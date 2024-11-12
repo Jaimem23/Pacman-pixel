@@ -4,8 +4,8 @@ class Clyde(Ghost):
 
     def __init__(self, x_pos, y_pos, widht, height, image):
         super().__init__(x_pos, y_pos, widht, height, image)
-        alive = True
-        blinking = False
+        self.alive = True
+        self.blinking = False
     
     @property
     def alive(self):
