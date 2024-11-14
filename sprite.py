@@ -3,7 +3,7 @@ class Sprite:
         """A function to initialize the object attributes"""
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.widht = widht
+        self.width = widht
         self.height = height
         self.image = image
 
@@ -30,11 +30,11 @@ class Sprite:
         self.__y_pos = y_pos
 
     @property
-    def widht(self):
+    def width(self):
         return self.__widht
     
-    @widht.setter
-    def widht(self,widht):
+    @width.setter
+    def width(self,widht):
         if not isinstance(widht,int):
             raise TypeError("widht value must be an integer")
         elif widht < 0:
