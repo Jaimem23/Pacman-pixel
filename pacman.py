@@ -14,8 +14,8 @@ class Pacman(Sprite):
     @direction.setter
     def direction(self,direction):  
         if not isinstance(direction,str):
-            raise TypeError("Direction must be an integer")
+            raise TypeError("Direction must be an string")
         #Change every direction to lower in order to avoid errors if you write it in upperCase
         elif direction.lower() != "up" and direction.lower() != "down" and direction.lower() != "right" and direction.lower() != "left":
             raise ValueError("Direction must be 'up', 'down', 'left', or 'right'")
-        else: self.__direction = direction
+        else: self.__direction = direction.lower()

@@ -18,7 +18,7 @@ class Ghost(Sprite):
         #Change every direction to lower in order to avoid errors writting it in upperCase
         elif direction.lower() != "up" and direction.lower() != "down" and direction.lower() != "right" and direction.lower() != "left":
             raise ValueError("Direction must be 'up', 'down', 'left', or 'right'")
-        else: self.__direction = direction
+        else: self.__direction = direction.lower()
     
     @property
     def alive(self):
@@ -27,7 +27,7 @@ class Ghost(Sprite):
     @alive.setter
     def alive(self, alive: bool):
         if not isinstance(alive, bool):
-            raise TypeError("The alive attribute needs to have  a boolean value, True or False")
+            raise TypeError("The alive attribute needs to have a boolean value, True or False")
         else:
             self.__alive = alive
         
@@ -38,5 +38,5 @@ class Ghost(Sprite):
     @alive.setter
     def blinking(self, blinking: bool):
         if not isinstance(blinking, bool):
-            raise TypeError("The blinking attribute needs to have  a boolean value, True or False")
+            raise TypeError("The blinking attribute needs to have a boolean value, True or False")
         else: self.__blinking = blinking
