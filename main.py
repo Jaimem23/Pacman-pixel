@@ -3,28 +3,25 @@ from UI_handler import UIHandler
 import pyxel
 from pacman import Pacman
 
-class main():
+class App():
     def __init__(self) -> None:
         pyxel.init(120,160)
+        pyxel.load("assets/pacman.pyxres")
         #Create the pacman
-        self.pacman = Pacman(0,0,16,16,"pacman")
+        self.pacman = Pacman(10,10,16,16,"pacman")
 
         pyxel.run(self.update,self.draw)
 
     def update(self):
 
         #Check the input of the user
-
-        if(pyxel.btn(pyxel.KEY_W) or pyxel.btn(pyxel.KEY_UP)):
-            self.pacman.direction = "up"
-        elif(pyxel.btn(pyxel.KEY_A) or pyxel.btn(pyxel.KEY_LEFT)):
-            self.pacman.direction = "left"
-        elif(pyxel.btn(pyxel.KEY_D) or pyxel.btn(pyxel.KEY_RIGHT)):
-            self.pacman.direction = "right"
-        elif(pyxel.btn(pyxel.KEY_S) or pyxel.btn(pyxel.KEY_DOWN)):
-            self.pacman.direction = "down"
-
+        self.pacman.change_direction()
+        self.pacman.move()
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
+    
+    def draw(self):
+        pyxel.cls(0)
+        pyxel.blt(self.pacman.x_pos,self.pacman.y_pos,0,0,0,16,16)
 
-main()
+App()
