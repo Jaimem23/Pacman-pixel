@@ -1,8 +1,35 @@
+import pyxel
+
+#This implmenetation is for the map blinking it is not finished yet, IMPORTANT, not final form of UI_Handler
+#A limit still needs to be implemented on the blinking of the map
 class UIHandler:
     def __init__(self):
-        pass
+        self.Blinking = False
+        self.counter = 0
+        pyxel.load("assets/pacman_map_blinking.pyxres")
+        pyxel.load("assets/pacman_map.pyxres")
 
-#Yet to be implemented (blinking function of the map)
+    def update(self):
+        pyxel.cls(0)
+        if self.counter%10 == 0 and not self.Blinking:
+            self.Blinking = True
+        elif self.counter%10 == 0 and self.Blinking:
+            self.Blinking = False
+        
+    def draw(self):
+        if not self.Blinking:
+            pyxel.load("assets/pacman_map.pyxres")
+            pyxel.bltm(126, 200, 0, 0, 0, 500, 500, None, None, 1.5)
+            self.counter += 1
+        else:
+            pyxel.load("assets/pacman_map_blinking.pyxres")
+            pyxel.bltm(126, 200, 0, 0, 0, 500, 500, None, None, 1.5)
+            self.counter += 1
+
+
+
+#Original code
+"""
 class App:
     def __init__(self):
         # Initialize Pyxel with a window size of 160x120
@@ -37,6 +64,6 @@ class App:
             pyxel.bltm(126, 200, 0, 0, 0, 500, 500, None, None, 1.5)
             self.counter += 1
             
-
 # Run the app
 App()
+"""
