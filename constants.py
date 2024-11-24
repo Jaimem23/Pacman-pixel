@@ -1,6 +1,17 @@
-import pyxel
-
 #Change the values please :)
-SCREEN_WIDTH = 150
-SCREEN_HEIGHT = 360
+SCREEN_WIDTH = 120
+SCREEN_HEIGHT = 160
 CAPTION = "Pacman"
+
+#Pacman position
+PACMAN_INITIAL_X = 60
+PACMAN_INITIAL_Y = 80
+
+#Pacman tiles
+PACMAN_TILE_X = 16
+PACMAN_RIGHT_TILE_Y = 0
+PACMAN_LEFT_TILE_Y = 16
+PACMAN_UP_TILE_Y = 32
+PACMAN_DOWN_TILE_Y = 48
+
+MAZE = []
