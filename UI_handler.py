@@ -18,4 +18,4 @@ class UIHandler:
         [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
         pyxel.blt(pacman.x_pos,pacman.y_pos,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16)
 
-UI = UIHandler()
+UI_handler = UIHandler()

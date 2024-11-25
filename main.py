@@ -1,12 +1,12 @@
-from colision_handler import ColisionHandler
-from UI_handler import UI
+from colision_handler import colision_handler
+from UI_handler import UI_handler
 import pyxel
 from pacman import pacman
 class App():
     def __init__(self) -> None:
         #Select the pacman
         self.pacman = pacman
-        pyxel.run(self.update,UI.draw)
+        pyxel.run(self.update,UI_handler.draw)
 
     def update(self):
         #Check the input of the user
