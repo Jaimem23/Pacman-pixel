@@ -40,3 +40,7 @@ class Ghost(Sprite):
         if not isinstance(blinking, bool):
             raise TypeError("The blinking attribute needs to have a boolean value, True or False")
         else: self.__blinking = blinking
+
+    def move():
+        """A function that moves the ghost"""
+        pass
