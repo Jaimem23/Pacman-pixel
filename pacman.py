@@ -127,4 +127,4 @@ class Pacman(Sprite):
         self.__y_pos_tile = tile
 
 #Create the pacman
-pacman = Pacman(0,0,8,8,0,0,2)
+pacman = Pacman(0,0,8,8,0,0,5)
