@@ -1,11 +1,12 @@
 class Sprite:
-    def __init__(self,x_pos:int,y_pos:int,widht:int,height:int,image):
+    def __init__(self,x_pos:int,y_pos:int,widht:int,height:int,x_pos_tile:int,y_pos_tile:int):
         """A function to initialize the object attributes"""
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.width = widht
         self.height = height
-        self.image = image
+        self.x_pos_tile = x_pos_tile
+        self.y_pos_tile = y_pos_tile
 
     @property
     def x_pos(self):
@@ -52,3 +53,27 @@ class Sprite:
         elif height < 0:
             raise ValueError("Height must be positive or 0 ")
         self.__height = height
+        
+    @property
+    def x_pos_tile(self):
+        return self.__x_pos_tile
+    
+    @x_pos_tile.setter
+    def x_pos_tile(self,tile):
+        if not isinstance(tile,int):
+            raise TypeError("x_pos_tile must be an integer")
+        elif tile < 0:
+            raise ValueError("x_pos_tile must be a non negative number")
+        self.__x_pos_tile = tile
+
+    @property
+    def y_pos_tile(self):
+        return self.__y_pos_tile
+    
+    @y_pos_tile.setter
+    def y_pos_tile(self,tile):
+        if not isinstance(tile,int):
+            raise TypeError("y_pos_tile must be an integer")
+        elif tile < 0:
+            raise ValueError("y_pos_tile must be a non negative number")
+        self.__y_pos_tile = tile

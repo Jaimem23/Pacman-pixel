@@ -1,8 +1,8 @@
 from sprite import Sprite
 
 class Ghost(Sprite):
-    def __init__(self, x_pos, y_pos, widht, height, image,direction):
-        super().__init__(x_pos, y_pos, widht, height, image)
+    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction):
+        super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = direction
         self.alive = True
         self.blinking = False

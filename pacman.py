@@ -4,14 +4,14 @@ from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
                       KEY_W,KEY_S,KEY_A,KEY_D
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
-                        PACMAN_TILE_X, PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y
+                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y
 class Pacman(Sprite):
-    def __init__(self, x_pos, y_pos, widht, height, image,velocity: int,direction:str = "right"):
-        super().__init__(x_pos, y_pos, widht, height, image)
-        self.direction = direction
-        self.x_pos_tile = 16
-        self.y_pos_tile = 0
+    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
+        super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
+        self.direction = "right"
         self.velocity = velocity
+        #A variable to control the animations depending on the frames
+        self.__animation_timer = 5
     
     def change_direction(self):
         """A function that cheks the direction of the pacman based on the input"""
@@ -33,19 +33,50 @@ class Pacman(Sprite):
         """A function that moves pacman with his direction"""
         if self.direction == "right":
             #Allow pacman to go from right to left
-            if(self.x_pos > SCREEN_WIDTH):              
-                self.x_pos = -16
+            if(self.x_pos > SCREEN_WIDTH):  
+                #Make the pacman appear on the other side of the screen exactly the coordinates of its size
+                #That way it gets teleported without the player noticing the change of coordinates            
+                self.x_pos = -self.width
             self.x_pos += 1 * self.velocity
+            #Logic to make the animation of pacman moving the mouth
+            #Only update every N frames
+            if self.__animation_timer == 0:
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 32:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
         elif self.direction == "left":
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
                 self.x_pos = SCREEN_WIDTH
             self.x_pos -= 1 * self.velocity
+
+            #Logic to make the animation of pacman moving the mouth
+            # Only update every N frames
+            if self.__animation_timer == 0:
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 32:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
         elif self.direction == "up" and self.y_pos >= 0:
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity 
+            #Logic to make the animation of pacman moving the mouth
+            # Only update every N frames
+            if self.__animation_timer == 0:
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 32:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
         elif self.direction == "down" and self.y_pos <= SCREEN_HEIGHT:
             self.y_pos += 1 * self.velocity
+
+            #Logic to make the animation of pacman moving the mouth
+            # Only update every N frames
+            if self.__animation_timer == 0:
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 32:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
+        
+        # Increment animation timer, reset periodically
+        self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
     @property
     def velocity(self):
@@ -59,6 +90,11 @@ class Pacman(Sprite):
             ValueError("Velocity must be 1 or more")
         else:
             self.__velocity = velocity
+
+    #read only properties
+    @property
+    def __animation_speed(self):
+        return 2
 
     @property
     def direction(self):
@@ -89,3 +125,6 @@ class Pacman(Sprite):
     @y_pos_tile.setter
     def y_pos_tile(self,tile):
         self.__y_pos_tile = tile
+
+#Create the pacman
+pacman = Pacman(0,0,8,8,0,0,2)
