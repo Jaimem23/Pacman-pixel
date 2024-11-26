@@ -1,11 +1,11 @@
 #Change the values please :)
-SCREEN_WIDTH = 224 * 2
-SCREEN_HEIGHT = 288 * 2
+SCREEN_WIDTH = 584
+SCREEN_HEIGHT = 750
 CAPTION = "Pacman"
 
 #Pacman position
-PACMAN_INITIAL_X = 60
-PACMAN_INITIAL_Y = 80
+PACMAN_INITIAL_X = 285
+PACMAN_INITIAL_Y = 450
 
 #Pacman tiles
 PACMAN_RIGHT_TILE_Y = 0
@@ -20,9 +20,9 @@ PINKY_Y_TILE = 32
 CLYDE_Y_TILE = 48
 
 #Fruit tiles
-FRUIT_Y_TYLE = 173 
+FRUIT_Y_TYLE = 173
 
 #Pellets tiles
 PELLET_Y_TILE = 192
 
-MAZE = []
+MAZE_1 = []

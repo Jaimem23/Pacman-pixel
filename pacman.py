@@ -1,10 +1,8 @@
-"""Create classes to represent the objects needed for the final project. For all of them, create init
-methods, properties and setters."""
 from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
                       KEY_W,KEY_S,KEY_A,KEY_D
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
-                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y
+                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y, PACMAN_INITIAL_X, PACMAN_INITIAL_Y
 class Pacman(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -127,4 +125,4 @@ class Pacman(Sprite):
         self.__y_pos_tile = tile
 
 #Create the pacman
-pacman = Pacman(0,0,8,8,0,0,5)
+pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2)
