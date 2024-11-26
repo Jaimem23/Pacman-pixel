@@ -1,6 +1,7 @@
 import pyxel
 import constants
 from pacman import pacman
+from blinky import blinky
 
 class UIHandler:
     ''' This class is in charge of drawing all of the visuals of the game '''
@@ -49,4 +50,4 @@ class UIHandler:
         pyxel.blt(pacman.x_pos,pacman.y_pos,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 2.5)
         
 
-UI = UIHandler()
+UI_Handler = UIHandler()
