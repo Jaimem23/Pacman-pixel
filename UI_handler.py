@@ -39,7 +39,7 @@ class UIHandler:
 
     def draw(self):
         pyxel.cls(0)
-        self.victory_maze_draw()
+        self.maze_draw()
         """x and y: The coordinates where the copied region will be drawn.
         img: The image or tilemap source (0-2 for image bank, 0-7 for tilemap).
         u and v: The coordinates of the top-left corner of the region to be copied within the image or tilemap.
