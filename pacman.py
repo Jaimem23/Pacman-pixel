@@ -40,8 +40,10 @@ class Pacman(Sprite):
             #Only update every N frames
             if self.__animation_timer == 0:
                 #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 32:self.x_pos_tile += 16
-                else: self.x_pos_tile = 0
+                if self.x_pos_tile != 32:
+                    self.x_pos_tile += 16
+                else: 
+                    self.x_pos_tile = 0
         elif self.direction == "left":
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
@@ -52,8 +54,10 @@ class Pacman(Sprite):
             # Only update every N frames
             if self.__animation_timer == 0:
                 #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 32:self.x_pos_tile += 16
-                else: self.x_pos_tile = 0
+                if self.x_pos_tile != 32:
+                    self.x_pos_tile += 16
+                else: 
+                    self.x_pos_tile = 0
         elif self.direction == "up" and self.y_pos >= 0:
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity 
@@ -61,8 +65,10 @@ class Pacman(Sprite):
             # Only update every N frames
             if self.__animation_timer == 0:
                 #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 32:self.x_pos_tile += 16
-                else: self.x_pos_tile = 0
+                if self.x_pos_tile != 32:
+                    self.x_pos_tile += 16
+                else: 
+                    self.x_pos_tile = 0
         elif self.direction == "down" and self.y_pos <= SCREEN_HEIGHT:
             self.y_pos += 1 * self.velocity
 
@@ -70,12 +76,14 @@ class Pacman(Sprite):
             # Only update every N frames
             if self.__animation_timer == 0:
                 #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 32:self.x_pos_tile += 16
-                else: self.x_pos_tile = 0
+                if self.x_pos_tile != 32:
+                    self.x_pos_tile += 16
+                else: 
+                    self.x_pos_tile = 0
         
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
-
+    
     @property
     def velocity(self):
         return self.__velocity
