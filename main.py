@@ -16,5 +16,7 @@ class App():
         blinky.move()
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
+
+
     
 App()

@@ -10,6 +10,7 @@ class Pacman(Sprite):
         self.velocity = velocity
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
+        
     
     def change_direction(self):
         """A function that cheks the direction of the pacman based on the input"""
@@ -58,7 +59,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "up" and self.y_pos >= 0:
+        elif self.direction == "up":
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity 
             #Logic to make the animation of pacman moving the mouth
@@ -69,7 +70,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "down" and self.y_pos <= SCREEN_HEIGHT:
+        elif self.direction == "down":
             self.y_pos += 1 * self.velocity
 
             #Logic to make the animation of pacman moving the mouth

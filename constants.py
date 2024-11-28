@@ -1,6 +1,6 @@
 #Change the values please :)
-SCREEN_WIDTH = 584
-SCREEN_HEIGHT = 750
+SCREEN_WIDTH = 448
+SCREEN_HEIGHT = 550
 CAPTION = "Pacman"
 
 #Pacman position
