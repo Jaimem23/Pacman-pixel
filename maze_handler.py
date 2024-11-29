@@ -3,9 +3,8 @@ from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 class Maze:
     ''' This class is used to register the walls in the map that has been loaded, and put their positions into a matrix '''
 
-    def __init__ (self, tilemap):
+    def __init__ (self):
         #Atribute used to get the current loaded tilemap
-        self.tilemap = tilemap
         #This matrix contains the tiles of all the walls in the map
         self.wall_tiles= ((0,2),(0,4),(0,7),(0,10),(0,12),(0,15),(0,17),(1,2),(2,2),
         (3,2),(5,2),(6,2),(9,2),(10,2),(13,2),(14,2),(18,2),(19,2),(20,2),
@@ -19,14 +18,19 @@ class Maze:
         (15,7),(20,7),(23,7),(16,2),(17,2),(8,3),(20,4))
         #A new matrix is going to be build to store all of the data of the map (corridors and walls)
         self.map_matrix = []
+
+
+    def matrix_create(self):
         for y in range(504):
             self.map_matrix.append([])
             for x in range (448):
                 #If the tile is in the wall list, a wall (1) is append
-                if self.tilemap.pget(x, y) in self.wall_tiles:
-                    pyxel.rect(x*8, y*8, 8, 8, 3) #Temporary
-                    self.map_matrix[y].append(1) 
+                if pyxel.tilemap(0).pget(x,y) in self.wall_tiles:
+                    self.map_matrix[y].append(1)
+                    #pyxel.rect(x*8, y*8, 8, 8, 3) #Temporary
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:
                     self.map_matrix[y].append(0)
-                    pyxel.rect(x*8, y*8, 8, 8,0) #Temporary
+                    #pyxel.rect(x*8, y*8, 8, 8,0) #Temporary
+
+maze = Maze()
