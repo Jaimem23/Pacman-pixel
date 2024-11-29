@@ -2,12 +2,13 @@ from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
                       KEY_W,KEY_S,KEY_A,KEY_D
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
-                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y, PACMAN_INITIAL_X, PACMAN_INITIAL_Y
+                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y
 class Pacman(Sprite):
-    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
+    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int, map_matrix):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = "right"
         self.velocity = velocity
+        self.map_matrix = map_matrix
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
         
@@ -45,7 +46,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "left":
+        elif self.direction == "left" and (self.map_matrix[int(self.y_pos/8)][int((self.x_pos/8) - 1)] == 0):
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
                 self.x_pos = SCREEN_WIDTH
@@ -59,7 +60,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "up":
+        elif self.direction == "up" and self.y_pos >= 0:
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity 
             #Logic to make the animation of pacman moving the mouth
@@ -70,7 +71,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "down":
+        elif self.direction == "down" and self.y_pos <= SCREEN_HEIGHT:
             self.y_pos += 1 * self.velocity
 
             #Logic to make the animation of pacman moving the mouth
@@ -133,5 +134,13 @@ class Pacman(Sprite):
     def y_pos_tile(self,tile):
         self.__y_pos_tile = tile
 
-#Create the pacman
-pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2)
+    @property
+    def map_matrix(self):
+        return self.__map_matrix
+
+    @map_matrix.setter
+    def map_matrix(self, map_matrix):
+        if not isinstance(map_matrix, list):
+            raise TypeError("The map matrix should be a list")
+        else:
+            self.__map_matrix = map_matrix

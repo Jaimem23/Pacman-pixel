@@ -1,12 +1,11 @@
 from colision_handler import colision_handler
 from UI_handler import  UI_Handler
 import pyxel
-from pacman import pacman
 from blinky import blinky
 class App():
     def __init__(self) -> None:
         #Select the pacman
-        self.pacman = pacman
+        self.pacman = UI_Handler.pacman
         pyxel.run(self.update,UI_Handler.draw)
 
     def update(self):
@@ -17,6 +16,4 @@ class App():
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
 
-
-    
 App()

@@ -1,23 +1,22 @@
 import pyxel
 import constants
-from pacman import pacman
+from pacman import Pacman
 from blinky import blinky
 from maze_handler import Maze
+from constants import PACMAN_INITIAL_X, PACMAN_INITIAL_Y
 
 class UIHandler:
     ''' This class is in charge of drawing all of the visuals of the game '''
 
     def __init__(self):
         self.blink_control = 0
-        pyxel.init(constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT)
-        pyxel.load("assets/resources.pyxres")
         self.maze = Maze(pyxel.tilemap(0))
+        self.pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2, self.maze.map_matrix)
 
 
 
     def maze_draw(self):
         '''This function is in charge of drawing the maze when the game is running'''
-        pyxel.cls(0)
         pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1)
 
     def victory_maze_update(self):
@@ -41,8 +40,6 @@ class UIHandler:
             pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1)
 
     def draw(self):
-        #pyxel.cls(0)
-        #self.maze_draw()
         """x and y: The coordinates where the copied region will be drawn.
         img: The image or tilemap source (0-2 for image bank, 0-7 for tilemap).
         u and v: The coordinates of the top-left corner of the region to be copied within the image or tilemap.
@@ -50,7 +47,7 @@ class UIHandler:
         [colkey]: An optional color key (0-255) to use for transparency. If specified, pixels with this color value will be treated as transparent.
         [rotate]: An optional rotation angle (in degrees) to apply to the copied region.
         [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
-        #pyxel.blt(pacman.x_pos,pacman.y_pos,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.5)
+        pyxel.blt(self.pacman.x_pos,self.pacman.y_pos,0,self.pacman.x_pos_tile,self.pacman.y_pos_tile,16,16, 0, 0, 1.5)
         
 
 UI_Handler = UIHandler()
