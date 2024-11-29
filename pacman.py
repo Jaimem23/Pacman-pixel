@@ -32,7 +32,7 @@ class Pacman(Sprite):
 
     def move(self):
         """A function that moves pacman with his direction"""
-        if self.direction == "right" and (self.map_matrix[int(self.y_pos/8)][int((self.x_pos/8) + 2)] == 0):
+        if self.direction == "right"  and ((self.map_matrix[int(self.y_pos/8 + 1)][int((self.x_pos/8) + 3)] == 0) and (self.map_matrix[int(self.y_pos/8)][int((self.x_pos/8) + 3)] == 0)):
             #Allow pacman to go from right to left
             if(self.x_pos > SCREEN_WIDTH):  
                 #Make the pacman appear on the other side of the screen exactly the coordinates of its size
@@ -47,7 +47,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "left" and (self.map_matrix[int(self.y_pos/8)][int((self.x_pos/8) - 1)] == 0):
+        elif self.direction == "left" and ((self.map_matrix[int(self.y_pos/8 + 1)][int((self.x_pos/8) - 1)] == 0) and (self.map_matrix[int(self.y_pos/8)][int((self.x_pos/8) - 1)] == 0)):
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
                 self.x_pos = SCREEN_WIDTH
@@ -61,7 +61,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "up" and (self.map_matrix[int((self.y_pos/8 - 1))][int(self.x_pos/8)] == 0):
+        elif self.direction == "up" and ((self.map_matrix[int((self.y_pos/8 - 1))][int(self.x_pos/8)] == 0) and (self.map_matrix[int((self.y_pos/8 - 1))][int(self.x_pos/8 + 1)] == 0)):
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity 
             #Logic to make the animation of pacman moving the mouth
@@ -72,7 +72,7 @@ class Pacman(Sprite):
                     self.x_pos_tile += 16
                 else: 
                     self.x_pos_tile = 0
-        elif self.direction == "down" and (self.map_matrix[int((self.y_pos/8 + 2))][int(self.x_pos/8)] == 0):
+        elif self.direction == "down" and ((self.map_matrix[int((self.y_pos/8 + 3))][int(self.x_pos/8)] == 0) and (self.map_matrix[int((self.y_pos/8 + 3))][int(self.x_pos/8) + 1] == 0)):
             self.y_pos += 1 * self.velocity
 
             #Logic to make the animation of pacman moving the mouth
