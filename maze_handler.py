@@ -23,10 +23,10 @@ class Maze:
                 #If the tile is in the wall list, a wall (1) is append
                 if pyxel.tilemap(0).pget(x,y) in self.wall_tiles:
                     self.map_matrix[y].append(1)
-                    #pyxel.rect(x*8, y*8, 8, 8, 3) #Temporary
+                    pyxel.rect(x*8, y*8, 8, 8, 3) #Temporary
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:
                     self.map_matrix[y].append(0)
-                    #pyxel.rect(x*8, y*8, 8, 8,0) #Temporary
+                    pyxel.rect(x*8, y*8, 8, 8,0) #Temporary
 
 maze = Maze()
