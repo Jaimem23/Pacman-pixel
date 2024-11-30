@@ -5,11 +5,10 @@ from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
                         PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y
 from maze_handler import maze
 class Pacman(Sprite):
-    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int, map_matrix):
+    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = "right"
         self.velocity = velocity
-        self.map_matrix = map_matrix
         self.pellet_positions = maze.pellet_positions
         self.__eaten_pellets = []
         self.game_end = False
@@ -47,10 +46,6 @@ class Pacman(Sprite):
         elif(btn(KEY_S) or btn(KEY_DOWN)):
             #Change the direction the pacman wants to go
             self.__next_direction = "down"
-            
-
-
-    
 
     def move(self):
         """A function that moves pacman with his direction"""
@@ -153,14 +148,14 @@ class Pacman(Sprite):
     def __can_move(self,direction):
         #Check the four tiles the pacman occupies
         for tile in range(4):
-            if direction == "right" and self.map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) + 4)] != 0:
+            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) + 4)] != 0:
                 #If a tile is a wall, return False
                 return False
-            elif direction == "left" and self.map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) - 1)] != 0:
+            elif direction == "left" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) - 1)] != 0:
                 return False
-            elif direction == "up" and self.map_matrix[int(self.y_pos/8) -1][int((self.x_pos/8)) + tile] != 0:
+            elif direction == "up" and self.__map_matrix[int(self.y_pos/8) -1][int((self.x_pos/8)) + tile] != 0:
                 return False
-            elif direction == "down" and self.map_matrix[int(self.y_pos/8) +4][int((self.x_pos/8)) + tile] != 0:
+            elif direction == "down" and self.__map_matrix[int(self.y_pos/8) +4][int((self.x_pos/8)) + tile] != 0:
                 return False
         return True
 
@@ -198,19 +193,10 @@ class Pacman(Sprite):
     @y_pos_tile.setter
     def y_pos_tile(self,tile):
         self.__y_pos_tile = tile
-
-    @property
-    def map_matrix(self):
-        return self.__map_matrix
-
-    @map_matrix.setter
-    def map_matrix(self, map_matrix):
-        if not isinstance(map_matrix, list):
-            raise TypeError("The map matrix should be a list")
-        else:
-            self.__map_matrix = map_matrix
     
-
-
+    #Read only properties
+    @property
+    def __map_matrix(self):
+        return maze.map_matrix
 #Create the pacman
-pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2, maze.map_matrix)
+pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2)
