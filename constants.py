@@ -25,4 +25,8 @@ FRUIT_Y_TYLE = 173
 #Pellets tiles
 PELLET_Y_TILE = 192
 
+#Sprite size
+SPRITE_SIZE = 12
+
+
 MAZE_1 = []
