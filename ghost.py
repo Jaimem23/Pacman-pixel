@@ -1,5 +1,7 @@
 from sprite import Sprite
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH
+from maze_handler import maze
+from pacman import pacman
 class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -10,7 +12,25 @@ class Ghost(Sprite):
         self.__animation_speed = 2
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
+        #Variables to change the direction of the ghost
+        self.__pacman_x_pos = pacman.x_pos
+        self.__pacman_y_pos = pacman.y_pos
+        self.__next_direction = "right"
+
+
+    #Read only properties
+    @property
+    def __x_bias(self):
+        return int((self.__pacman_x_pos - self.x_pos)/8)
     
+    @property
+    def __y_bias(self):
+        return int((self.__pacman_y_pos - self.y_pos)/8)
+
+    @property
+    def __map_matrix(self):
+        return maze.map_matrix
+
     @property
     def direction(self):
         return self.__direction
@@ -48,11 +68,11 @@ class Ghost(Sprite):
     def move(self):
         """A function that moves the ghost"""
         if self.direction == "right":
-            #Allow pacman to go from right to left
-            if(self.x_pos > SCREEN_WIDTH):  
-                #Make the ghost appear on the other side of the screen exactly the coordinates of its size
-                #That way it gets teleported without the player noticing the change of coordinates            
+
+            #Allow ghost to go from right to left
+            if(self.x_pos > SCREEN_WIDTH):           
                 self.x_pos = -self.width
+
             self.x_pos += 1 * self.velocity
             #Logic to make the animation of pacman moving the mouth
             #Only update every N frames
@@ -60,6 +80,7 @@ class Ghost(Sprite):
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
                 else: self.x_pos_tile = 0
+
         elif self.direction == "left":
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
@@ -72,7 +93,9 @@ class Ghost(Sprite):
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 48:self.x_pos_tile = 48
                 else: self.x_pos_tile = 32
+
         elif self.direction == "up" and self.y_pos >= 0:
+
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity
                         #Logic to make the animation of pacman moving the mouth
@@ -94,4 +117,21 @@ class Ghost(Sprite):
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
     def change_direction(self):
-        pass
+        """A function that cheks the direction of the pacman based on the input"""
+        #Only change to that direction if he can move
+        if self.__can_move(self.__next_direction):
+            self.direction = self.__next_direction
+    
+    def __can_move(self,direction):
+        #Check the four tiles the pacman occupies
+        for tile in range(4):
+            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) + 4)] != 0:
+                #If a tile is a wall, return False
+                return False
+            elif direction == "left" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) - 1)] != 0:
+                return False
+            elif direction == "up" and self.__map_matrix[int(self.y_pos/8) -1][int((self.x_pos/8)) + tile] != 0:
+                return False
+            elif direction == "down" and self.__map_matrix[int(self.y_pos/8) +4][int((self.x_pos/8)) + tile] != 0:
+                return False
+        return True
