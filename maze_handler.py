@@ -1,5 +1,6 @@
 import pyxel
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from pellets import Pellets
 class Maze:
     ''' This class is used to register the walls in the map that has been loaded, and put their positions into a matrix '''
 
@@ -18,11 +19,13 @@ class Maze:
         (4,5),(5,5),(6,5),(7,5),(8,5),(9,5),(12,5),(15,5),(16,5),(19,5),(20,5),(23,5),(25,5),(26,5),
         (5,6),(6,6),(7,6),(9,6),(10,6),(16,6),(19,6),(20,6),(21,6),(22,6),(23,6),(25,6),(26,6),
         (1,7),(2,7),(3,7),(4,7),(7,7),(12,7),(15,7),(20,7),(23,7))
+        self.pellet_tile = (5,0)
         #A new matrix is going to be build to store all of the data of the map (corridors and walls)
         self.map_matrix = []
+        self.pellet_positions = []
 
 
-    def matrix_create(self):
+    def map_matrix_create(self):
         for y in range(504):
             self.map_matrix.append([])
             for x in range (448):
@@ -34,5 +37,13 @@ class Maze:
                 else:
                     self.map_matrix[y].append(0)
                     pyxel.rect(x*8, y*8, 8, 8,0) #Temporary
+
+    def pellet_list_create(self):
+        for y in range(504):
+            for x in range (448):
+                #If the tile is a pellet create a pellet object in the list
+                if pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
+                    self.pellet_positions.append(Pellets(x,y,4,4, False))
+                    pyxel.rect(x*8, y*8, 4, 4, 6) #Temporary
 
 maze = Maze()

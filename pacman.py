@@ -10,6 +10,9 @@ class Pacman(Sprite):
         self.direction = "right"
         self.velocity = velocity
         self.map_matrix = map_matrix
+        self.pellet_positions = maze.pellet_positions
+        self.__eaten_pellets = []
+        self.game_end = False
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
         self.__next_direction = self.direction
@@ -60,6 +63,7 @@ class Pacman(Sprite):
             self.x_pos += 1 * self.velocity
             #Logic to make the animation of pacman moving the mouth
             #Only update every N frames
+
             if self.__animation_timer == 0:
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 32:
@@ -105,6 +109,33 @@ class Pacman(Sprite):
         
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
+
+        #Check if there's a pellet in the position and if there is, change the pellet status to eaten
+        for element in self.pellet_positions:
+            if (element.x_pos >= int(self.x_pos/8 + 1) and element.x_pos < int(self.x_pos/8 + 3)) and (element.y_pos >= int(self.y_pos/8 + 1) and element.y_pos < int(self.y_pos/8 + 3)):
+                if not element.eaten:
+                    element.eaten = True
+                    self.__eaten_pellets.append(element)
+        #If Pacman has eaten all of the pellets, the game ends
+        if len(self.pellet_positions) == len(self.__eaten_pellets):
+
+            #Select the required sprite for pacman on the victory screen according to the direction
+            if self.direction.lower() == "up":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 32
+            elif self.direction.lower() == "down":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 48
+            elif self.direction.lower() == "right":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 0
+            elif self.direction.lower() == "left":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 16
+
+            #Change the direction by stand-by and set the game has ended
+            self.direction = "stand-by"
+            self.game_end = True
     
     @property
     def velocity(self):
@@ -147,7 +178,7 @@ class Pacman(Sprite):
         if not isinstance(direction,str):
             raise TypeError("Direction must be an string")
         #Change every direction to lower in order to avoid errors if you write it in upperCase
-        elif direction.lower() != "up" and direction.lower() != "down" and direction.lower() != "right" and direction.lower() != "left":
+        elif direction.lower() != "up" and direction.lower() != "down" and direction.lower() != "right" and direction.lower() != "left" and direction.lower() != "stand-by":
             raise ValueError("Direction must be 'up', 'down', 'left', or 'right'")
         else: self.__direction = direction.lower()
 

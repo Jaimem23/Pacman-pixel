@@ -10,10 +10,14 @@ class App():
         pyxel.run(self.update,UI_Handler.draw)
 
     def update(self):
-        #Check the input of the user
-        self.pacman.change_direction()
-        self.pacman.move()
-        blinky.move()
+        if not pacman.game_end:
+            #Check the input of the user
+            self.pacman.change_direction()
+            self.pacman.move()
+            blinky.move()
+        else:
+            UI_Handler.victory_maze_update()
+
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
 
