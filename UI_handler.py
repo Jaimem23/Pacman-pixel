@@ -51,7 +51,7 @@ class UIHandler:
         [colkey]: An optional color key (0-255) to use for transparency. If specified, pixels with this color value will be treated as transparent.
         [rotate]: An optional rotation angle (in degrees) to apply to the copied region.
         [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
-        pyxel.blt(pacman.x_pos+ 2,pacman.y_pos + 4,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.5)
+        pyxel.blt(pacman.x_pos+ 6,pacman.y_pos + 4,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
         #pyxel.rect(pacman.x_pos, pacman.y_pos, 32, 32, 5)
         
 
