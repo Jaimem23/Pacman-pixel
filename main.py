@@ -13,6 +13,7 @@ class App():
         #Check the input of the user
         self.pacman.change_direction()
         self.pacman.move()
+        blinky.change_direction()
         blinky.move()
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()

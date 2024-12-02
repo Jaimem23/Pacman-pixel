@@ -16,7 +16,7 @@ class Pacman(Sprite):
     def change_direction(self):
         """A function that cheks the direction of the pacman based on the input"""
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.__is_next_tile_wall(self.__next_direction) and not self.remains_in_same_tile(self.direction):
+        if  self.__is_next_tile_wall(self.__next_direction) and not self.__is_centerd(self.direction):
             self.direction = self.__next_direction
             if self.direction == "right":
                 self.y_pos_tile = PACMAN_RIGHT_TILE_Y
@@ -44,13 +44,13 @@ class Pacman(Sprite):
             #Change the direction the pacman wants to go
             self.__next_direction = "down"
 
-    def remains_in_same_tile(self, direction):
+    def __is_centerd(self, direction):
         current_tile = 0
         next_pos = 0
         new_tile = 0
         if direction == "right":
             current_tile = int(self.x_pos // 8)
-            next_pos = self.x_pos + self.velocity
+            next_pos = self.x_pos + self.velocity + 4
             new_tile = int((next_pos) // 8)
         elif direction == "left":
             current_tile = int(self.x_pos // 8)
@@ -62,7 +62,7 @@ class Pacman(Sprite):
             new_tile = int((next_pos) // 8)
         elif direction == "down":
             current_tile = int(self.y_pos // 8)
-            next_pos = self.y_pos + self.velocity
+            next_pos = self.y_pos + self.velocity + 4
             new_tile = int((next_pos) // 8)
         
         if btn(KEY_E):
@@ -166,7 +166,7 @@ class Pacman(Sprite):
         """A function that chekcs if the next step is a wall"""
 
         for tile in range(4): 
-            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos+ 24 +self.velocity)/8)] == 1:
+            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos+ 24 +self.velocity + 4)/8)] == 1:
                 #If a tile is a wall, return False
                 return False
             elif direction == "left" and self.__map_matrix[int((self.y_pos)/8) + tile][int((self.x_pos - self.velocity)/8)] == 1:
