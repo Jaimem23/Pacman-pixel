@@ -3,6 +3,7 @@ from UI_handler import  UI_Handler
 import pyxel
 from blinky import blinky
 from pacman import pacman
+from HUD import HUD_obj
 class App():
     def __init__(self) -> None:
         #Select the pacman
@@ -14,8 +15,12 @@ class App():
             #Check the input of the user
             self.pacman.change_direction()
             self.pacman.move()
+            self.pacman.pellet_eaten_check()
             blinky.change_direction()
             blinky.move()
+            #Update the high score if current score is higher than the highest score obatined before game over
+            if pacman.score > HUD_obj.high_score:
+                HUD_obj.high_score = pacman.score
         else:
             UI_Handler.victory_maze_update()
 

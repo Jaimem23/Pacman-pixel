@@ -1,6 +1,7 @@
 class HUD:
     def __init__(self):
         self.level = 1
+        self.high_score = 0
     
     @property 
     def level(self):
@@ -14,7 +15,21 @@ class HUD:
             raise ValueError("Level must be a positive number")
         self.__level = level
 
+    @property
+    def high_score(self):
+        return self.__high_score
+    
+    @high_score.setter
+    def high_score(self, high_score):
+        if not isinstance(high_score, int):
+            raise TypeError("The score must be an integer")
+        elif high_score < -1:
+            raise ValueError("The high score must be a psoitive integer")
+        else:
+            self.__high_score = high_score
+
     def increase_level(self):
         self.level += 1
+
 
 HUD_obj = HUD()

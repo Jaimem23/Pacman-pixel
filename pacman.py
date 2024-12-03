@@ -4,6 +4,7 @@ from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
                         PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y
 from maze_handler import maze
+from HUD import HUD_obj
 class Pacman(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -12,6 +13,9 @@ class Pacman(Sprite):
         self.pellet_positions = maze.pellet_positions
         self.__eaten_pellets = 0
         self.game_end = False
+        self.score = 0
+        self.lifes = 3
+
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
         self.__next_direction = self.direction
@@ -39,13 +43,16 @@ class Pacman(Sprite):
             #Change the direction the pacman wants to go
             self.__next_direction = "left"
 
+
         elif(btn(KEY_D) or btn(KEY_RIGHT)):
             #Change the direction the pacman wants to go
             self.__next_direction = "right"
 
+
         elif(btn(KEY_S) or btn(KEY_DOWN)):
             #Change the direction the pacman wants to go
             self.__next_direction = "down"
+
 
     def __is_centerd(self, direction):
         current_tile = 0
@@ -139,32 +146,7 @@ class Pacman(Sprite):
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
-        #Check if there's a pellet in the position and if there is, change the pellet status to eaten
-        for element in self.pellet_positions:
-            if (element.x_pos >= int(self.x_pos/8 + 1) and element.x_pos < int(self.x_pos/8 + 3)) and (element.y_pos >= int(self.y_pos/8 + 1) and element.y_pos < int(self.y_pos/8 + 3)):
-                if not element.eaten:
-                    element.eaten = True
-                    self.__eaten_pellets += 1
-        #If Pacman has eaten all of the pellets, the game ends
-        if len(self.pellet_positions) == self.__eaten_pellets:
 
-            #Select the required sprite for pacman on the victory screen according to the direction
-            if self.direction.lower() == "up":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 32
-            elif self.direction.lower() == "down":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 48
-            elif self.direction.lower() == "right":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 0
-            elif self.direction.lower() == "left":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 16
-
-            #Change the direction by stand-by and set the game has ended
-            self.direction = "stand-by"
-            self.game_end = True
     
     @property
     def velocity(self):
@@ -247,5 +229,50 @@ class Pacman(Sprite):
     @property
     def __map_matrix(self):
         return maze.map_matrix
+    
+    def pellet_eaten_check(self):
+        '''This function checks if the position pacman is going to has an active pellet in it, if it has, it erases the pellet and sums the value to the score'''
+    #Check if there's a pellet in the position and if there is, change the pellet status to eaten
+        for element in self.pellet_positions:
+            if (element.x_pos >= int(self.x_pos/8 + 1) and element.x_pos < int(self.x_pos/8 + 3)) and (element.y_pos >= int(self.y_pos/8 + 1) and element.y_pos < int(self.y_pos/8 + 3)):
+                if not element.eaten:
+                    element.eaten = True
+                    self.__eaten_pellets += 1
+                    self.score += 10
+
+    #If Pacman has eaten all of the pellets, the game ends
+        if len(self.pellet_positions) == self.__eaten_pellets:
+
+            #Select the required sprite for pacman on the victory screen according to the direction
+            if self.direction.lower() == "up":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 32
+            elif self.direction.lower() == "down":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 48
+            elif self.direction.lower() == "right":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 0
+            elif self.direction.lower() == "left":
+                self.x_pos_tile = 16
+                self.y_pos_tile = 16
+
+            #Change the direction by stand-by and set the game has ended
+            self.direction = "stand-by"
+            self.game_end = True
+
+    @property
+    def score(self):
+        return self.__score
+    
+    @score.setter
+    def score(self, score):
+        if not isinstance (score, int):
+            raise TypeError("Score must be an integer")
+        elif score < 0:
+            raise ValueError("Score must be a positive number")
+        else:
+            self.__score = score
+
 #Create the pacman
 pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 4)

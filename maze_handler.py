@@ -40,20 +40,4 @@ class Maze:
                 else:
                     self.map_matrix[y].append(0)
 
-    def pellet_list_create(self):
-        for y in range(62):
-            for x in range (62):
-                #If the tile is a pellet create a pellet object in the list
-                if pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
-                    self.pellet_positions.append(Pellets(x,y,4,4, False))
-                    pyxel.rect(x*8, y*8, 4, 4, 6) #Temporary
-
-    def pellet_list_create(self):
-        for y in range(62):
-            for x in range (62):
-                #If the tile is a pellet create a pellet object in the list
-                if pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
-                    self.pellet_positions.append(Pellets(x,y,4,4, False))
-                    pyxel.rect(x*8, y*8, 4, 4, 6) #Temporary
-
 maze = Maze()
