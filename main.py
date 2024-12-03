@@ -14,6 +14,7 @@ class App():
         self.pacman.change_direction()
         self.pacman.move()
         blinky.change_direction()
+        blinky.change_mode()
         blinky.move()
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()

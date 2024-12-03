@@ -24,55 +24,88 @@ class Blinky(Ghost):
         
         self.__mode = mode.lower()
 
+    def change_mode(self):
+        if pyxel.btn(pyxel.KEY_E):
+            print("Change mode to chase")
+            self.mode = "chase"
+        elif pyxel.btn(pyxel.KEY_T):
+            print("Change mode to frightened")
+            self.mode = "frightened"
+
     def calculate_new_direction(self):
         #If he has recently change its direction, return
         if self._change_direction_timer != 0: 
             self._change_direction_timer = (self._change_direction_timer + 1) % self._change_direction_speed
             return
 
-        if pyxel.btn(pyxel.KEY_E):
-            print("Next tile is wall: " + str(super().can_move_next_tile(self.direction)) + " and it remains in same tile " + str(self.remains_in_same_tile(self.direction)) + \
-                  " and can move: " + str(super().can_move(self.direction)))
-            print("My position is " + str((self.x_pos,self.y_pos)) + " and my direction is " +str(self.direction))
-        """if self.__x_bias > self.__y_bias and self.__x_bias > 0:
-            self.next_direction = "right"""
+        directions = ["right","left","up","down"]
 
-       
-        if self.mode == "frightened":
-            directions = ["right","left","up","down"]
-            #remove the direction it is currently going, since it cannot move backwards
-            if self.direction == "right":
-                directions.remove("left")
-            elif self.direction == "left":
-                directions.remove("right")
-            elif self.direction == "up":
-                directions.remove("down")
-            else: directions.remove("up")
+        #Check which directions are valid
 
-            new_directions =[]
-            #Check if which directions are allowed
-            for direction in directions:
-                if super().can_move_next_tile(direction): new_directions.append(direction)
+        #remove the direction it is currently going, since it cannot move backwards
+        if self.direction == "right":
+            directions.remove("left")
+        elif self.direction == "left":
+            directions.remove("right")
+        elif self.direction == "up":
+            directions.remove("down")
+        else: directions.remove("up")
+
+        new_directions =[]
+        #Check if which directions are allowed
+        for direction in directions:
+            if self.can_move_next_tile(direction): new_directions.append(direction)
+
+        if len(new_directions) == 1: 
+            #If you can only keep forward, skip this function
+            if new_directions[0] == self.direction: return
             
-            if len(new_directions) == 1: 
-                #If you can only keep forward, skip this function
-                if new_directions[0] == self.direction: return
+        if self.mode == "frightened":
             self.next_direction = new_directions[random.randrange(0,len(new_directions))]
             self._change_direction_timer = 1
-    
+        elif self.mode == "chase":
+            self.target = [pacman.x_pos,pacman.y_pos]
+
+            lowest_distance_sqr = float("inf")
+            best_direction = "up"
+            for direction in new_directions:
+                if direction == "up":
+                    next_x = self.x_pos
+                    next_y = self.y_pos - self.velocity
+                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                    if distance_sqr < lowest_distance_sqr:
+                        lowest_distance_sqr = distance_sqr
+                        best_direction = "up"
+                elif direction == "left":
+                    next_x = self.x_pos - self.velocity
+                    next_y = self.y_pos
+                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                    if distance_sqr < lowest_distance_sqr:
+                        lowest_distance_sqr = distance_sqr
+                        best_direction = "left"
+                elif direction == "down": 
+                    next_x = self.x_pos
+                    next_y = self.y_pos + self.velocity
+                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                    if distance_sqr < lowest_distance_sqr:
+                        lowest_distance_sqr = distance_sqr
+                        best_direction = "down"
+                else: 
+                    next_x = self.x_pos + self.velocity
+                    next_y = self.y_pos
+                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                    if distance_sqr < lowest_distance_sqr:
+                        lowest_distance_sqr = distance_sqr
+                        best_direction = "right"
+            self.next_direction = best_direction
+            self._change_direction_timer = 1
 
     def change_direction(self):
-        #Change direction only if he can move there and it is centered
-        super().change_direction()
+        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
+        if  self.can_move_next_tile(self.next_direction) and not self.remains_in_same_tile(self.direction):
+            self.direction = self.next_direction
         self.calculate_new_direction()
     
-    #Read only properties
-    @property
-    def __x_bias(self):
-        return int((pacman.x_pos - self.x_pos)/8)
-    
-    @property
-    def __y_bias(self):
-        return int((pacman.y_pos - self.y_pos)/8)
+
 
 blinky = Blinky(88,160,16,16,0,BLINKY_Y_TILE,"right")
