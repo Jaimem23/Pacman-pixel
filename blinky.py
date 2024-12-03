@@ -1,5 +1,5 @@
 from ghost import Ghost
-from constants import BLINKY_Y_TILE,SCREEN_HEIGHT,SCREEN_WIDTH
+from constants import BLINKY_Y_TILE,SCREEN_WIDTH
 from pacman import pacman
 import random
 import pyxel
@@ -25,13 +25,18 @@ class Blinky(Ghost):
         self.__mode = mode.lower()
 
     def change_mode(self):
-        if pyxel.btn(pyxel.KEY_E):
+        if pyxel.btn(pyxel.KEY_1):
             print("Change mode to chase")
             self.mode = "chase"
-        elif pyxel.btn(pyxel.KEY_T):
+        elif pyxel.btn(pyxel.KEY_2):
             print("Change mode to frightened")
             self.mode = "frightened"
-
+        elif pyxel.btn(pyxel.KEY_3):
+            print("Change mode to eaten")
+            self.mode = "eaten"
+        elif pyxel.btn(pyxel.KEY_4):
+            print("Change mode to scatter")
+            self.mode = "scatter"
     def calculate_new_direction(self):
         #If he has recently change its direction, return
         if self._change_direction_timer != 0: 
@@ -59,46 +64,58 @@ class Blinky(Ghost):
         if len(new_directions) == 1: 
             #If you can only keep forward, skip this function
             if new_directions[0] == self.direction: return
-            
+
+
         if self.mode == "frightened":
             self.next_direction = new_directions[random.randrange(0,len(new_directions))]
             self._change_direction_timer = 1
         elif self.mode == "chase":
             self.target = [pacman.x_pos,pacman.y_pos]
-
-            lowest_distance_sqr = float("inf")
-            best_direction = "up"
-            for direction in new_directions:
-                if direction == "up":
-                    next_x = self.x_pos
-                    next_y = self.y_pos - self.velocity
-                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                    if distance_sqr < lowest_distance_sqr:
-                        lowest_distance_sqr = distance_sqr
-                        best_direction = "up"
-                elif direction == "left":
-                    next_x = self.x_pos - self.velocity
-                    next_y = self.y_pos
-                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                    if distance_sqr < lowest_distance_sqr:
-                        lowest_distance_sqr = distance_sqr
-                        best_direction = "left"
-                elif direction == "down": 
-                    next_x = self.x_pos
-                    next_y = self.y_pos + self.velocity
-                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                    if distance_sqr < lowest_distance_sqr:
-                        lowest_distance_sqr = distance_sqr
-                        best_direction = "down"
-                else: 
-                    next_x = self.x_pos + self.velocity
-                    next_y = self.y_pos
-                    distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                    if distance_sqr < lowest_distance_sqr:
-                        lowest_distance_sqr = distance_sqr
-                        best_direction = "right"
-            self.next_direction = best_direction
             self._change_direction_timer = 1
+        elif self.mode == "eaten":
+            self.target = [SCREEN_WIDTH/2,248]
+            self._change_direction_timer = 1
+        else:
+            self.target = [SCREEN_WIDTH,0]
+            self._change_direction_timer = 1
+
+        #If the mode is frightened it should not calculate the path
+        if self.mode == "frightened": return
+
+        #Calculate the best path
+        lowest_distance_sqr = float("inf")
+        best_direction = "up"
+        for direction in new_directions:
+            if direction == "up":
+                next_x = self.x_pos
+                next_y = self.y_pos - self.velocity
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "up"
+            elif direction == "left":
+                next_x = self.x_pos - self.velocity
+                next_y = self.y_pos
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "left"
+            elif direction == "down": 
+                next_x = self.x_pos
+                next_y = self.y_pos + self.velocity
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "down"
+            else: 
+                next_x = self.x_pos + self.velocity
+                next_y = self.y_pos
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "right"
+            self.next_direction = best_direction
+
 
     def change_direction(self):
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
