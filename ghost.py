@@ -108,7 +108,7 @@ class Ghost(Sprite):
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
     def change_direction(self):
-        """A function that cheks the direction of the pacman based on the input"""
+        """A function that changes the direction of the ghost"""
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
         if  self.is_next_tile_wall(self.next_direction) and not self.remains_in_same_tile(self.direction):
             self.direction = self.next_direction
