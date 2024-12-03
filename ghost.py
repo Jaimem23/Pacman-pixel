@@ -5,7 +5,7 @@ from pacman import pacman
 class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
-        self._direction = direction
+        self.__direction = direction
         self.alive = True
         self.blinking = False
         self.velocity = 4
@@ -15,38 +15,25 @@ class Ghost(Sprite):
         #Variables to change the direction of the ghost
         self.__pacman_x_pos = pacman.x_pos
         self.__pacman_y_pos = pacman.y_pos
-        self.__next_direction = "up"
-        self.__mode = "scatter"
-    
-    @property 
-    def mode(self):
-        return self.__mode
-    
-    @mode.setter
-    def mode(self,mode):
-        if not isinstance(mode,str):
-            raise TypeError("Ghost mode must be a str")
-        elif mode.lower() != "scatter" and mode.lower() != "chase" and mode.lower() != "eaten" and mode.lower() != "frightened":
-            raise ValueError("Ghost mode must be scatter, chase, eaten or frightened")
-        
-        self.__mode = mode.lower()
+        self.next_direction = "up"
+
 
     @property
     def __map_matrix(self):
         return maze.map_matrix
 
     @property
-    def __direction(self):
-        return self._direction
+    def direction(self):
+        return self.__direction
     
-    @__direction.setter
-    def __direction(self,direction):  
+    @direction.setter
+    def direction(self,direction):  
         if not isinstance(direction,str):
             raise TypeError("Direction must be an integer")
         #Change every direction to lower in order to avoid errors writting it in upperCase
         elif direction.lower() != "up" and direction.lower() != "down" and direction.lower() != "right" and direction.lower() != "left":
             raise ValueError("Direction must be 'up', 'down', 'left', or 'right'")
-        else: self._direction = direction.lower()
+        else: self.__direction = direction.lower()
     
     @property
     def alive(self):
@@ -71,7 +58,7 @@ class Ghost(Sprite):
 
     def move(self):
         """A function that moves the ghost"""
-        if self.__direction == "right" and self.__can_move(self.__direction):
+        if self.direction == "right" and self.can_move(self.direction):
 
             #Allow ghost to go from right to left
             if(self.x_pos > SCREEN_WIDTH):           
@@ -85,7 +72,7 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
                 else: self.x_pos_tile = 0
 
-        elif self.__direction == "left" and self.__can_move(self.__direction):
+        elif self.direction == "left" and self.can_move(self.direction):
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
                 self.x_pos = SCREEN_WIDTH
@@ -98,7 +85,7 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 48:self.x_pos_tile = 48
                 else: self.x_pos_tile = 32
 
-        elif self.__direction == "up" and self.__can_move(self.__direction):
+        elif self.direction == "up" and self.can_move(self.direction):
 
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity
@@ -109,7 +96,7 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 112:self.x_pos_tile = 112
                 #Else, move to the previous one
                 else: self.x_pos_tile = 96 
-        elif self.__direction == "down" and self.__can_move(self.__direction):
+        elif self.direction == "down" and self.can_move(self.direction):
             self.y_pos += 1 * self.velocity
             #Logic to make the animation of pacman moving the mouth
             # Only update every N frames
@@ -123,11 +110,11 @@ class Ghost(Sprite):
     def change_direction(self):
         """A function that cheks the direction of the pacman based on the input"""
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.is_next_tile_wall(self.__next_direction) and not self.remains_in_same_tile(self._direction):
-            self._direction = self.__next_direction
+        if  self.is_next_tile_wall(self.next_direction) and not self.remains_in_same_tile(self.direction):
+            self.direction = self.next_direction
             
     
-    def __can_move(self,direction):
+    def can_move(self,direction):
         """A function that chekcs if the next step is a wall"""
 
         for tile in range(4): 
