@@ -25,13 +25,13 @@ class UIHandler:
 
     def victory_maze_update(self):
         '''This function is in charge of updating the parameters of the maze while the victory screen is running'''
-        pyxel.cls(0)
-        if self.blink_control < 20:
+        if self.blink_control <= 120:
             self.blink_control +=1
 
-        #This else avoids the counter from surpassing 20 to save memory
         else:
             self.blink_control = 0
+            pacman.game_end = False
+            #Missing all of the reset conditions of level up
 
     def victory_maze_draw(self):
         '''This function is in charge of drawing the maze while the victory screen is running '''
@@ -52,8 +52,9 @@ class UIHandler:
                 
         
     def draw(self):
+        pyxel.cls(0)
+
         if not pacman.game_end:
-            pyxel.cls(0)
             self.maze_draw()
             self.erase_eaten_pellets()
             """x and y: The coordinates where the copied region will be drawn.
@@ -64,6 +65,7 @@ class UIHandler:
             [rotate]: An optional rotation angle (in degrees) to apply to the copied region.
             [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
             pyxel.blt(pacman.x_pos+ 2,pacman.y_pos + 54,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.5)
+
         else:
             self.victory_maze_draw()
             self.erase_eaten_pellets()

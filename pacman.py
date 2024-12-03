@@ -10,7 +10,7 @@ class Pacman(Sprite):
         self.direction = "right"
         self.velocity = velocity
         self.pellet_positions = maze.pellet_positions
-        self.__eaten_pellets = []
+        self.__eaten_pellets = 0
         self.game_end = False
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
@@ -110,9 +110,9 @@ class Pacman(Sprite):
             if (element.x_pos >= int(self.x_pos/8 + 1) and element.x_pos < int(self.x_pos/8 + 3)) and (element.y_pos >= int(self.y_pos/8 + 1) and element.y_pos < int(self.y_pos/8 + 3)):
                 if not element.eaten:
                     element.eaten = True
-                    self.__eaten_pellets.append(element)
+                    self.__eaten_pellets += 1
         #If Pacman has eaten all of the pellets, the game ends
-        if len(self.pellet_positions) == len(self.__eaten_pellets):
+        if len(self.pellet_positions) == self.__eaten_pellets:
 
             #Select the required sprite for pacman on the victory screen according to the direction
             if self.direction.lower() == "up":
