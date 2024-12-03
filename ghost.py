@@ -110,7 +110,7 @@ class Ghost(Sprite):
     def change_direction(self):
         """A function that changes the direction of the ghost"""
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.is_next_tile_wall(self.next_direction) and not self.remains_in_same_tile(self.direction):
+        if  self.can_move_next_tile(self.next_direction) and not self.remains_in_same_tile(self.direction):
             self.direction = self.next_direction
             
     
@@ -129,7 +129,7 @@ class Ghost(Sprite):
                 return False
         return True
     
-    def is_next_tile_wall(self,direction):
+    def can_move_next_tile(self,direction):
         """A function that checks if the next tile is a wall"""
         for tile in range(4): 
             if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos)/8) + 4] == 1:

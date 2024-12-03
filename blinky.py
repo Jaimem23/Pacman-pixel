@@ -31,7 +31,7 @@ class Blinky(Ghost):
             return
 
         if pyxel.btn(pyxel.KEY_E):
-            print("Next tile is wall: " + str(super().is_next_tile_wall(self.direction)) + " and it remains in same tile " + str(self.remains_in_same_tile(self.direction)) + \
+            print("Next tile is wall: " + str(super().can_move_next_tile(self.direction)) + " and it remains in same tile " + str(self.remains_in_same_tile(self.direction)) + \
                   " and can move: " + str(super().can_move(self.direction)))
             print("My position is " + str((self.x_pos,self.y_pos)) + " and my direction is " +str(self.direction))
         """if self.__x_bias > self.__y_bias and self.__x_bias > 0:
@@ -52,7 +52,7 @@ class Blinky(Ghost):
             new_directions =[]
             #Check if which directions are allowed
             for direction in directions:
-                if super().is_next_tile_wall(direction): new_directions.append(direction)
+                if super().can_move_next_tile(direction): new_directions.append(direction)
             
             if len(new_directions) == 1: 
                 #If you can only keep forward, skip this function
