@@ -26,21 +26,31 @@ class Maze:
 
 
     def map_matrix_create(self):
-        for y in range(504):
+        for y in range(62):
             self.map_matrix.append([])
-            for x in range (448):
+            for x in range(62):
                 #If the tile is in the wall list, a wall (1) is append
                 if pyxel.tilemap(0).pget(x,y) in self.wall_tiles:
                     self.map_matrix[y].append(1)
-                    pyxel.rect(x*8, y*8, 8, 8, 3) #Temporary
+                #If the tile is a pellet create a pellet object in the pellet list and append a 0 in map matrix
+                elif pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
+                    self.pellet_positions.append(Pellets(x,y,4,4, False))
+                    self.map_matrix[y].append(0)
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:
                     self.map_matrix[y].append(0)
-                    pyxel.rect(x*8, y*8, 8, 8,0) #Temporary
 
     def pellet_list_create(self):
-        for y in range(504):
-            for x in range (448):
+        for y in range(62):
+            for x in range (62):
+                #If the tile is a pellet create a pellet object in the list
+                if pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
+                    self.pellet_positions.append(Pellets(x,y,4,4, False))
+                    pyxel.rect(x*8, y*8, 4, 4, 6) #Temporary
+
+    def pellet_list_create(self):
+        for y in range(62):
+            for x in range (62):
                 #If the tile is a pellet create a pellet object in the list
                 if pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
                     self.pellet_positions.append(Pellets(x,y,4,4, False))

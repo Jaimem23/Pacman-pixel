@@ -14,6 +14,7 @@ class App():
             #Check the input of the user
             self.pacman.change_direction()
             self.pacman.move()
+            blinky.change_direction()
             blinky.move()
         else:
             UI_Handler.victory_maze_update()

@@ -1,6 +1,6 @@
 from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
-                      KEY_W,KEY_S,KEY_A,KEY_D
+                      KEY_W,KEY_S,KEY_A,KEY_D,KEY_E
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
                         PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y
 from maze_handler import maze
@@ -15,11 +15,11 @@ class Pacman(Sprite):
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
         self.__next_direction = self.direction
-        
+    
     def change_direction(self):
         """A function that cheks the direction of the pacman based on the input"""
-        #Only change to that direction if he can move
-        if self.__can_move(self.__next_direction):
+        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
+        if  self.__is_next_tile_wall(self.__next_direction) and not self.__is_centerd(self.direction):
             self.direction = self.__next_direction
             if self.direction == "right":
                 self.y_pos_tile = PACMAN_RIGHT_TILE_Y
@@ -47,8 +47,42 @@ class Pacman(Sprite):
             #Change the direction the pacman wants to go
             self.__next_direction = "down"
 
+    def __is_centerd(self, direction):
+        current_tile = 0
+        next_pos = 0
+        new_tile = 0
+        if direction == "right":
+            current_tile = int(self.x_pos // 8)
+            next_pos = self.x_pos + self.velocity + 4
+            new_tile = int((next_pos) // 8)
+        elif direction == "left":
+            current_tile = int(self.x_pos // 8)
+            next_pos = self.x_pos - self.velocity
+            new_tile = int((next_pos) // 8)
+        elif direction == "up":
+            current_tile = int(self.y_pos // 8)
+            next_pos = self.y_pos - self.velocity
+            new_tile = int((next_pos) // 8)
+        elif direction == "down":
+            current_tile = int(self.y_pos // 8)
+            next_pos = self.y_pos + self.velocity + 4
+            new_tile = int((next_pos) // 8)
+        
+        if btn(KEY_E):
+            print("Position is " + str(self.x_pos) + " and next position is " + str(next_pos))
+            print("Current tile is " +  str(current_tile) + " and new tile is " + str(new_tile))
+            print(self.__next_direction)
+            print(self.direction)
+
+        return current_tile == new_tile
+
+
     def move(self):
         """A function that moves pacman with his direction"""
+        if(btn(KEY_E)):
+            print(self.x_pos)
+            print(self.y_pos)
+
         if self.direction == "right"  and self.__can_move(self.direction):
             #Allow pacman to go from right to left
             if(self.x_pos > SCREEN_WIDTH):  
@@ -145,20 +179,35 @@ class Pacman(Sprite):
         else:
             self.__velocity = velocity
 
-    def __can_move(self,direction):
-        #Check the four tiles the pacman occupies
-        for tile in range(4):
-            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) + 4)] != 0:
+    def __is_next_tile_wall(self,direction):
+        """A function that checks if the next tile is a wall"""
+        for tile in range(4): 
+            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos)/8) + 4] == 1:
                 #If a tile is a wall, return False
                 return False
-            elif direction == "left" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos/8) - 1)] != 0:
+            elif direction == "left" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos)/8) - 1] == 1:
                 return False
-            elif direction == "up" and self.__map_matrix[int(self.y_pos/8) -1][int((self.x_pos/8)) + tile] != 0:
+            elif direction == "up" and self.__map_matrix[int((self.y_pos/8) -1)][int((self.x_pos/8)) + tile] == 1:
                 return False
-            elif direction == "down" and self.__map_matrix[int(self.y_pos/8) +4][int((self.x_pos/8)) + tile] != 0:
+            elif direction == "down" and self.__map_matrix[int((self.y_pos)/8) + 4][int((self.x_pos/8)) + tile] == 1:
                 return False
         return True
 
+    def __can_move(self,direction):
+        """A function that chekcs if the next step is a wall"""
+
+        for tile in range(4): 
+            if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos+ 24 +self.velocity + 4)/8)] == 1:
+                #If a tile is a wall, return False
+                return False
+            elif direction == "left" and self.__map_matrix[int((self.y_pos)/8) + tile][int((self.x_pos - self.velocity)/8)] == 1:
+                return False
+            elif direction == "up" and self.__map_matrix[int((self.y_pos - self.velocity)/8)][int((self.x_pos/8)) + tile] == 1:
+                return False
+            elif direction == "down" and self.__map_matrix[int((self.y_pos+  24 + self.velocity)/8)][int((self.x_pos/8)) + tile] == 1:
+                return False
+        return True
+        
     #read only properties
     @property
     def __animation_speed(self):
@@ -199,4 +248,4 @@ class Pacman(Sprite):
     def __map_matrix(self):
         return maze.map_matrix
 #Create the pacman
-pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2)
+pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 4)
