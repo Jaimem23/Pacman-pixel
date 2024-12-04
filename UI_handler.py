@@ -13,7 +13,6 @@ class UIHandler:
         pyxel.load("assets/resources.pyxres")
         maze.map_matrix_create()
         self.pellet_position = maze.pellet_positions
-        self.blink_control = 0
         self.__characters = {"H": (16, 96), "I": (32, 96), "G": (48,96), "L": (32, 144), "V": (48, 144), "M": (16, 160), "S": (0,80), "C": (16, 80), "O": (32, 80), "R": (48, 80),
                               "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), "5": (16, 128), "6": (32, 128), "7": (48, 128), 
                               "8": (0,144), "9": (16, 144), " ": (48, 160)}
@@ -29,24 +28,15 @@ class UIHandler:
         '''This function is in charge of drawing the maze when the game is running'''
         pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1) #Temporarily edited, to do the collisions in a basic setting y is missing + 50
 
-    def victory_maze_update(self):
-        '''This function is in charge of updating the parameters of the maze while the victory screen is running'''
-        if self.blink_control <= 120:
-            self.blink_control +=1
-
-        else:
-            self.blink_control = 0
-            pacman.game_end = False
-            #Missing all of the reset conditions of level up IMPORTANT THIS CAUSES THE BLINK
 
     def victory_maze_draw(self):
         '''This function is in charge of drawing the maze while the victory screen is running '''
         #This two elif control the timing of the map blink, when the variable blink_control divided by 20 returns a 
         #remainder bigger than or equal to 10 it will load the white map to create the effect
-        if self.blink_control%20 < 10:
+        if maze.blink_control%20 < 10:
             pyxel.bltm(0, 50, 0, 0, 512, 448, 504, None, None, 1)
 
-        elif self.blink_control%20 >= 10:
+        elif maze.blink_control%20 >= 10:
             pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1)
 
     def fruit_draw(self):
