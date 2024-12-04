@@ -9,8 +9,7 @@ class Blinky(Ghost):
         self.mode = "frightened"
         #Target the right top corner of the maze
         self.target = [0,SCREEN_WIDTH]
-        self._change_direction_timer = 0
-        self._change_direction_speed = int(8 // self.velocity)
+        
     @property 
     def mode(self):
         return self.__mode
@@ -37,6 +36,7 @@ class Blinky(Ghost):
         elif pyxel.btn(pyxel.KEY_4):
             print("Change mode to scatter")
             self.mode = "scatter"
+        
     def calculate_new_direction(self):
         #If he has recently change its direction, return
         if self._change_direction_timer != 0: 
@@ -83,39 +83,7 @@ class Blinky(Ghost):
         if self.mode == "frightened": return
 
         #Calculate the best path
-        lowest_distance_sqr = float("inf")
-        best_direction = "up"
-        for direction in new_directions:
-            if direction == "up":
-                next_x = self.x_pos
-                next_y = self.y_pos - self.velocity
-                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                if distance_sqr < lowest_distance_sqr:
-                    lowest_distance_sqr = distance_sqr
-                    best_direction = "up"
-            elif direction == "left":
-                next_x = self.x_pos - self.velocity
-                next_y = self.y_pos
-                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                if distance_sqr < lowest_distance_sqr:
-                    lowest_distance_sqr = distance_sqr
-                    best_direction = "left"
-            elif direction == "down": 
-                next_x = self.x_pos
-                next_y = self.y_pos + self.velocity
-                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                if distance_sqr < lowest_distance_sqr:
-                    lowest_distance_sqr = distance_sqr
-                    best_direction = "down"
-            else: 
-                next_x = self.x_pos + self.velocity
-                next_y = self.y_pos
-                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
-                if distance_sqr < lowest_distance_sqr:
-                    lowest_distance_sqr = distance_sqr
-                    best_direction = "right"
-            self.next_direction = best_direction
-
+        self.calculate_best_path(new_directions)
 
     def change_direction(self):
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step

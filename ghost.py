@@ -16,6 +16,8 @@ class Ghost(Sprite):
         self.__pacman_x_pos = pacman.x_pos
         self.__pacman_y_pos = pacman.y_pos
         self.next_direction = "up"
+        self._change_direction_timer = 0
+        self._change_direction_speed = int(8 // self.velocity)
 
 
     @property
@@ -143,6 +145,40 @@ class Ghost(Sprite):
                 return False
         return True
     
+    def calculate_best_path(self,new_directions):
+        lowest_distance_sqr = float("inf")
+        best_direction = "up"
+        for direction in new_directions:
+            if direction == "up":
+                next_x = self.x_pos
+                next_y = self.y_pos - self.velocity
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "up"
+            elif direction == "left":
+                next_x = self.x_pos - self.velocity
+                next_y = self.y_pos
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "left"
+            elif direction == "down": 
+                next_x = self.x_pos
+                next_y = self.y_pos + self.velocity
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "down"
+            else: 
+                next_x = self.x_pos + self.velocity
+                next_y = self.y_pos
+                distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
+                if distance_sqr < lowest_distance_sqr:
+                    lowest_distance_sqr = distance_sqr
+                    best_direction = "right"
+            self.next_direction = best_direction
+
     def remains_in_same_tile(self, direction):
         current_tile = 0
         next_pos = 0
