@@ -27,11 +27,9 @@ class Ghost(Sprite):
         self._time_to_chg_mode = 300
 
     #Read only attributes
-
     @property
     def __map_matrix(self):
         return maze.map_matrix
-
 
     @property 
     def mode(self):
@@ -120,7 +118,9 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 112:self.x_pos_tile = 112
                 #Else, move to the previous one
                 else: self.x_pos_tile = 96 
+
         elif self.direction == "down" and self.__can_move(self.direction):
+
             self.y_pos += 1 * self.__velocity
             #Logic to make the animation of pacman moving the mouth
             # Only update every N frames
@@ -128,6 +128,7 @@ class Ghost(Sprite):
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 80:self.x_pos_tile = 80
                 else: self.x_pos_tile = 64
+
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
@@ -140,7 +141,6 @@ class Ghost(Sprite):
         directions = ["right","left","up","down"]
 
         #Check which directions are valid
-
         #remove the direction it is currently going, since it cannot move backwards
         if self.direction == "right":
             directions.remove("left")
@@ -158,7 +158,6 @@ class Ghost(Sprite):
         if len(new_directions) == 1: 
             #If you can only keep forward, skip this function
             if new_directions[0] == self.direction: return
-
 
         if self.mode == "frightened":
             self.__next_direction = new_directions[random.randrange(0,len(new_directions))]
@@ -181,7 +180,6 @@ class Ghost(Sprite):
     
     def __can_move(self,direction):
         """A function that chekcs if the next step is a wall"""
-
         for tile in range(4): 
             if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos+ 24 +self.__velocity)/8)] == 1:
                 #If a tile is a wall, return False
@@ -209,13 +207,15 @@ class Ghost(Sprite):
         return True
     
     def __calculate_best_path(self,new_directions):
-        """A function that changes the direction of the ghost"""
+        """A function that changes the direction of the ghost given legal directions"""
         lowest_distance_sqr = float("inf")
         best_direction = "up"
+        #For each direction in legal directions
         for direction in new_directions:
             if direction == "up":
                 next_x = self.x_pos
                 next_y = self.y_pos - self.__velocity
+                #Calculate the distance squared to simplify calculations
                 distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
                 if distance_sqr < lowest_distance_sqr:
                     lowest_distance_sqr = distance_sqr
@@ -223,6 +223,7 @@ class Ghost(Sprite):
             elif direction == "left":
                 next_x = self.x_pos - self.__velocity
                 next_y = self.y_pos
+                #Calculate the distance squared to simplify calculations
                 distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
                 if distance_sqr < lowest_distance_sqr:
                     lowest_distance_sqr = distance_sqr
@@ -230,6 +231,7 @@ class Ghost(Sprite):
             elif direction == "down": 
                 next_x = self.x_pos
                 next_y = self.y_pos + self.__velocity
+                #Calculate the distance squared to simplify calculations
                 distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
                 if distance_sqr < lowest_distance_sqr:
                     lowest_distance_sqr = distance_sqr
@@ -237,6 +239,7 @@ class Ghost(Sprite):
             else: 
                 next_x = self.x_pos + self.__velocity
                 next_y = self.y_pos
+                #Calculate the distance squared to simplify calculations
                 distance_sqr = (self.target[0] - next_x) ** 2 + (self.target[1] - next_y) ** 2
                 if distance_sqr < lowest_distance_sqr:
                     lowest_distance_sqr = distance_sqr
@@ -244,6 +247,7 @@ class Ghost(Sprite):
             self.__next_direction = best_direction
 
     def __remains_in_same_tile(self, direction):
+        """A function that checks if the next step will stay in same tile"""
         current_tile = 0
         next_pos = 0
         new_tile = 0

@@ -29,9 +29,4 @@ class Blinky(Ghost):
             self.mode = "scatter"
             self._timer_to_chg_mode = 1
         
-        
-    
-    
-
-
 blinky = Blinky(88,160,16,16,0,BLINKY_Y_TILE,"right",0)
