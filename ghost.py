@@ -84,7 +84,7 @@ class Ghost(Sprite):
 
     def move(self):
         """A function that moves the ghost"""
-        if self.direction == "right" and self.can_move(self.direction):
+        if self.direction == "right" and self.__can_move(self.direction):
 
             #Allow ghost to go from right to left
             if(self.x_pos > SCREEN_WIDTH):           
@@ -98,7 +98,7 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
                 else: self.x_pos_tile = 0
 
-        elif self.direction == "left" and self.can_move(self.direction):
+        elif self.direction == "left" and self.__can_move(self.direction):
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
                 self.x_pos = SCREEN_WIDTH
@@ -111,7 +111,7 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 48:self.x_pos_tile = 48
                 else: self.x_pos_tile = 32
 
-        elif self.direction == "up" and self.can_move(self.direction):
+        elif self.direction == "up" and self.__can_move(self.direction):
 
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.velocity
@@ -122,7 +122,7 @@ class Ghost(Sprite):
                 if self.x_pos_tile != 112:self.x_pos_tile = 112
                 #Else, move to the previous one
                 else: self.x_pos_tile = 96 
-        elif self.direction == "down" and self.can_move(self.direction):
+        elif self.direction == "down" and self.__can_move(self.direction):
             self.y_pos += 1 * self.velocity
             #Logic to make the animation of pacman moving the mouth
             # Only update every N frames
@@ -133,7 +133,7 @@ class Ghost(Sprite):
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
-    def calculate_new_direction(self):
+    def __calculate_new_direction(self):
         #If he has recently change its direction, return
         if self._change_direction_timer != 0: 
             self._change_direction_timer = (self._change_direction_timer + 1) % self._change_direction_speed
@@ -155,7 +155,7 @@ class Ghost(Sprite):
         new_directions =[]
         #Check if which directions are allowed
         for direction in directions:
-            if self.can_move_next_tile(direction): new_directions.append(direction)
+            if self.__can_move_next_tile(direction): new_directions.append(direction)
 
         if len(new_directions) == 1: 
             #If you can only keep forward, skip this function
@@ -179,22 +179,9 @@ class Ghost(Sprite):
         if self.mode == "frightened": return
 
         #Calculate the best path
-        self.calculate_best_path(new_directions)
-
-    def change_direction(self):
-        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.can_move_next_tile(self.next_direction) and not self.remains_in_same_tile(self.direction):
-            self.direction = self.next_direction
-        self.calculate_new_direction()
-
-    def change_direction(self):
-        """A function that changes the direction of the ghost"""
-        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.can_move_next_tile(self.next_direction) and not self.remains_in_same_tile(self.direction):
-            self.direction = self.next_direction
-            
+        self.__calculate_best_path(new_directions)
     
-    def can_move(self,direction):
+    def __can_move(self,direction):
         """A function that chekcs if the next step is a wall"""
 
         for tile in range(4): 
@@ -209,7 +196,7 @@ class Ghost(Sprite):
                 return False
         return True
     
-    def can_move_next_tile(self,direction):
+    def __can_move_next_tile(self,direction):
         """A function that checks if the next tile is a wall"""
         for tile in range(4): 
             if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos)/8) + 4] == 1:
@@ -223,7 +210,7 @@ class Ghost(Sprite):
                 return False
         return True
     
-    def calculate_best_path(self,new_directions):
+    def __calculate_best_path(self,new_directions):
         """A function that changes the direction of the ghost"""
         lowest_distance_sqr = float("inf")
         best_direction = "up"
@@ -258,7 +245,7 @@ class Ghost(Sprite):
                     best_direction = "right"
             self.next_direction = best_direction
 
-    def remains_in_same_tile(self, direction):
+    def __remains_in_same_tile(self, direction):
         current_tile = 0
         next_pos = 0
         new_tile = 0
@@ -282,7 +269,8 @@ class Ghost(Sprite):
         return current_tile == new_tile
 
     def change_direction(self):
+        """A function that changes the direction of the ghosts"""
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.can_move_next_tile(self.next_direction) and not self.remains_in_same_tile(self.direction):
+        if  self.__can_move_next_tile(self.next_direction) and not self.__remains_in_same_tile(self.direction):
             self.direction = self.next_direction
-        self.calculate_new_direction()
+        self.__calculate_new_direction()
