@@ -4,6 +4,7 @@ import pyxel
 from blinky import blinky
 from pacman import pacman
 from HUD import HUD_obj
+from fruit import fruit_object
 class App():
     def __init__(self) -> None:
         #Select the pacman
@@ -16,8 +17,13 @@ class App():
             self.pacman.change_direction()
             self.pacman.move()
             self.pacman.pellet_eaten_check()
-            blinky.change_direction()
-            blinky.move()
+            if pacman.fruit_spawned == True and fruit_object.cycle_counter <= 300:
+                fruit_object.fruit_update()
+                self.pacman.fruit_collision_check()
+            else:
+                fruit_object.cycle_counter = 0
+                pacman.fruit_spawned = False
+    
             #Update the high score if current score is higher than the highest score obatined before game over
             if pacman.score > HUD_obj.high_score:
                 HUD_obj.high_score = pacman.score

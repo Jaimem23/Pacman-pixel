@@ -2,19 +2,20 @@ from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
                       KEY_W,KEY_S,KEY_A,KEY_D,KEY_E
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
-                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y
+                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y, FRUIT_X_POS, FRUIT_Y_POS
 from maze_handler import maze
-from HUD import HUD_obj
+from fruit import fruit_object, fruit_spawn
 class Pacman(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = "right"
         self.velocity = velocity
         self.pellet_positions = maze.pellet_positions
-        self.__eaten_pellets = 0
+        self.__eaten_pellets = 69
         self.game_end = False
         self.score = 0
         self.lifes = 3
+        self.fruit_spawned = False
 
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
@@ -235,14 +236,27 @@ class Pacman(Sprite):
     #Check if there's a pellet in the position and if there is, change the pellet status to eaten
         for element in self.pellet_positions:
             if (element.x_pos >= int(self.x_pos/8 + 1) and element.x_pos < int(self.x_pos/8 + 3)) and (element.y_pos >= int(self.y_pos/8 + 1) and element.y_pos < int(self.y_pos/8 + 3)):
-                if not element.eaten:
+                if not element.eaten and self.__map_matrix[element.y_pos][element.x_pos] != 3:
                     element.eaten = True
                     self.__eaten_pellets += 1
                     self.score += 10
+                    self.pellet_status_update()
+                elif not element.eaten:
+                    element.eaten = True
+                    self.__eaten_pellets += 1
+                    self.score += 500
+                    self.pellet_status_update()
+
+
+    def pellet_status_update(self):
+        '''A function that checks if certain conditions of pellets are met and change the game execution'''
+    #Check if the conditions to spawn fruit are met
+        if (self.__eaten_pellets == 70 or self.__eaten_pellets == 170) and not self.fruit_spawned:
+            fruit_spawn()
+            self.fruit_spawned = True
 
     #If Pacman has eaten all of the pellets, the game ends
         if len(self.pellet_positions) == self.__eaten_pellets:
-
             #Select the required sprite for pacman on the victory screen according to the direction
             if self.direction.lower() == "up":
                 self.x_pos_tile = 16
@@ -256,10 +270,15 @@ class Pacman(Sprite):
             elif self.direction.lower() == "left":
                 self.x_pos_tile = 16
                 self.y_pos_tile = 16
-
             #Change the direction by stand-by and set the game has ended
             self.direction = "stand-by"
             self.game_end = True
+
+    def fruit_collision_check(self):
+        '''A function that checks if Pacman collides with the fruit'''
+        if ( 26 >= int(self.x_pos/8 + 1) and 26 < int(self.x_pos/8 + 3)) and ( 34 >= int(self.y_pos/8 + 1) and 34 < int(self.y_pos/8 + 3)):
+                self.fruit_spawned = False
+                self.score += fruit_object.value
 
     @property
     def score(self):
