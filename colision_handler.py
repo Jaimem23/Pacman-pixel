@@ -53,7 +53,7 @@ class ColisionHandler():
 
     def fruit_collision_check(self):
         '''A function that checks if Pacman collides with the fruit'''
-        if ( 26 >= int(pacman.x_pos/8 + 1) and 26 < int(pacman.x_pos/8 + 3)) and ( 34 >= int(pacman.y_pos/8 + 1) and 34 < int(pacman.y_pos/8 + 3)):
-                fruit_object.eaten= True
+        if ( 26 >= int(pacman.x_pos/8 + 1) and 26 < int(pacman.x_pos/8 + 2)) and (33 == int(pacman.y_pos/8)):
+                fruit_object.eaten = True
                 HUD_obj.level_score += fruit_object.value
 colision_handler = ColisionHandler()
