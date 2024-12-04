@@ -11,6 +11,12 @@ class App():
         pyxel.run(self.update,UI_Handler.draw)
 
     def update(self):
+        #Check the input of the user
+        self.pacman.change_direction()
+        self.pacman.move()
+        blinky.change_direction()
+        blinky.change_mode()
+        blinky.move()
         if not pacman.game_end:
             #Check the input of the user
             pacman.change_direction()
