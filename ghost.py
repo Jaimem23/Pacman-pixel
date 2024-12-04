@@ -162,18 +162,9 @@ class Ghost(Sprite):
         if self.mode == "frightened":
             self.__next_direction = new_directions[random.randrange(0,len(new_directions))]
             self._change_direction_timer = 1
-        elif self.mode == "chase":
-            self.target = [pacman.x_pos,pacman.y_pos]
-            self._change_direction_timer = 1
-        elif self.mode == "eaten":
-            self.target = [SCREEN_WIDTH/2,248]
-            self._change_direction_timer = 1
-        else:
-            self.target = [SCREEN_WIDTH,0]
-            self._change_direction_timer = 1
+            #If the mode is frightened it should not calculate the path
+            return
 
-        #If the mode is frightened it should not calculate the path
-        if self.mode == "frightened": return
 
         #Calculate the best path
         self.__calculate_best_path(new_directions)

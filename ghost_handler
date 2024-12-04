@@ -1,0 +1,9 @@
+from blinky import blinky
+from pinky import pinky
+from inky import inky
+from clyde import clyde
+
+
+class Ghost_Handler():
+    def __init__(self) -> None:
+        pass
