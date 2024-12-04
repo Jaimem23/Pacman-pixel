@@ -4,7 +4,7 @@ from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
 from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
                         PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y, FRUIT_X_POS, FRUIT_Y_POS
 from maze_handler import maze
-from fruit import fruit_object, fruit_spawn
+from fruit import fruit_object
 class Pacman(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -252,7 +252,7 @@ class Pacman(Sprite):
         '''A function that checks if certain conditions of pellets are met and change the game execution'''
     #Check if the conditions to spawn fruit are met
         if (self.__eaten_pellets == 70 or self.__eaten_pellets == 170) and not self.fruit_spawned:
-            fruit_spawn()
+            fruit_object.fruit_spawn()
             self.fruit_spawned = True
 
     #If Pacman has eaten all of the pellets, the game ends
