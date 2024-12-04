@@ -6,6 +6,7 @@ from pacman import pacman
 from HUD import HUD_obj
 from fruit import fruit_object
 from colision_handler import colision_handler
+from maze_handler import maze
 
 class UpdateHandler:
     
@@ -30,7 +31,13 @@ class UpdateHandler:
             if HUD_obj.level_score > HUD_obj.high_score:
                 HUD_obj.high_score = HUD_obj.level_score
         else:
-            UI_Handler.victory_maze_update()
+            #Condition to make the maze blink when pacman has eaten all pellets
+            if maze.blink_control <= 120:
+                maze.victory_maze_update()
+            else:
+                maze.blink_control = 0
+                pacman.game_end = False
+        #Missing the reset conditions (this causes the screen blinking)
 
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
