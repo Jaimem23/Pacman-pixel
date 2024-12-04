@@ -28,5 +28,14 @@ class Blinky(Ghost):
             print("Change mode to scatter")
             self.mode = "scatter"
             self._timer_to_chg_mode = 1
+
+    def change_target(self):
+        if self.mode == "chase":
+            self.target = [pacman.x_pos,pacman.y_pos]
+        elif self.mode == "eaten":
+            self.target = [SCREEN_WIDTH/2,248]
+        else:
+            self.target = [SCREEN_WIDTH,0]
+
         
 blinky = Blinky(88,160,16,16,0,BLINKY_Y_TILE,"right",0)

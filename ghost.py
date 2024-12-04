@@ -162,15 +162,7 @@ class Ghost(Sprite):
         if self.mode == "frightened":
             self.__next_direction = new_directions[random.randrange(0,len(new_directions))]
             self._change_direction_timer = 1
-        elif self.mode == "chase":
-            self.target = [pacman.x_pos,pacman.y_pos]
-            self._change_direction_timer = 1
-        elif self.mode == "eaten":
-            self.target = [SCREEN_WIDTH/2,248]
-            self._change_direction_timer = 1
-        else:
-            self.target = [SCREEN_WIDTH,0]
-            self._change_direction_timer = 1
+
 
         #If the mode is frightened it should not calculate the path
         if self.mode == "frightened": return
@@ -245,6 +237,8 @@ class Ghost(Sprite):
                     lowest_distance_sqr = distance_sqr
                     best_direction = "right"
             self.__next_direction = best_direction
+            #Reset the timer to change direction
+            self._change_direction_timer = 1
 
     def __remains_in_same_tile(self, direction):
         """A function that checks if the next step will stay in same tile"""

@@ -143,8 +143,6 @@ class Pacman(Sprite):
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
-
-    
     @property
     def velocity(self):
         return self.__velocity

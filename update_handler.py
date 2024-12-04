@@ -14,6 +14,7 @@ class UpdateHandler:
         #Check the input of the user
         blinky.change_direction()
         blinky.change_mode()
+        blinky.change_target()
         blinky.move()
         if not pacman.game_end:
             #Check the input of the user
