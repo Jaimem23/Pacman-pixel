@@ -229,4 +229,4 @@ class Pacman(Sprite):
 
 
 #Create the pacman
-pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 4)
+pacman = Pacman(PACMAN_INITIAL_X, PACMAN_INITIAL_Y, 8, 8, 0, 0, 2)

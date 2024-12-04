@@ -12,8 +12,8 @@ class App():
 
     def update(self):
         #Check the input of the user
-        self.pacman.change_direction()
-        self.pacman.move()
+        pacman.change_direction()
+        pacman.move()
         blinky.change_direction()
         blinky.change_mode()
         blinky.move()
