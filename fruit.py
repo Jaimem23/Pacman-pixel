@@ -7,6 +7,7 @@ class Fruit(Consumable):
       super().__init__(x_pos, y_pos, widht, height, eaten)
       self.fruit_ID = {"1": (0, 176), "2": (16, 176), "3": (32,176), "4": (48, 176), "5":(64, 176)} #Internal naming of the fruits: 1.Cherry 2.Raspberry 3.Orange 4.Apple 5.Watermelon
       self.fruit_value = {"1": 100, "2": 150, "3": 200, "4": 250, "5":500}
+      self.eaten = eaten
       self.fruit_number = fruit_number
       self.y_pos_tile = y_pos_tile
       self.x_pos_tile = x_pos_tile
@@ -30,5 +31,5 @@ class Fruit(Consumable):
       fruit_object.fruit_number = selected_fruit
 
 #Create a fruit object (Cherry by default)
-fruit_object = Fruit(FRUIT_X_POS, FRUIT_Y_POS, 16, 16, False, 0, 176,1)
+fruit_object = Fruit(FRUIT_X_POS, FRUIT_Y_POS, 16, 16, True, 0, 176,1)
     

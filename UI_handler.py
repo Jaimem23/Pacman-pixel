@@ -85,9 +85,9 @@ class UIHandler:
 
         #Score draw
         self.__characters_drawn = 0
-        for number in str(pacman.score):
+        for number in str(HUD_obj.level_score):
             if self.__characters_drawn <= 8:
-                pyxel.blt(73 - 12*len(str(pacman.score))/2+self.__characters_drawn*12,24,0,self.__characters[number][0],self.__characters[number][1],16,16,0,0,1)
+                pyxel.blt(73 - 12*len(str(HUD_obj.level_score))/2+self.__characters_drawn*12,24,0,self.__characters[number][0],self.__characters[number][1],16,16,0,0,1)
                 self.__characters_drawn += 1
 
         #Draw lifes letters
@@ -119,7 +119,7 @@ class UIHandler:
             self.maze_draw()
             self.hud_draw()
             self.erase_eaten_pellets()
-            if pacman.fruit_spawned:
+            if not fruit_object.eaten:
                 self.fruit_draw()
             """x and y: The coordinates where the copied region will be drawn.
             img: The image or tilemap source (0-2 for image bank, 0-7 for tilemap).

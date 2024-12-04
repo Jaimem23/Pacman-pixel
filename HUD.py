@@ -1,6 +1,7 @@
 class HUD:
     def __init__(self):
         self.level = 1
+        self.level_score = 0
         self.high_score = 0
     
     @property 

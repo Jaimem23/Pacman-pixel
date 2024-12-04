@@ -1,9 +1,12 @@
+import pyxel
 from pacman import pacman
 from maze_handler import maze
 from fruit import fruit_object
+from HUD import HUD_obj
 class ColisionHandler():
     def __init__(self):
         self.pellet_positions = maze.pellet_positions
+        self.__map_matrix = maze.map_matrix
         self.__eaten_pellets = 0
 
     def pellet_eaten_check(self):
@@ -14,40 +17,43 @@ class ColisionHandler():
                 if not element.eaten and self.__map_matrix[element.y_pos][element.x_pos] != 3:
                     element.eaten = True
                     self.__eaten_pellets += 1
-                    self.score += 10
+                    HUD_obj.level_score += 10
                     self.pellet_status_update()
                 elif not element.eaten:
                     element.eaten = True
                     self.__eaten_pellets += 1
-                    pacman.score += 500
+                    HUD_obj.level_score += 50
                     self.pellet_status_update()
 
     def pellet_status_update(self):
         '''A function that checks if certain conditions of pellets are met and change the game execution'''
-    #Check if the conditions to spawn fruit are met
-        if (self.__eaten_pellets == 70 or self.__eaten_pellets == 170) and not self.fruit_spawned:
+    #Check if the fruit has been eaten (is not on screen) and change the parameters to make ir appear
+        if (self.__eaten_pellets == 70 or self.__eaten_pellets == 170) and fruit_object.eaten:
             fruit_object.fruit_spawn()
-            self.fruit_spawned = True
+            fruit_object.eaten = False
 
     #If Pacman has eaten all of the pellets, the game ends
         if len(self.pellet_positions) == self.__eaten_pellets:
             #Select the required sprite for pacman on the victory screen according to the direction
-            if self.direction.lower() == "up":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 32
-            elif self.direction.lower() == "down":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 48
-            elif self.direction.lower() == "right":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 0
-            elif self.direction.lower() == "left":
-                self.x_pos_tile = 16
-                self.y_pos_tile = 16
+            if pacman.direction.lower() == "up":
+                pacman.x_pos_tile = 16
+                pacman.y_pos_tile = 32
+            elif pacman.direction.lower() == "down":
+                pacman.x_pos_tile = 16
+                pacman.y_pos_tile = 48
+            elif pacman.direction.lower() == "right":
+                pacman.x_pos_tile = 16
+                pacman.y_pos_tile = 0
+            elif pacman.direction.lower() == "left":
+                pacman.x_pos_tile = 16
+                pacman.y_pos_tile = 16
             #Change the direction by stand-by and set the game has ended
-            self.direction = "stand-by"
-            self.game_end = True
+            pacman.direction = "stand-by"
+            pacman.game_end = True
 
-    
-
+    def fruit_collision_check(self):
+        '''A function that checks if Pacman collides with the fruit'''
+        if ( 26 >= int(pacman.x_pos/8 + 1) and 26 < int(pacman.x_pos/8 + 3)) and ( 34 >= int(pacman.y_pos/8 + 1) and 34 < int(pacman.y_pos/8 + 3)):
+                fruit_object.eaten= True
+                HUD_obj.level_score += fruit_object.value
 colision_handler = ColisionHandler()
