@@ -22,11 +22,11 @@ class Ghost(Sprite):
         self._change_direction_timer = 0
         self._change_direction_speed = int(8 // self.velocity)
         #Variables to change mode
-        self.mode = "frightened"  
+        self.mode = "scatter"  
         self._timer_to_start = 0
         self._time_to_start = time_to_start
-        self._timer_to_chg_mode = 0
-        self._time_to_chg_mode = 100
+        self._timer_to_chg_mode = 1
+        self._time_to_chg_mode = 300
 
     #Read only attributes
 
