@@ -7,15 +7,14 @@ from HUD import HUD_obj
 from fruit import fruit_object
 from colision_handler import colision_handler
 from maze_handler import maze
+from ghost_handler import ghost_handler
 
 class UpdateHandler:
     
     def update(self):
-        #Check the input of the user
-        blinky.change_direction()
-        blinky.change_mode()
-        blinky.change_target()
-        blinky.move()
+        
+        ghost_handler.update_ghosts()
+
         if not pacman.game_end:
             #Check the input of the user
             pacman.change_direction()

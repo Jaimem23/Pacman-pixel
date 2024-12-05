@@ -224,6 +224,9 @@ class Pacman(Sprite):
     @property
     def __map_matrix(self):
         return maze.map_matrix
+    
+    def die(self):
+        print("die")
 
 
 #Create the pacman

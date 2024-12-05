@@ -270,3 +270,14 @@ class Ghost(Sprite):
         if  self.__can_move_next_tile(self.__next_direction) and not self.__remains_in_same_tile(self.direction):
             self.direction = self.__next_direction
         self.__calculate_new_direction()
+
+    def check_colision(self):
+        """A function that checks colision with pacman"""
+        pacman_x_tile,pacman_y_tile = int(pacman.x_pos // 8),int(pacman.y_pos// 8)
+        ghost_x_tile,ghost_y_tile = int(self.x_pos//8),int(self.y_pos//8)
+
+        #Return True if the have the same tile
+        if(pacman_x_tile,pacman_y_tile) == (ghost_x_tile,ghost_y_tile):
+            pacman.die()
+    
+        

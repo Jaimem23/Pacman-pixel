@@ -5,6 +5,7 @@ from blinky import blinky
 from maze_handler import maze
 from HUD import HUD_obj
 from fruit import fruit_object
+from ghost_handler import ghost_handler
 class UIHandler:
     ''' This class is in charge of drawing all of the visuals of the game '''
 
@@ -119,8 +120,7 @@ class UIHandler:
             [rotate]: An optional rotation angle (in degrees) to apply to the copied region.
             [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
-            pyxel.blt(blinky.x_pos + 7, blinky.y_pos + 55,1,blinky.x_pos_tile,blinky.y_pos_tile,16,16,0,0,1.4)
-
+            ghost_handler.draw_ghosts()
         else:
             self.victory_maze_draw()
             self.hud_draw()
