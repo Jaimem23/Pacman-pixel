@@ -6,6 +6,7 @@ from maze_handler import maze
 from HUD import HUD_obj
 from fruit import fruit_object
 from ghost_handler import ghost_handler
+from constants import SCREEN_WIDTH,SCREEN_HEIGHT
 class UIHandler:
     ''' This class is in charge of drawing all of the visuals of the game '''
 
@@ -121,6 +122,8 @@ class UIHandler:
             [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
             ghost_handler.draw_ghosts()
+            
+            pyxel.rect(int((SCREEN_WIDTH/2 - 16)) + 7,int((SCREEN_HEIGHT/2 - 58)) + 55,16,16,3)
         else:
             self.victory_maze_draw()
             self.hud_draw()

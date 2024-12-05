@@ -37,7 +37,7 @@ class Clyde(Ghost):
             else: self.target = [constants.SCREEN_WIDTH,0]
         elif self.mode == "eaten":
             self.target = [constants.SCREEN_WIDTH/2,248]
-        else:
+        elif self.mode == "scatter":
             self.target = [0,constants.SCREEN_HEIGHT]
 
-clyde = Clyde(int(constants.SCREEN_WIDTH/2 - 40),228,16,16,0,constants.CLYDE_Y_TILE,"right",0)
+clyde = Clyde(int(constants.SCREEN_WIDTH/2 - 42),216,16,16,0,constants.CLYDE_Y_TILE,"right",450)

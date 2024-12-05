@@ -9,7 +9,7 @@ class Ghost(Sprite):
         self.direction = direction
         self.alive = True
         self.blinking = False
-        self.__velocity = 4
+        self.__velocity = 2
         self.__animation_speed = 2
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
@@ -20,11 +20,12 @@ class Ghost(Sprite):
         self._change_direction_timer = 0
         self._change_direction_speed = int(8 // self.__velocity)
         #Variables to change mode
-        self.mode = "scatter"  
-        self._timer_to_start = 0
+        self.mode = "waiting"  
+        self._timer_to_start = 1
         self._time_to_start = time_to_start
         self._timer_to_chg_mode = 1
         self._time_to_chg_mode = 300
+        self.__going_up = False
 
     #Read only attributes
     @property
@@ -39,8 +40,8 @@ class Ghost(Sprite):
     def mode(self,mode):
         if not isinstance(mode,str):
             raise TypeError("Ghost mode must be a str")
-        elif mode.lower() not in ["scatter","chase","eaten","frightened","waiting"]:
-            raise ValueError("Ghost mode must be scatter, chase, eaten, frightened or waiting")
+        elif mode.lower() not in ["scatter","chase","eaten","frightened","waiting","exiting"]:
+            raise ValueError("Ghost mode must be scatter, chase, eaten, frightened or waiting,exitingg")
         
         self.__mode = mode.lower()
 
@@ -80,6 +81,39 @@ class Ghost(Sprite):
 
     def move(self):
         """A function that moves the ghost"""
+
+        if self.mode == "waiting":
+            if self._timer_to_start != 0:
+                
+                if self.__going_up and self._timer_to_start % 4 == 0:
+                    self.x_pos_tile = 96
+                    self.__going_up = False
+                elif not self.__going_up and self._timer_to_start % 4== 0:
+                    self.x_pos_tile = 80
+                    self.__going_up = True
+
+                #Change position every 4 frames
+                if self.__going_up:
+                    self.y_pos = self.y_pos - self.__velocity
+                else: self.y_pos = self.y_pos + self.__velocity
+
+                #Update the time
+                self._timer_to_start = (self._timer_to_start + 1) % self._time_to_start 
+
+                #Dont check directions nor if there are walls 
+                return     
+            else: 
+                print("exit waiting mode")
+                self.mode = "exiting"
+                self.target = [int((SCREEN_WIDTH/2 - 16)/8),int((SCREEN_HEIGHT/2 - 100)/8)]
+        if self.mode == "exiting":
+            print("in exiting mode")
+            if int(self.x_pos/8) == self.target[0] and  int(self.y_pos/8)  == self.target[1]:
+                self.__velocity = 4
+                self.mode = "scatter"
+            
+                
+   
         if self.direction == "right" and self.__can_move(self.direction):
 
             #Allow ghost to go from right to left

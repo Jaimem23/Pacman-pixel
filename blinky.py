@@ -34,8 +34,8 @@ class Blinky(Ghost):
             self.target = [pacman.x_pos,pacman.y_pos]
         elif self.mode == "eaten":
             self.target = [SCREEN_WIDTH/2,248]
-        else:
+        elif self.mode == "scatter":
             self.target = [SCREEN_WIDTH,0]
 
         
-blinky = Blinky(int(SCREEN_WIDTH/2 - 16),int(SCREEN_HEIGHT/2 - 100),16,16,0,BLINKY_Y_TILE,"right",0)
+blinky = Blinky(int(SCREEN_WIDTH/2 - 16),int(SCREEN_HEIGHT/2 - 100),16,16,0,BLINKY_Y_TILE,"right",1)

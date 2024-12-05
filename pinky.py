@@ -42,8 +42,8 @@ class Pinky(Ghost):
             else: self.target = [pacman.x_pos + 3 * 8, pacman.y_pos]
         elif self.mode == "eaten":
             self.target = [constants.SCREEN_WIDTH/2,248]
-        else:
+        elif self.mode == "scatter":
             self.target = [0,0]
 
-pinky = Pinky(int(constants.SCREEN_WIDTH/2 - 16),int(constants.SCREEN_HEIGHT/2 - 50),16,16,0,constants.PINKY_Y_TILE,"right",0)
+pinky = Pinky(int(constants.SCREEN_WIDTH/2 - 16),206,16,16,0,constants.PINKY_Y_TILE,"right",150)
 

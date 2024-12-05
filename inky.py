@@ -48,7 +48,7 @@ class Inky(Ghost):
             self.target = [pacman.x_pos,pacman.y_pos]
         elif self.mode == "eaten":
             self.target = [constants.SCREEN_WIDTH/2,248]
-        else:
+        elif self.mode == "scatter":
             self.target = [constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT]
 
-inky = Inky(int(constants.SCREEN_WIDTH/2 - 20),248,16,16,0,constants.INKY_Y_TILE,"up",0)
+inky = Inky(int(constants.SCREEN_WIDTH/2) + 8,216,16,16,0,constants.INKY_Y_TILE,"up",300)
