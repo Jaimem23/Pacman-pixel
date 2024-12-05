@@ -30,10 +30,14 @@ class Clyde(Ghost):
 
     def change_target(self):
         if self.mode == "chase":
-            self.target = [pacman.x_pos,pacman.y_pos]
+            #Calculate distance with pacman. Calculate the distance squared to simplify calculations
+            dist_sqr = (pacman.x_pos - self.x_pos) ** 2 + (pacman.y_pos - self.y_pos) ** 2
+            if dist_sqr > (8 * 8) ** 2: 
+                self.target = [pacman.x_pos,pacman.y_pos]
+            else: self.target = [constants.SCREEN_WIDTH,0]
         elif self.mode == "eaten":
             self.target = [constants.SCREEN_WIDTH/2,248]
         else:
-            self.target = [constants.SCREEN_WIDTH,0]
+            self.target = [0,constants.SCREEN_HEIGHT]
 
-clyde = Clyde(100,160,16,16,0,constants.CLYDE_Y_TILE,"right",0)
+clyde = Clyde(int(constants.SCREEN_WIDTH/2 - 40),228,16,16,0,constants.CLYDE_Y_TILE,"right",0)

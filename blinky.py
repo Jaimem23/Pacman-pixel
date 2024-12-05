@@ -1,5 +1,5 @@
 from ghost import Ghost
-from constants import BLINKY_Y_TILE,SCREEN_WIDTH
+from constants import BLINKY_Y_TILE,SCREEN_WIDTH,SCREEN_HEIGHT
 from pacman import pacman
 import random
 import pyxel
@@ -38,4 +38,4 @@ class Blinky(Ghost):
             self.target = [SCREEN_WIDTH,0]
 
         
-blinky = Blinky(88,160,16,16,0,BLINKY_Y_TILE,"right",0)
+blinky = Blinky(int(SCREEN_WIDTH/2 - 16),int(SCREEN_HEIGHT/2 - 100),16,16,0,BLINKY_Y_TILE,"right",0)

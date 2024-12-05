@@ -32,11 +32,18 @@ class Pinky(Ghost):
 
     def change_target(self):
         if self.mode == "chase":
-            self.target = [pacman.x_pos,pacman.y_pos]
+            #Get 3 tiles in from of pacman
+            if(pacman.direction == "up"):
+                self.target = [pacman.x_pos, pacman.y_pos - 3 * 8]
+            elif(pacman.direction == "left"):
+                self.target = [pacman.x_pos - 3 * 8, pacman.y_pos]
+            elif (pacman.direction == "down"):
+                self.target = [pacman.x_pos, pacman.y_pos + 3 * 8]
+            else: self.target = [pacman.x_pos + 3 * 8, pacman.y_pos]
         elif self.mode == "eaten":
             self.target = [constants.SCREEN_WIDTH/2,248]
         else:
-            self.target = [constants.SCREEN_WIDTH,0]
+            self.target = [0,0]
 
-pinky = Pinky(40,160,16,16,0,constants.PINKY_Y_TILE,"right",0)
+pinky = Pinky(int(constants.SCREEN_WIDTH/2 - 16),int(constants.SCREEN_HEIGHT/2 - 50),16,16,0,constants.PINKY_Y_TILE,"right",0)
 
