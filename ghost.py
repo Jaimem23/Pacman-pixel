@@ -75,7 +75,7 @@ class Ghost(Sprite):
     def blinking(self):
         return self.__blinking
     
-    @alive.setter
+    @blinking.setter
     def blinking(self, blinking: bool):
         if not isinstance(blinking, bool):
             raise TypeError("The blinking attribute needs to have a boolean value, True or False")
@@ -83,6 +83,8 @@ class Ghost(Sprite):
 
     def get_eated(self):
         self.alive = False
+        self.mode = "eaten"
+        
 
     def move(self):
         """A function that moves the ghost"""
@@ -118,6 +120,7 @@ class Ghost(Sprite):
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 self.__velocity = 4
                 self.alive = True
+                self.blinking = False
                 #Change mode to exiting
                 self.mode = "exiting"
           
@@ -134,12 +137,17 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 0
+            elif self.blinking:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 16:self.x_pos_tile = 16
+                else: self.x_pos_tile = 0
             elif self.__animation_timer == 0:
                 self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
                 else: self.x_pos_tile = 0
-
+           
         elif self.direction == "left" and self.__can_move(self.direction):
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
@@ -151,6 +159,11 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 16
+            elif self.blinking:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 16:self.x_pos_tile = 16
+                else: self.x_pos_tile = 0
             elif self.__animation_timer == 0:
                 self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
@@ -166,6 +179,11 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 48
+            elif self.blinking:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 16:self.x_pos_tile = 16
+                else: self.x_pos_tile = 0
             elif self.__animation_timer == 0:
                 self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
@@ -181,6 +199,11 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 32
+            elif self.blinking:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 16:self.x_pos_tile = 16
+                else: self.x_pos_tile = 0
             elif self.__animation_timer == 0:
                 self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
@@ -338,11 +361,13 @@ class Ghost(Sprite):
 
     def check_colision(self):
         """A function that checks colision with pacman"""
-        pacman_x_tile,pacman_y_tile = int(pacman.x_pos // 8),int(pacman.y_pos// 8)
-        ghost_x_tile,ghost_y_tile = int(self.x_pos//8),int(self.y_pos//8)
+        pacman_x_tile,pacman_y_tile = int(pacman.x_pos / 8),int(pacman.y_pos/ 8)
+        ghost_x_tile,ghost_y_tile = int(self.x_pos/8),int(self.y_pos/8)
 
         #Return True if the have the same tile
-        if(pacman_x_tile,pacman_y_tile) == (ghost_x_tile,ghost_y_tile):
+        if(pacman_x_tile,pacman_y_tile) == (ghost_x_tile,ghost_y_tile) and self.mode != "frightened":
             pacman.die()
+        elif (pacman_x_tile,pacman_y_tile) == (ghost_x_tile,ghost_y_tile) and self.mode == "frightened":
+            self.get_eated()
     
         

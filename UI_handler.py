@@ -75,7 +75,6 @@ class UIHandler:
             pyxel.blt(43+self.__characters_drawn*12,4,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,1)
             self.__characters_drawn += 1
 
-
         #Score draw
         self.__characters_drawn = 0
         for number in str(HUD_obj.level_score):

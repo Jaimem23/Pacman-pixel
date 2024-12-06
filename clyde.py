@@ -20,6 +20,6 @@ class Clyde(Ghost):
         elif self.mode == "scatter":
             self.target = [0,constants.SCREEN_HEIGHT]
         elif self.mode == "exiting":
-            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 100))]
+            self.target = [(constants.SCREEN_WIDTH/2 - 16),(constants.SCREEN_HEIGHT/2 - 106)]
 
 clyde = Clyde(int(constants.SCREEN_WIDTH/2 - 42),216,16,16,0,constants.CLYDE_Y_TILE,"right",450)

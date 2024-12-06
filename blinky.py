@@ -15,7 +15,7 @@ class Blinky(Ghost):
         elif self.mode == "scatter":
             self.target = [SCREEN_WIDTH,0]
         elif self.mode == "exiting":
-            self.target = [(SCREEN_WIDTH/2 - 16),(SCREEN_HEIGHT/2 - 100)]
+            self.target = [(SCREEN_WIDTH/2 - 16),(SCREEN_HEIGHT/2 - 106)]
 
         
 blinky = Blinky(int(SCREEN_WIDTH/2 - 16),int(SCREEN_HEIGHT/2 - 100),16,16,0,BLINKY_Y_TILE,"right",1)

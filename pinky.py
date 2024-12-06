@@ -23,7 +23,7 @@ class Pinky(Ghost):
         elif self.mode == "scatter":
             self.target = [0,0]
         elif self.mode == "exiting":
-            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 100))]
+            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 106))]
 
 pinky = Pinky(int(constants.SCREEN_WIDTH/2 - 16),206,16,16,0,constants.PINKY_Y_TILE,"right",150)
 

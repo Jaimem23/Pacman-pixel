@@ -22,15 +22,24 @@ class Ghost_Handler():
 
     def activate_blink_mode(self):
         if pyxel.btn(pyxel.KEY_3):
+            print("change to frightened")
             self._timer_frightened = 1
             for ghost in self.ghosts:
-                ghost.blinking = True
-                ghost.mode = "frightened"
+                if ghost.mode not in ["exiting","eaten","waiting"]:
+                    ghost.blinking = True
+                    ghost.mode = "frightened"
             self.__mode = "frightened"
 
 
+    def check_ghosts_moves(self):
+        """Delete this function when the project is done"""
+        if pyxel.btn(pyxel.KEY_5):
+            for ghost in self.ghosts:
+                print(ghost.mode)
+
     def update_ghosts_mode(self):
 
+        #Check if ghosts are frightened
         self._timer_frightened = self._timer_frightened  % self._time_frightened
         if self._timer_frightened != 0:
             self._timer_frightened += 1
