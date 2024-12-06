@@ -361,13 +361,17 @@ class Ghost(Sprite):
 
     def check_colision(self):
         """A function that checks colision with pacman"""
-        pacman_x_tile,pacman_y_tile = int(pacman.x_pos / 8),int(pacman.y_pos/ 8)
-        ghost_x_tile,ghost_y_tile = int(self.x_pos/8),int(self.y_pos/8)
+        ghost_x_upper_bound,ghost_y_upper_bound = self.x_pos + 16,self.y_pos + 16
+        ghost_x_lower_bound,ghost_y_lower_bound = self.x_pos + -16,self.y_pos -16
 
         #Return True if the have the same tile
-        if(pacman_x_tile,pacman_y_tile) == (ghost_x_tile,ghost_y_tile) and self.mode != "frightened":
+        if pacman.x_pos > ghost_x_lower_bound and pacman.x_pos < ghost_x_upper_bound \
+            and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
+            and self.mode not in ["frightened","eaten"]:
             pacman.die()
-        elif (pacman_x_tile,pacman_y_tile) == (ghost_x_tile,ghost_y_tile) and self.mode == "frightened":
+        elif pacman.x_pos > ghost_x_lower_bound and pacman.x_pos < ghost_x_upper_bound \
+            and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
+            and self.mode == "frightened":
             self.get_eated()
     
         
