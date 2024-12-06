@@ -12,6 +12,8 @@ class Blinky(Ghost):
         if pyxel.btn(pyxel.KEY_3):
             print("Change mode to eaten")
             self.mode = "eaten"
+            self.get_eated()
+            
         elif pyxel.btn(pyxel.KEY_4):
             print("Change mode to frightened")
             self.mode = "frightened"
@@ -28,14 +30,17 @@ class Blinky(Ghost):
             print("Change mode to scatter")
             self.mode = "scatter"
             self._timer_to_chg_mode = 1
+        
 
     def change_target(self):
         if self.mode == "chase":
             self.target = [pacman.x_pos,pacman.y_pos]
         elif self.mode == "eaten":
-            self.target = [SCREEN_WIDTH/2,248]
+            self.target = [int(SCREEN_WIDTH/2 - 16),int((SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
             self.target = [SCREEN_WIDTH,0]
+        elif self.mode == "exiting":
+            self.target = [(SCREEN_WIDTH/2 - 16),(SCREEN_HEIGHT/2 - 100)]
 
         
 blinky = Blinky(int(SCREEN_WIDTH/2 - 16),int(SCREEN_HEIGHT/2 - 100),16,16,0,BLINKY_Y_TILE,"right",1)

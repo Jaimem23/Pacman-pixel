@@ -14,6 +14,7 @@ class UIHandler:
         pyxel.init(constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT, constants.CAPTION)
         pyxel.load("assets/resources.pyxres")
         maze.map_matrix_create()
+        maze.create_ghost_map_matrix()
         self.pellet_position = maze.pellet_positions
         self.__characters = {"H": (16, 96), "I": (32, 96), "G": (48,96), "L": (32, 144), "V": (48, 144), "M": (16, 160), "S": (0,80), "C": (16, 80), "O": (32, 80), "R": (48, 80),
                               "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), "5": (16, 128), "6": (32, 128), "7": (48, 128), 
@@ -123,7 +124,8 @@ class UIHandler:
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
             ghost_handler.draw_ghosts()
             
-            pyxel.rect(int((SCREEN_WIDTH/2 - 16)) + 7,int((SCREEN_HEIGHT/2 - 58)) + 55,16,16,3)
+            pyxel.rect(int((SCREEN_WIDTH/2 - 16)) + 7,int((SCREEN_HEIGHT/2 - 100)) + 55,16,16,3)
+            pyxel.rect(int(SCREEN_WIDTH/2 - 16) + 7,int((SCREEN_HEIGHT/2) -60)+ 55,16,16,19)
         else:
             self.victory_maze_draw()
             self.hud_draw()

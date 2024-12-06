@@ -13,6 +13,7 @@ class Pinky(Ghost):
         if pyxel.btn(pyxel.KEY_3):
             print("Change mode to eaten")
             self.mode = "eaten"
+            self.get_eated()
         elif pyxel.btn(pyxel.KEY_4):
             print("Change mode to frightened")
             self.mode = "frightened"
@@ -41,9 +42,11 @@ class Pinky(Ghost):
                 self.target = [pacman.x_pos, pacman.y_pos + 3 * 8]
             else: self.target = [pacman.x_pos + 3 * 8, pacman.y_pos]
         elif self.mode == "eaten":
-            self.target = [constants.SCREEN_WIDTH/2,248]
+            self.target = [int(constants.SCREEN_WIDTH/2 - 16),int((constants.SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
             self.target = [0,0]
+        elif self.mode == "exiting":
+            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 100))]
 
 pinky = Pinky(int(constants.SCREEN_WIDTH/2 - 16),206,16,16,0,constants.PINKY_Y_TILE,"right",150)
 

@@ -7,6 +7,7 @@ class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,time_to_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = direction
+        self.__Y_POS_TILE = y_pos_tile
         self.alive = True
         self.blinking = False
         self.__velocity = 2
@@ -30,6 +31,8 @@ class Ghost(Sprite):
     #Read only attributes
     @property
     def __map_matrix(self):
+        if self.mode in ["exiting","eaten"]:
+            return maze.ghost_map_matrix
         return maze.map_matrix
 
     @property 
@@ -79,6 +82,9 @@ class Ghost(Sprite):
             raise TypeError("The blinking attribute needs to have a boolean value, True or False")
         else: self.__blinking = blinking
 
+    def get_eated(self):
+        self.alive = False
+
     def move(self):
         """A function that moves the ghost"""
 
@@ -103,16 +109,19 @@ class Ghost(Sprite):
                 #Dont check directions nor if there are walls 
                 return     
             else: 
-                print("exit waiting mode")
                 self.mode = "exiting"
                 self.target = [int((SCREEN_WIDTH/2 - 16)/8),int((SCREEN_HEIGHT/2 - 100)/8)]
-        if self.mode == "exiting":
-            print("in exiting mode")
-            if int(self.x_pos/8) == self.target[0] and  int(self.y_pos/8)  == self.target[1]:
+        elif self.mode == "exiting":
+            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 self.__velocity = 4
                 self.mode = "scatter"
-            
-                
+        elif self.mode == "eaten":
+            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
+                self.__velocity = 4
+                self.alive = True
+                #Change mode to exiting
+                self.mode = "exiting"
+          
    
         if self.direction == "right" and self.__can_move(self.direction):
 
@@ -123,7 +132,11 @@ class Ghost(Sprite):
             self.x_pos += 1 * self.__velocity
             #Logic to make the animation of pacman moving the mouth
             #Only update every N frames
-            if self.__animation_timer == 0:
+            if not self.alive:
+                self.y_pos_tile = 80
+                self.x_pos_tile = 0
+            elif self.__animation_timer == 0:
+                self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
                 else: self.x_pos_tile = 0
@@ -136,7 +149,11 @@ class Ghost(Sprite):
 
             #Logic to make the animation of pacman moving the mouth
             # Only update every N frames
-            if self.__animation_timer == 0:
+            if not self.alive:
+                self.y_pos_tile = 80
+                self.x_pos_tile = 16
+            elif self.__animation_timer == 0:
+                self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 48:self.x_pos_tile = 48
                 else: self.x_pos_tile = 32
@@ -147,7 +164,11 @@ class Ghost(Sprite):
             self.y_pos -= 1 * self.__velocity
                         #Logic to make the animation of pacman moving the mouth
             # Only update every N frames
-            if self.__animation_timer == 0:
+            if not self.alive:
+                self.y_pos_tile = 80
+                self.x_pos_tile = 48
+            elif self.__animation_timer == 0:
+                self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 112:self.x_pos_tile = 112
                 #Else, move to the previous one
@@ -158,7 +179,11 @@ class Ghost(Sprite):
             self.y_pos += 1 * self.__velocity
             #Logic to make the animation of pacman moving the mouth
             # Only update every N frames
-            if self.__animation_timer == 0:
+            if not self.alive:
+                self.y_pos_tile = 80
+                self.x_pos_tile = 32
+            elif self.__animation_timer == 0:
+                self.y_pos_tile = self.__Y_POS_TILE
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 80:self.x_pos_tile = 80
                 else: self.x_pos_tile = 64

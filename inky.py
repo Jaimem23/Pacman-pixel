@@ -15,6 +15,7 @@ class Inky(Ghost):
         if pyxel.btn(pyxel.KEY_3):
             print("Change mode to eaten")
             self.mode = "eaten"
+            self.get_eated()
         elif pyxel.btn(pyxel.KEY_4):
             print("Change mode to frightened")
             self.mode = "frightened"
@@ -47,8 +48,10 @@ class Inky(Ghost):
 
             self.target = [pacman.x_pos,pacman.y_pos]
         elif self.mode == "eaten":
-            self.target = [constants.SCREEN_WIDTH/2,248]
+            self.target = [int(constants.SCREEN_WIDTH/2 - 16),int((constants.SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
             self.target = [constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT]
+        elif self.mode == "exiting":
+            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 100))]
 
 inky = Inky(int(constants.SCREEN_WIDTH/2) + 8,216,16,16,0,constants.INKY_Y_TILE,"up",300)
