@@ -14,7 +14,8 @@ class UpdateHandler:
     def update(self):
         
         ghost_handler.update_ghosts()
-
+        ghost_handler.update_ghosts_mode()
+        ghost_handler.activate_blink_mode()
         if not pacman.game_end:
             #Check the input of the user
             pacman.change_direction()

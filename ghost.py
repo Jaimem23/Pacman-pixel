@@ -3,6 +3,7 @@ from constants import SCREEN_HEIGHT,SCREEN_WIDTH
 from maze_handler import maze
 from pacman import pacman
 import random
+import pyxel
 class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,time_to_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -24,8 +25,6 @@ class Ghost(Sprite):
         self.mode = "waiting"  
         self._timer_to_start = 1
         self._time_to_start = time_to_start
-        self._timer_to_chg_mode = 1
-        self._time_to_chg_mode = 300
         self.__going_up = False
 
     #Read only attributes
@@ -114,7 +113,7 @@ class Ghost(Sprite):
         elif self.mode == "exiting":
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 self.__velocity = 4
-                self.mode = "scatter"
+                self.mode = "chase"
         elif self.mode == "eaten":
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 self.__velocity = 4
@@ -190,6 +189,13 @@ class Ghost(Sprite):
 
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
+
+    def change_mode(self,mode):
+        "A function that changes the mode of the ghost given a mode"
+        if mode == "scatter":
+            self.mode = "scatter"
+        elif mode == "chase":
+            self.mode = "chase"
 
     def __calculate_new_direction(self):
         #If he has recently change its direction, return
