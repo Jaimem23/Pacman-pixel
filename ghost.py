@@ -85,8 +85,7 @@ class Ghost(Sprite):
         self._change_direction_speed = 2
         self.alive = False
         self.mode = "eaten"
-        self.__velocity = 8
-        
+        self.__velocity = 7
 
     def move(self):
         """A function that moves the ghost"""
@@ -224,7 +223,7 @@ class Ghost(Sprite):
 
     def __calculate_new_direction(self):
         #If he has recently change its direction, return
-        if self._change_direction_timer != 0: 
+        if self._change_direction_timer != 0 and self.mode != "eaten": 
             self._change_direction_timer = (self._change_direction_timer + 1) % self._change_direction_speed
             return
 
@@ -363,8 +362,8 @@ class Ghost(Sprite):
 
     def check_colision(self):
         """A function that checks colision with pacman"""
-        ghost_x_upper_bound,ghost_y_upper_bound = self.x_pos + 16,self.y_pos + 16
-        ghost_x_lower_bound,ghost_y_lower_bound = self.x_pos + -16,self.y_pos -16
+        ghost_x_upper_bound,ghost_y_upper_bound = self.x_pos + 10,self.y_pos + 10
+        ghost_x_lower_bound,ghost_y_lower_bound = self.x_pos + -10,self.y_pos -10
 
         #Return True if the have the same tile
         if pacman.x_pos > ghost_x_lower_bound and pacman.x_pos < ghost_x_upper_bound \
@@ -378,5 +377,10 @@ class Ghost(Sprite):
     
     def change_velocity(self,velocity:int):
         self.__velocity = velocity
+
+    def change_next_direction(self,new_direction:str):
+        self.direction = new_direction
+        self.__next_direction = new_direction
+        self._change_direction_timer = 1
     
         

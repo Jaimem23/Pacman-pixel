@@ -12,12 +12,11 @@ from ghost_handler import ghost_handler
 class UpdateHandler:
     
     def update(self):
-        
-        ghost_handler.update_ghosts()
-        ghost_handler.update_ghosts_mode()
-        ghost_handler.activate_blink_mode()
-        ghost_handler.check_ghosts_moves()
         if not pacman.game_end:
+            ghost_handler.update_ghosts_mode()
+            ghost_handler.update_ghosts()
+            ghost_handler.activate_blink_mode()
+            ghost_handler.check_ghosts_moves()
             #Check the input of the user
             pacman.change_direction()
             pacman.move()

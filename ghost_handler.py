@@ -39,6 +39,17 @@ class Ghost_Handler():
             for ghost in self.ghosts:
                 print(ghost.mode)
 
+    def __invert_direction(self):
+       for ghost in self.ghosts:
+            # Dictionary to map the current direction to its inverse
+            direction_map = {
+                "right": "left",
+                "left": "right",
+                "up": "down",
+                "down": "up"
+            }
+            ghost.change_next_direction(direction_map[ghost.direction])
+
     def update_ghosts_mode(self):
 
         #Check if ghosts are frightened
@@ -52,6 +63,9 @@ class Ghost_Handler():
                 if ghost.mode not in ["eaten","waiting","exiting"]:
                     ghost.mode = "chase"
                     ghost.change_velocity(4)
+            
+            self.__invert_direction()
+                    
             self.__mode = "chase"
         
 
@@ -69,6 +83,7 @@ class Ghost_Handler():
                 print("Change to scatter")
                 ghost.change_mode("scatter")
                 self._timer_to_chg_mode = 1
+        self.__invert_direction()
         if self.__mode == "chase":
             self.__mode = "scatter"
         else: self.__mode = "chase"
