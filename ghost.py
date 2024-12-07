@@ -83,7 +83,9 @@ class Ghost(Sprite):
         else: self.__frightened = frightened
 
     def get_eated(self):
-        #self._change_direction_speed = 1
+        #Allow to change direction more often
+        self._change_direction_speed = 1
+
         self.alive = False
         self.blinking = False
         self.frightened = False
@@ -144,11 +146,6 @@ class Ghost(Sprite):
             #If is not the last sprite, move to the next one  
             if self.x_pos_tile != 80:self.x_pos_tile = 80
             else: self.x_pos_tile = 64
-        
-        
-        
-        
-
 
     def move(self):
         """A function that moves the ghost"""
@@ -177,20 +174,24 @@ class Ghost(Sprite):
                 self.mode = "exiting"
                 self.target = [int((SCREEN_WIDTH/2 - 16)/8),int((SCREEN_HEIGHT/2 - 100)/8)]
         elif self.mode == "exiting":
+            #Check if the ghost is in the right tile
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 self.__velocity = 4
                 self.mode = "chase"
         elif self.mode == "eaten":
+            #Check if the ghost is in the right tile
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
+                #Reset velocity
                 self.__velocity = 4
                 self.alive = True
                 self.frightened = False
                 #Change mode to exiting
                 self.mode = "exiting"
+                #Reset how often it changes direction
+                self._change_direction_speed = int(8 /self.__velocity)
           
    
         if self.direction == "right" and self.__can_move(self.direction):
-
             #Allow ghost to go from right to left
             if(self.x_pos > SCREEN_WIDTH):           
                 self.x_pos = -self.width
@@ -226,7 +227,7 @@ class Ghost(Sprite):
 
     def __calculate_new_direction(self):
         #If he has recently change its direction, return
-        if self._change_direction_timer != 0 and self.mode != "eaten": 
+        if self._change_direction_timer != 0: 
             self._change_direction_timer = (self._change_direction_timer + 1) % self._change_direction_speed
             return
 
@@ -243,7 +244,7 @@ class Ghost(Sprite):
         else: directions.remove("up")
 
         new_directions =[]
-        #Check if which directions are allowed
+        #Check which directions are allowed
         for direction in directions:
             if self.__can_move_next_tile(direction): new_directions.append(direction)
 
@@ -253,8 +254,9 @@ class Ghost(Sprite):
 
         if self.mode == "frightened":
             self.__next_direction = new_directions[random.randrange(0,len(new_directions))]
-            self._change_direction_timer = 1
 
+        #Reset the timer to change direction
+        self._change_direction_timer = 1
 
         #If the mode is frightened it should not calculate the path
         if self.mode == "frightened": return
@@ -329,8 +331,7 @@ class Ghost(Sprite):
                     lowest_distance_sqr = distance_sqr
                     best_direction = "right"
             self.__next_direction = best_direction
-            #Reset the timer to change direction
-            self._change_direction_timer = 1
+
 
     def __remains_in_same_tile(self, direction):
         """A function that checks if the next step will stay in same tile"""
@@ -358,10 +359,11 @@ class Ghost(Sprite):
 
     def change_direction(self):
         """A function that changes the direction of the ghosts automatically"""
-        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.__can_move_next_tile(self.__next_direction) and not self.__remains_in_same_tile(self.direction):
-            self.direction = self.__next_direction
         self.__calculate_new_direction()
+        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
+        if  self.__can_move_next_tile(self.__next_direction):
+            self.direction = self.__next_direction
+ 
 
     def check_colision(self):
         """A function that checks colision with pacman"""
