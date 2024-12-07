@@ -220,7 +220,7 @@ class Pacman(Sprite):
         return maze.map_matrix
     
     def die(self):
-        print("die")
+        pass
 
 
 #Create the pacman

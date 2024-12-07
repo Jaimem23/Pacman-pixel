@@ -82,10 +82,10 @@ class Ghost(Sprite):
         else: self.__blinking = blinking
 
     def get_eated(self):
-        self._change_direction_speed = 2
+        #self._change_direction_speed = 1
         self.alive = False
         self.mode = "eaten"
-        self.__velocity = 7
+        self.__velocity = 6
 
     def move(self):
         """A function that moves the ghost"""
