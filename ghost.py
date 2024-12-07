@@ -90,7 +90,7 @@ class Ghost(Sprite):
         self.blinking = False
         self.frightened = False
         self.mode = "eaten"
-        self.__velocity = 6
+        self.__velocity = 7
 
     def __update_animations(self):
         """A function that updates the animations"""
@@ -333,14 +333,14 @@ class Ghost(Sprite):
             self.__next_direction = best_direction
 
 
-    def __remains_in_same_tile(self, direction):
+    def __is_centered(self, direction):
         """A function that checks if the next step will stay in same tile"""
         current_tile = 0
         next_pos = 0
         new_tile = 0
         if direction == "right":
             current_tile = int(self.x_pos // 8)
-            next_pos = self.x_pos + self.__velocity
+            next_pos = self.x_pos + self.__velocity + 4
             new_tile = int((next_pos) // 8)
         elif direction == "left":
             current_tile = int(self.x_pos // 8)
@@ -352,7 +352,7 @@ class Ghost(Sprite):
             new_tile = int((next_pos) // 8)
         elif direction == "down":
             current_tile = int(self.y_pos // 8)
-            next_pos = self.y_pos + self.__velocity
+            next_pos = self.y_pos + self.__velocity + 4
             new_tile = int((next_pos) // 8)
 
         return current_tile == new_tile
@@ -361,7 +361,7 @@ class Ghost(Sprite):
         """A function that changes the direction of the ghosts automatically"""
         self.__calculate_new_direction()
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.__can_move_next_tile(self.__next_direction):
+        if  self.__can_move_next_tile(self.__next_direction) and self.__can_move(self.__next_direction) and not self.__is_centered(self.direction):
             self.direction = self.__next_direction
  
 
