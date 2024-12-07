@@ -48,7 +48,9 @@ class Ghost_Handler():
         elif self.__mode == "frightened" and self._timer_frightened == 0:
             for ghost in self.ghosts:
                 ghost.blinking = False
-                ghost.mode = "chase"
+                if ghost.mode not in ["eaten","waiting","exiting"]:
+                    ghost.mode = "chase"
+                    ghost.change_velocity(4)
             self.__mode = "chase"
         
 

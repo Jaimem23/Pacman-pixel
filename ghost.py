@@ -84,7 +84,7 @@ class Ghost(Sprite):
     def get_eated(self):
         self.alive = False
         self.mode = "eaten"
-        self.__velocity = 4
+        self.__velocity = 5
         
 
     def move(self):
