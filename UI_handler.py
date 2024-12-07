@@ -123,8 +123,6 @@ class UIHandler:
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
             ghost_handler.draw_ghosts()
             
-            pyxel.rect(int((SCREEN_WIDTH/2 - 16)) + 7,int((SCREEN_HEIGHT/2 - 100)) + 55,16,16,3)
-            pyxel.rect(int(SCREEN_WIDTH/2 - 16) + 7,int((SCREEN_HEIGHT/2) -60)+ 55,16,16,19)
         else:
             self.victory_maze_draw()
             self.hud_draw()
