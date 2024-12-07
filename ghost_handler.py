@@ -89,11 +89,11 @@ class Ghost_Handler():
         for ghost in self.ghosts:
             if self.__mode == "scatter" and ghost.mode not in ["frightened","exiting","eaten","waiting"]:
                 print("Change to chase")
-                ghost.change_mode("chase")
+                ghost.force_change_mode("chase")
                 self._timer_to_chg_mode = 1
             elif self.__mode == "chase" and ghost.mode not in ["frightened","exiting","eaten","waiting"]:
                 print("Change to scatter")
-                ghost.change_mode("scatter")
+                ghost.force_change_mode("scatter")
                 self._timer_to_chg_mode = 1
         self.__invert_direction()
         if self.__mode == "chase":
