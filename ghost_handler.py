@@ -28,6 +28,7 @@ class Ghost_Handler():
                 if ghost.mode not in ["exiting","eaten","waiting"]:
                     ghost.blinking = True
                     ghost.mode = "frightened"
+                    ghost.change_velocity(2)
             self.__mode = "frightened"
 
 

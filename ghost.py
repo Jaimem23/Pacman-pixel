@@ -84,6 +84,7 @@ class Ghost(Sprite):
     def get_eated(self):
         self.alive = False
         self.mode = "eaten"
+        self.__velocity = 4
         
 
     def move(self):
@@ -373,5 +374,8 @@ class Ghost(Sprite):
             and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
             and self.mode == "frightened":
             self.get_eated()
+    
+    def change_velocity(self,velocity:int):
+        self.__velocity = velocity
     
         
