@@ -27,7 +27,7 @@ class Ghost_Handler():
             self._timer_frightened = 1
             for ghost in self.ghosts:
                 if ghost.mode not in ["exiting","eaten","waiting"]:
-                    ghost.blinking = True
+                    ghost.frightened = True
                     ghost.mode = "frightened"
                     ghost.change_velocity(2)
                     ghost._change_direction_speed = 8
@@ -57,11 +57,16 @@ class Ghost_Handler():
         #Check if ghosts are frightened, so it does not change mode 
         self._timer_frightened = self._timer_frightened  % self._time_frightened
         if self._timer_frightened != 0:
+            if self._timer_frightened == int(self._time_frightened * 3/4):
+                for ghost in self.ghosts:
+                    if ghost.mode == "frightened":
+                        ghost.blinking = True
             self._timer_frightened += 1
             return
         elif self.__mode == "frightened" and self._timer_frightened == 0:
             #Reset ghosts once the frightened mode is over
             for ghost in self.ghosts:
+                ghost.frightened = False
                 ghost.blinking = False
                 if ghost.mode not in ["eaten","waiting","exiting"]:
                     ghost.mode = "chase"

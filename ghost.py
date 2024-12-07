@@ -10,6 +10,7 @@ class Ghost(Sprite):
         self.direction = direction
         self.__Y_POS_TILE = y_pos_tile
         self.alive = True
+        self.frightened = False
         self.blinking = False
         self.__velocity = 2
         self.__animation_speed = 2
@@ -72,14 +73,14 @@ class Ghost(Sprite):
             self.__alive = alive
         
     @property
-    def blinking(self):
-        return self.__blinking
+    def frightened(self):
+        return self.__frightened
     
-    @blinking.setter
-    def blinking(self, blinking: bool):
-        if not isinstance(blinking, bool):
-            raise TypeError("The blinking attribute needs to have a boolean value, True or False")
-        else: self.__blinking = blinking
+    @frightened.setter
+    def frightened(self, frightened: bool):
+        if not isinstance(frightened, bool):
+            raise TypeError("The frightened attribute needs to have a boolean value, True or False")
+        else: self.__frightened = frightened
 
     def get_eated(self):
         #self._change_direction_speed = 1
@@ -121,7 +122,7 @@ class Ghost(Sprite):
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 self.__velocity = 4
                 self.alive = True
-                self.blinking = False
+                self.frightened = False
                 #Change mode to exiting
                 self.mode = "exiting"
           
@@ -138,7 +139,12 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 0
-            elif self.blinking:
+            elif self.frightened and self.blinking and self.__animation_timer == 0:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 48:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
+            elif self.frightened and self.__animation_timer == 0:
                 self.y_pos_tile = 64
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
@@ -160,7 +166,12 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 16
-            elif self.blinking:
+            elif self.frightened and self.blinking and self.__animation_timer == 0:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 48:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
+            elif self.frightened and self.__animation_timer == 0:
                 self.y_pos_tile = 64
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
@@ -180,7 +191,12 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 48
-            elif self.blinking:
+            elif self.frightened and self.blinking and self.__animation_timer == 0:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 48:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
+            elif self.frightened and self.__animation_timer == 0:
                 self.y_pos_tile = 64
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
@@ -200,7 +216,12 @@ class Ghost(Sprite):
             if not self.alive:
                 self.y_pos_tile = 80
                 self.x_pos_tile = 32
-            elif self.blinking:
+            elif self.frightened and self.blinking and self.__animation_timer == 0:
+                self.y_pos_tile = 64
+                #If is not the last sprite, move to the next one  
+                if self.x_pos_tile != 48:self.x_pos_tile += 16
+                else: self.x_pos_tile = 0
+            elif self.frightened and self.__animation_timer == 0:
                 self.y_pos_tile = 64
                 #If is not the last sprite, move to the next one  
                 if self.x_pos_tile != 16:self.x_pos_tile = 16
@@ -354,7 +375,7 @@ class Ghost(Sprite):
         return current_tile == new_tile
 
     def change_direction(self):
-        """A function that changes the direction of the ghosts"""
+        """A function that changes the direction of the ghosts automatically"""
         #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
         if  self.__can_move_next_tile(self.__next_direction) and not self.__remains_in_same_tile(self.direction):
             self.direction = self.__next_direction
