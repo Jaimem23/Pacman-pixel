@@ -20,7 +20,7 @@ class Ghost(Sprite):
         #Target the right top corner of the maze
         self.target = [0,SCREEN_WIDTH]
         self._change_direction_timer = 0
-        self._change_direction_speed = int(8 // self.__velocity)
+        self._change_direction_speed = int(8// (self.__velocity))
         #Variables to change mode
         self.mode = "waiting"  
         self._timer_to_start = 1
@@ -82,9 +82,10 @@ class Ghost(Sprite):
         else: self.__blinking = blinking
 
     def get_eated(self):
+        self._change_direction_speed = 2
         self.alive = False
         self.mode = "eaten"
-        self.__velocity = 5
+        self.__velocity = 8
         
 
     def move(self):

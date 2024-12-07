@@ -29,6 +29,7 @@ class Ghost_Handler():
                     ghost.blinking = True
                     ghost.mode = "frightened"
                     ghost.change_velocity(2)
+                    ghost._change_direction_speed = 8
             self.__mode = "frightened"
 
 
