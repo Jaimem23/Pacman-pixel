@@ -378,7 +378,10 @@ class Ghost(Sprite):
     def change_velocity(self,velocity:int):
         self.__velocity = velocity
 
-    def change_next_direction(self,new_direction:str):
+    def force_change_direction(self,new_direction:str):
+        """A function that forces the ghost to change direction"""
+        if self.mode in ["waiting","exiting","eaten"]:return
+
         self.direction = new_direction
         self.__next_direction = new_direction
         self._change_direction_timer = 1

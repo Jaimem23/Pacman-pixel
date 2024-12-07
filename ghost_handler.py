@@ -30,6 +30,7 @@ class Ghost_Handler():
                     ghost.mode = "frightened"
                     ghost.change_velocity(2)
                     ghost._change_direction_speed = 8
+            self.__invert_direction()
             self.__mode = "frightened"
 
 
@@ -48,7 +49,7 @@ class Ghost_Handler():
                 "up": "down",
                 "down": "up"
             }
-            ghost.change_next_direction(direction_map[ghost.direction])
+            ghost.force_change_direction(direction_map[ghost.direction])
 
     def update_ghosts_mode(self):
 
