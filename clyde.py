@@ -14,7 +14,7 @@ class Clyde(Ghost):
             #Check if the distance is less than 8 tiles
             if dist_sqr > (8 * 8) ** 2: 
                 self.target = [pacman.x_pos,pacman.y_pos]
-            else: self.target = [constants.SCREEN_WIDTH,0]
+            else: self.target = [0,constants.SCREEN_HEIGHT]
         elif self.mode == "eaten":
             self.target = [int(constants.SCREEN_WIDTH/2 - 16),int((constants.SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
