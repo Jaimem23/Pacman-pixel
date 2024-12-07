@@ -27,6 +27,7 @@ class Ghost_Handler():
             self._timer_frightened = 1
             for ghost in self.ghosts:
                 if ghost.mode not in ["exiting","eaten","waiting"]:
+                    ghost.blinking = False
                     ghost.frightened = True
                     ghost.mode = "frightened"
                     ghost.change_velocity(2)
@@ -63,6 +64,7 @@ class Ghost_Handler():
                         ghost.blinking = True
             self._timer_frightened += 1
             return
+        
         elif self.__mode == "frightened" and self._timer_frightened == 0:
             #Reset ghosts once the frightened mode is over
             for ghost in self.ghosts:
@@ -83,8 +85,6 @@ class Ghost_Handler():
         if self._timer_to_chg_mode != 0:
             self._timer_to_chg_mode = (self._timer_to_chg_mode + 1) % self._time_to_chg_mode
             return
-
-
 
         for ghost in self.ghosts:
             if self.__mode == "scatter" and ghost.mode not in ["frightened","exiting","eaten","waiting"]:
@@ -111,14 +111,6 @@ class Ghost_Handler():
 
                 #Change 20 seconds to chase
                 self._time_to_chg_mode = 600
-
-
-
-            
-
-
-        
-
 
     def draw_ghosts(self):
         for ghost in self.ghosts:
