@@ -34,7 +34,7 @@ class Ghost_Handler():
             ghost.check_colision()
 
     def activate_blink_mode(self):
-        if pyxel.btn(pyxel.KEY_3):
+            '''A function to toggle the frightened state of the ghosts'''
             print("change to frightened")
             self._timer_frightened = 1
             for ghost in self.ghosts:
@@ -46,6 +46,7 @@ class Ghost_Handler():
                     ghost._change_direction_speed = 8
             self.__invert_direction()
             self.__mode = "frightened"
+
 
 
     def check_ghosts_moves(self):

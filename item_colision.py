@@ -1,9 +1,9 @@
-import pyxel
 from pacman import pacman
 from maze_handler import maze
 from fruit import fruit_object
 from HUD import HUD_obj
 from constants import GAME_LEVEL_UP
+from ghost_handler import ghost_handler
 class ItemColision():
     def __init__(self):
         self.pellet_positions = maze.pellet_positions
@@ -24,10 +24,11 @@ class ItemColision():
                     self.__eaten_pellets += 1
                     HUD_obj.current_score += 10
                     self.pellet_status_update()
-                elif not element.eaten:
+                elif not element.eaten and self.__map_matrix[element.y_pos][element.x_pos] == 3:
                     element.eaten = True
                     self.__eaten_pellets += 1
                     HUD_obj.current_score += 50
+                    ghost_handler.activate_blink_mode()
                     self.pellet_status_update()
 
     def pellet_status_update(self):
@@ -61,5 +62,8 @@ class ItemColision():
         if ( 26 >= int(pacman.x_pos/8 + 1) and 26 < int(pacman.x_pos/8 + 2)) and (33 == int(pacman.y_pos/8)):
                 fruit_object.eaten = True
                 HUD_obj.current_score += fruit_object.value
+
+    def power_pellet_activate(self):
+        ghost_handler.activate_blink_mode()
 
 item_colision = ItemColision()

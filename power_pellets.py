@@ -5,5 +5,5 @@ class PowerPellets(Consumable):
         super().__init__(x_pos, y_pos, eaten)
     
     def activate_power():
-        #Make the ghosts blink and change the pattern of them (still to be done)
+        #Make the ghosts blink and change the pattern of them
         pass

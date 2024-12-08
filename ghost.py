@@ -12,6 +12,7 @@ class Ghost(Sprite):
         self.__Y_POS_TILE = y_pos_tile
         self.alive = True
         self.frightened = False
+        self.blinking = False
         self.__velocity = 2
         self.__animation_speed = 2
         #A variable to control the animations depending on the frames
@@ -32,13 +33,17 @@ class Ghost(Sprite):
         '''A function to reset the parameters when restarting or leveling up'''
         self.alive = True
         self.frightened = False
-        self.change_velocity()
         self.__next_direction = "up"
         self._change_direction_timer = 0
         self._change_direction_speed = int(8// (self.__velocity))
         self.change_mode()
         self._timer_to_start = 1
         self.__going_up = False
+        #If the level is lower than 5 set the velocity in function of the level
+        if HUD_obj.level < 5:
+            self.__velocity = 1 + HUD_obj.level
+        else:
+            self.__velocity = 5
 
     #Read only attributes
     @property
@@ -392,12 +397,8 @@ class Ghost(Sprite):
             and self.mode == "frightened":
             self.get_eated()
     
-    def change_velocity(self):
-        '''A function to change the velocity in function of the level'''
-        if HUD_obj.level < 5:
-            self.__velocity = 1 + HUD_obj.level
-        else:
-            self.__velocity = 5
+    def change_velocity(self,velocity:int):
+        self.__velocity = velocity
 
     def change_mode(self):
         '''A function that changes the direction of the ghost when starting up or leveling up'''

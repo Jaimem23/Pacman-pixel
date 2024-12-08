@@ -170,6 +170,5 @@ class UIHandler:
             self.erase_eaten_pellets()
             self.game_over_draw()
 
-        
 
 UI_Handler = UIHandler()

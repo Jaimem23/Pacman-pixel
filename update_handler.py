@@ -1,9 +1,5 @@
 import pyxel
 from item_colision import item_colision
-from blinky import blinky
-from clyde import clyde
-from pinky import pinky
-from inky import inky
 from maze_handler import maze
 from pacman import pacman
 from HUD import HUD_obj
@@ -14,6 +10,8 @@ from ghost_handler import ghost_handler
 class UpdateHandler:
     def __init__(self):
         self.frame_counter = 0
+        self.fruit_frame_counter = 0
+
     def update(self):
         if HUD_obj.game_state == GAME_STARTING:
             if self.frame_counter <= 90:
@@ -26,18 +24,17 @@ class UpdateHandler:
             #Update the status of the ghosts
             ghost_handler.update_ghosts_mode()
             ghost_handler.update_ghosts()
-            ghost_handler.activate_blink_mode()
             ghost_handler.check_ghosts_moves()
             #Update the status of pacman according to the user input
             pacman.change_direction()
             pacman.move()
             item_colision.pellet_eaten_check()
             #This if updates the logic of the fruit, it is drawn for 300 frames, if it hasn't been eaten in that number of frames, then it counts as eaten but doesn't sum points
-            if fruit_object.eaten == False and self.frame_counter <= 300:
-                self.frame_counter += 1
+            if fruit_object.eaten == False and self.fruit_frame_counter <= 300:
+                self.fruit_frame_counter += 1
                 item_colision.fruit_collision_check()
             else:
-                self.frame_counter = 0
+                self.fruit_frame_counter = 0
                 fruit_object.eaten = True
             #Update the high score if the current level score is higher than the highest recorded high score
             HUD_obj.score_update()
@@ -60,6 +57,7 @@ class UpdateHandler:
             #The game starts running again if pacman still has lives, otherwise game over is displayed
             elif pacman.lives != 0:
                 self.frame_counter = 0
+                self.fruit_frame_counter = 0
                 self.global_reset()
                 HUD_obj.game_state = GAME_STARTING
 

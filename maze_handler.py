@@ -1,6 +1,6 @@
 import pyxel
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from pellets import Pellets
+from consumable import Consumable
 from power_pellets import PowerPellets
 
 class Maze:
@@ -41,7 +41,7 @@ class Maze:
                     self.map_matrix[y].append(1)
                 #If the tile is a pellet create a pellet object in the pellet list and append a 0 in map matrix
                 elif pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
-                    self.pellet_positions.append(Pellets(x,y, False))
+                    self.pellet_positions.append(Consumable(x,y, False))
                     self.map_matrix[y].append(0)
                 #If the tile is a power pellet, create a power_pellet object and append a 3 (internal number for corridor with power pellet)
                 elif pyxel.tilemap(0).pget(x,y) == self.power_pellet_tile:
