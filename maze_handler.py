@@ -1,5 +1,4 @@
 import pyxel
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from consumable import Consumable
 
 class Maze:

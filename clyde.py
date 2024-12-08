@@ -1,6 +1,5 @@
 from ghost import Ghost
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, CLYDE_INITIAL_X, CLYDE_INITIAL_Y, CLYDE_Y_TILE
-import pyxel
 from pacman import pacman
 class Clyde(Ghost):
     def __init__(self, x_pos, y_pos, widht, height, x_pos_tile,y_pos_tile,direction,_time_to_start):

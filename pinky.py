@@ -1,4 +1,3 @@
-import pyxel
 from ghost import Ghost
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PINKY_INITIAL_X, PINKY_INITIAL_Y, PINKY_Y_TILE
 from pacman import pacman

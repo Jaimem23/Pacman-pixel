@@ -2,7 +2,6 @@ import pyxel
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, CAPTION, CHARACTERS, GAME_STARTING, GAME_RUNNING, GAME_LEVEL_UP, \
                         GAME_LIVE_LOST, GAME_OVER, PACMAN_DEATH_TILES_X, PACMAN_DEATH_TILES_Y
 from pacman import pacman
-from blinky import blinky
 from maze_handler import maze
 from HUD import HUD_obj
 from fruit import fruit_object

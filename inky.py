@@ -1,4 +1,3 @@
-import pyxel
 from ghost import Ghost
 from blinky import blinky
 from constants import INKY_Y_TILE,SCREEN_WIDTH,SCREEN_HEIGHT, INKY_INITIAL_X, INKY_INITIAL_Y
