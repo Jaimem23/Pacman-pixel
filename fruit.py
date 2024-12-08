@@ -11,18 +11,12 @@ class Fruit(Consumable):
       self.fruit_number = fruit_number
       self.y_pos_tile = y_pos_tile
       self.x_pos_tile = x_pos_tile
-      self.cycle_counter = 0
    
    #Read only property
    @property
    def value(self):
-      return int(HUD_obj.level) * self.fruit_value[str(self.fruit_number)]
-
-   def fruit_update(self):
-      '''A function to update the number of cycles that the fruit has been on screen'''
-      self.cycle_counter += 1
-   
-          
+      return int(HUD_obj.level * self.fruit_value[str(self.fruit_number)])
+       
    def fruit_spawn(self):
       #Choose a random fruit (number) to spawn and update the object parameters
       selected_fruit = random.randint(1,5)

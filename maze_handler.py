@@ -17,11 +17,13 @@ class Maze:
         (1,7),(2,7),(3,7),(4,7),(7,7),(12,7),(15,7),(20,7),(23,7))
         self.pellet_tile = (5,0)
         self.power_pellet_tile = (7,0)
-        self.blink_control = 0
         #A new matrix is going to be build to store all of the data of the map (corridors and walls)
         self.map_matrix = []
         self.pellet_positions = []
 
+    def reset(self):
+        for element in self.pellet_positions:
+            element.eaten = False
 
     def map_matrix_create(self):
         for y in range(62):
@@ -41,10 +43,5 @@ class Maze:
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:
                     self.map_matrix[y].append(0)
-
-    def victory_maze_update(self):
-        '''This function is in charge of updating the parameters of the maze while the victory screen is running'''
-        self.blink_control +=1
-
 
 maze = Maze()

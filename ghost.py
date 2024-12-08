@@ -3,6 +3,7 @@ from constants import SCREEN_HEIGHT,SCREEN_WIDTH
 from maze_handler import maze
 from pacman import pacman
 import random
+from HUD import HUD_obj
 class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,time_to_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)

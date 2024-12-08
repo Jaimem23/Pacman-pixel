@@ -3,10 +3,14 @@ from pacman import pacman
 from maze_handler import maze
 from fruit import fruit_object
 from HUD import HUD_obj
+from constants import GAME_LEVEL_UP
 class ColisionHandler():
     def __init__(self):
         self.pellet_positions = maze.pellet_positions
         self.__map_matrix = maze.map_matrix
+        self.__eaten_pellets = 0
+
+    def reset(self):
         self.__eaten_pellets = 0
 
     def pellet_eaten_check(self):
@@ -49,7 +53,7 @@ class ColisionHandler():
                 pacman.y_pos_tile = 16
             #Change the direction by stand-by and set the game has ended
             pacman.direction = "stand-by"
-            pacman.game_end = True
+            HUD_obj.game_state = GAME_LEVEL_UP
 
     def fruit_collision_check(self):
         '''A function that checks if Pacman collides with the fruit'''

@@ -5,6 +5,7 @@ from blinky import blinky
 from maze_handler import maze
 from HUD import HUD_obj
 from fruit import fruit_object
+from update_handler import Update_handler
 class UIHandler:
     ''' This class is in charge of drawing all of the visuals of the game '''
 
@@ -16,14 +17,9 @@ class UIHandler:
         self.__characters = {"H": (16, 96), "I": (32, 96), "G": (48,96), "L": (32, 144), "V": (48, 144), "M": (16, 160), "S": (0,80), "C": (16, 80), "O": (32, 80), "R": (48, 80),
                               "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), "5": (16, 128), "6": (32, 128), "7": (48, 128), 
                               "8": (0,144), "9": (16, 144), " ": (48, 160)}
-        self.start_counter = 0
         self.__characters_drawn = 0
         self.fruit_counter = 0
  
-        
-
-
-
     def maze_draw(self):
         '''This function is in charge of drawing the maze when the game is running'''
         pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1) #Temporarily edited, to do the collisions in a basic setting y is missing + 50
@@ -33,10 +29,11 @@ class UIHandler:
         '''This function is in charge of drawing the maze while the victory screen is running '''
         #This two elif control the timing of the map blink, when the variable blink_control divided by 20 returns a 
         #remainder bigger than or equal to 10 it will load the white map to create the effect
-        if maze.blink_control%20 < 10:
+        
+        if Update_handler.frame_counter%20 < 10:
             pyxel.bltm(0, 50, 0, 0, 512, 448, 504, None, None, 1)
 
-        elif maze.blink_control%20 >= 10:
+        elif Update_handler.frame_counter%20 >= 10:
             pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1)
 
     def fruit_draw(self):
@@ -91,21 +88,35 @@ class UIHandler:
             pyxel.blt(350+counter*20, 24, 0, 16, 0,16, 16, 0, 1)
 
 
-    def level_up_draw (self):
-        #Draw ready
+    def ready_banner_draw (self):
+        '''A function to draw the ready and level message at the start of a level'''
+
+        #Draw LEVEL letters and number
+        self.__characters_drawn = 0
+        for letter in ("LEVEL " + str(HUD_obj.level)):
+            pyxel.blt(160+self.__characters_drawn*20,223,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,2)
+            self.__characters_drawn += 1
+
+        #Draw READY letters
         self.__characters_drawn = 0
         for letter in ("READY"):
             pyxel.blt(176+self.__characters_drawn*20,263,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,2)
             self.__characters_drawn += 1
-        #Draw the counter number
-        pyxel.blt(216,291, 0,self.__characters[str(self.start_counter)][0],self.__characters[str(self.start_counter)][1],16,16,0,0,2)
-        #Draw numbers of the counter 
+
+        #Draw the REGRESSIVE counter number
+        pyxel.blt(216,291, 0,self.__characters[str(3 - (Update_handler.frame_counter// 30))][0],self.__characters[str(3 - (Update_handler.frame_counter// 30))][1],16,16,0,0,2)
 
 
     def draw(self):
         pyxel.cls(0)
+        if HUD_obj.game_state == constants.GAME_STARTING:
+            self.maze_draw()
+            self.hud_draw()
+            self.ready_banner_draw()
+            pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
 
-        if not pacman.game_end:
+
+        elif HUD_obj.game_state == constants.GAME_RUNNING:
             self.maze_draw()
             self.hud_draw()
             self.erase_eaten_pellets()
@@ -121,11 +132,14 @@ class UIHandler:
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
             pyxel.blt(blinky.x_pos + 7, blinky.y_pos + 55,1,blinky.x_pos_tile,blinky.y_pos_tile,16,16,0,0,1.4)
 
-        else:
+        elif HUD_obj.game_state == constants.GAME_LEVEL_UP:
             self.victory_maze_draw()
             self.hud_draw()
             self.erase_eaten_pellets()
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
+        
+        elif HUD_obj.game_state == constants.GAME_OVER:
+            pass
         
 
 UI_Handler = UIHandler()

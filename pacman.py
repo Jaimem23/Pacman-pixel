@@ -10,12 +10,19 @@ class Pacman(Sprite):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = "right"
         self.velocity = velocity
-        self.game_end = False
         self.lifes = 3
 
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
         self.__next_direction = self.direction
+
+    def reset(self):
+        self.x_pos = PACMAN_INITIAL_X
+        self.y_pos = PACMAN_INITIAL_Y
+        self.direction = "right"
+        self.__next_direction = "right"
+        self.y_pos_tile = PACMAN_RIGHT_TILE_Y
+
     
     def change_direction(self):
         """A function that cheks the direction of the pacman based on the input"""
