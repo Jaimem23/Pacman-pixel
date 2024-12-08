@@ -36,7 +36,7 @@ class Ghost_Handler():
             ghost.move()
             ghost.check_colision()
             ghost.change_mode()
-        self.update_ghosts_mode()
+        self.__update_ghosts_mode()
 
     def activate_blink_mode(self):
         '''A function to toggle the frightened state of the ghosts'''
@@ -64,7 +64,7 @@ class Ghost_Handler():
             }
             ghost.force_change_direction(direction_map[ghost.direction])
 
-    def update_ghosts_mode(self):
+    def __update_ghosts_mode(self):
         """A function that updates the modes of the ghosts"""
         #Check if ghosts are frightened, so it does not change mode 
         self._timer_frightened = self._timer_frightened  % self._time_frightened
