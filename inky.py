@@ -21,9 +21,8 @@ class Inky(Ghost):
             else:
                 #Create a vector form pacman to blinky and rotate it 180 deg
                 inverted_vector = (-(blinky.x_pos - pacman.x_pos),-(blinky.y_pos - pacman.x_pos))
-                self.target[0] = [inverted_vector[0],inverted_vector[1]]
+                self.target = [inverted_vector[0],inverted_vector[1]]
 
-            self.target = [pacman.x_pos,pacman.y_pos]
         elif self.mode == "eaten":
             self.target = [int(constants.SCREEN_WIDTH/2 - 16),int((constants.SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
