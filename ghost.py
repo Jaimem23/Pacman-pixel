@@ -35,7 +35,7 @@ class Ghost(Sprite):
         self.__next_direction = "up"
         self._change_direction_timer = 0
         self._change_direction_speed = int(8// (self.__velocity))
-        self.change_mode()
+        self.reset_mode()
         self._timer_to_start = 1
         self.__going_up = False
         self.change_velocity(1 + HUD_obj.level)
@@ -158,6 +158,24 @@ class Ghost(Sprite):
             if self.x_pos_tile != 80:self.x_pos_tile = 80
             else: self.x_pos_tile = 64
 
+    def change_mode(self):
+        if self.mode == "exiting":
+            #Check if the ghost is in the right tile
+            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
+                self.change_velocity(1 + HUD_obj.level)
+                self.mode = "chase"
+        elif self.mode == "eaten":
+            #Check if the ghost is in the right tile
+            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
+                #Reset velocity
+                self.change_velocity(1 + HUD_obj.level)
+                self.alive = True
+                self.frightened = False
+                #Change mode to exiting
+                self.mode = "exiting"
+                #Reset how often it changes direction
+                self._change_direction_speed = int(8 /self.__velocity)
+
     def move(self):
         """A function that moves the ghost"""
 
@@ -184,24 +202,7 @@ class Ghost(Sprite):
             else: 
                 self.mode = "exiting"
                 self.target = [int((SCREEN_WIDTH/2 - 16)/8),int((SCREEN_HEIGHT/2 - 100)/8)]
-        elif self.mode == "exiting":
-            #Check if the ghost is in the right tile
-            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
-                self.change_velocity(1 + HUD_obj.level)
-                self.mode = "chase"
-        elif self.mode == "eaten":
-            #Check if the ghost is in the right tile
-            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
-                #Reset velocity
-                self.change_velocity(1 + HUD_obj.level)
-                self.alive = True
-                self.frightened = False
-                #Change mode to exiting
-                self.mode = "exiting"
-                #Reset how often it changes direction
-                self._change_direction_speed = int(8 /self.__velocity)
-          
-   
+            
         if self.direction == "right" and self.__can_move(self.direction):
             #Allow ghost to go from right to left
             if(self.x_pos > SCREEN_WIDTH):           
@@ -400,8 +401,8 @@ class Ghost(Sprite):
         else:
             self.__velocity = 5
 
-    def change_mode(self):
-        '''A function that changes the direction of the ghost when starting up or leveling up'''
+    def reset_mode(self):
+        '''A function that changes the mode of the ghost when starting up or leveling up'''
         if HUD_obj.level < 5:
             self.mode = "waiting"
         else:

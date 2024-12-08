@@ -34,6 +34,7 @@ class Ghost_Handler():
             ghost.change_target()
             ghost.move()
             ghost.check_colision()
+            ghost.change_mode()
 
     def activate_blink_mode(self):
             '''A function to toggle the frightened state of the ghosts'''
