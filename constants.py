@@ -15,9 +15,9 @@ PACMAN_DOWN_TILE_Y = 48
 
 #Ghost tiles
 BLINKY_Y_TILE = 0
-INKY_Y_TILE = 16
-PINKY_Y_TILE = 32
-CLYDE_Y_TILE = 48
+INKY_Y_TILE = 32
+PINKY_Y_TILE = 48
+CLYDE_Y_TILE = 16
 
 #Ghost positions
 BLINKY_INITIAL_X = 88
@@ -38,5 +38,10 @@ GAME_STARTING = 0
 GAME_RUNNING = 1
 GAME_LEVEL_UP = 2
 GAME_OVER = 3
+
+#Possible characters used in the UI
+CHARACTERS = {"H": (16, 96), "I": (32, 96), "G": (48,96), "L": (32, 144), "V": (48, 144), "M": (16, 160), "S": (0,80), "C": (16, 80), "O": (32, 80), "R": (48, 80),
+            "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), 
+            "5": (16, 128), "6": (32, 128), "7": (48, 128), "8": (0,144), "9": (16, 144), " ": (48, 160)}
 
 MAZE_1 = []

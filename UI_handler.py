@@ -1,22 +1,22 @@
 import pyxel
-import constants
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, CAPTION, CHARACTERS, GAME_STARTING, GAME_RUNNING, GAME_LEVEL_UP, GAME_OVER
 from pacman import pacman
 from blinky import blinky
 from maze_handler import maze
 from HUD import HUD_obj
 from fruit import fruit_object
+from ghost_handler import ghost_handler
 from update_handler import Update_handler
 class UIHandler:
     ''' This class is in charge of drawing all of the visuals of the game '''
 
     def __init__(self):
-        pyxel.init(constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT, constants.CAPTION)
+        pyxel.init(SCREEN_WIDTH,SCREEN_HEIGHT,CAPTION)
         pyxel.load("assets/resources.pyxres")
         maze.map_matrix_create()
+        maze.create_ghost_map_matrix()
         self.pellet_position = maze.pellet_positions
-        self.__characters = {"H": (16, 96), "I": (32, 96), "G": (48,96), "L": (32, 144), "V": (48, 144), "M": (16, 160), "S": (0,80), "C": (16, 80), "O": (32, 80), "R": (48, 80),
-                              "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), "5": (16, 128), "6": (32, 128), "7": (48, 128), 
-                              "8": (0,144), "9": (16, 144), " ": (48, 160)}
+        self.__characters = CHARACTERS
         self.__characters_drawn = 0
         self.fruit_counter = 0
  
@@ -69,7 +69,6 @@ class UIHandler:
             pyxel.blt(43+self.__characters_drawn*12,4,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,1)
             self.__characters_drawn += 1
 
-
         #Score draw
         self.__characters_drawn = 0
         for number in str(HUD_obj.level_score):
@@ -77,13 +76,13 @@ class UIHandler:
                 pyxel.blt(73 - 12*len(str(HUD_obj.level_score))/2+self.__characters_drawn*12,24,0,self.__characters[number][0],self.__characters[number][1],16,16,0,0,1)
                 self.__characters_drawn += 1
 
-        #Draw lifes letters
+        #Draw lives letters
         self.__characters_drawn = 0
-        for letter in ("LIFES"):
+        for letter in ("LIVES"):
             pyxel.blt(345+self.__characters_drawn*12,4,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,1)
             self.__characters_drawn += 1  
 
-        #Draw the lifes icons
+        #Draw the lives icons
         for counter in range(pacman.lifes):
             pyxel.blt(350+counter*20, 24, 0, 16, 0,16, 16, 0, 1)
 
@@ -109,14 +108,14 @@ class UIHandler:
 
     def draw(self):
         pyxel.cls(0)
-        if HUD_obj.game_state == constants.GAME_STARTING:
+        if HUD_obj.game_state == GAME_STARTING:
             self.maze_draw()
             self.hud_draw()
             self.ready_banner_draw()
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
 
 
-        elif HUD_obj.game_state == constants.GAME_RUNNING:
+        elif HUD_obj.game_state == GAME_RUNNING:
             self.maze_draw()
             self.hud_draw()
             self.erase_eaten_pellets()
@@ -131,14 +130,17 @@ class UIHandler:
             [scale]: An optional scale factor (1.0 = 100%) to apply to the copied region."""
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
             pyxel.blt(blinky.x_pos + 7, blinky.y_pos + 55,1,blinky.x_pos_tile,blinky.y_pos_tile,16,16,0,0,1.4)
+            ghost_handler.draw_ghosts()
 
-        elif HUD_obj.game_state == constants.GAME_LEVEL_UP:
+        
+        elif HUD_obj.game_state == GAME_LEVEL_UP:
             self.victory_maze_draw()
             self.hud_draw()
             self.erase_eaten_pellets()
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
-        
-        elif HUD_obj.game_state == constants.GAME_OVER:
+
+
+        elif HUD_obj.game_state == GAME_OVER:
             pass
         
 

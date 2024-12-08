@@ -78,13 +78,7 @@ class Pacman(Sprite):
             current_tile = int(self.y_pos // 8)
             next_pos = self.y_pos + self.velocity + 4
             new_tile = int((next_pos) // 8)
-        """        
-        if btn(KEY_E):
-            print("Position is " + str(self.x_pos) + " and next position is " + str(next_pos))
-            print("Current tile is " +  str(current_tile) + " and new tile is " + str(new_tile))
-            print(self.__next_direction)
-            print(self.direction)
-        """
+
         return current_tile == new_tile
 
 
@@ -150,8 +144,6 @@ class Pacman(Sprite):
         # Increment animation timer, reset periodically
         self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
 
-
-    
     @property
     def velocity(self):
         return self.__velocity
@@ -233,6 +225,9 @@ class Pacman(Sprite):
     @property
     def __map_matrix(self):
         return maze.map_matrix
+    
+    def die(self):
+        pass
 
 
 #Create the pacman

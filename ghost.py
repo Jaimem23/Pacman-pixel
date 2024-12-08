@@ -4,13 +4,16 @@ from maze_handler import maze
 from pacman import pacman
 import random
 from HUD import HUD_obj
+import pyxel
 class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,time_to_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = direction
+        self.__Y_POS_TILE = y_pos_tile
         self.alive = True
+        self.frightened = False
         self.blinking = False
-        self.__velocity = 4
+        self.__velocity = 2
         self.__animation_speed = 2
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
@@ -19,17 +22,18 @@ class Ghost(Sprite):
         #Target the right top corner of the maze
         self.target = [0,SCREEN_WIDTH]
         self._change_direction_timer = 0
-        self._change_direction_speed = int(8 // self.__velocity)
+        self._change_direction_speed = int(8// (self.__velocity))
         #Variables to change mode
-        self.mode = "scatter"  
-        self._timer_to_start = 0
+        self.mode = "waiting"  
+        self._timer_to_start = 1
         self._time_to_start = time_to_start
-        self._timer_to_chg_mode = 1
-        self._time_to_chg_mode = 300
+        self.__going_up = False
 
     #Read only attributes
     @property
     def __map_matrix(self):
+        if self.mode in ["exiting","eaten"]:
+            return maze.ghost_map_matrix
         return maze.map_matrix
 
     @property 
@@ -40,8 +44,8 @@ class Ghost(Sprite):
     def mode(self,mode):
         if not isinstance(mode,str):
             raise TypeError("Ghost mode must be a str")
-        elif mode.lower() not in ["scatter","chase","eaten","frightened","waiting"]:
-            raise ValueError("Ghost mode must be scatter, chase, eaten, frightened or waiting")
+        elif mode.lower() not in ["scatter","chase","eaten","frightened","waiting","exiting"]:
+            raise ValueError("Ghost mode must be scatter, chase, eaten, frightened or waiting,exitingg")
         
         self.__mode = mode.lower()
 
@@ -70,68 +74,157 @@ class Ghost(Sprite):
             self.__alive = alive
         
     @property
-    def blinking(self):
-        return self.__blinking
+    def frightened(self):
+        return self.__frightened
     
-    @alive.setter
-    def blinking(self, blinking: bool):
-        if not isinstance(blinking, bool):
-            raise TypeError("The blinking attribute needs to have a boolean value, True or False")
-        else: self.__blinking = blinking
+    @frightened.setter
+    def frightened(self, frightened: bool):
+        if not isinstance(frightened, bool):
+            raise TypeError("The frightened attribute needs to have a boolean value, True or False")
+        else: self.__frightened = frightened
+
+    def get_eated(self):
+        #Allow to change direction more often
+        self._change_direction_speed = 1
+
+        self.alive = False
+        self.blinking = False
+        self.frightened = False
+        self.mode = "eaten"
+        self.__velocity = 7
+
+    def __update_animations(self):
+        """A function that updates the animations"""
+
+        # Increment animation timer, reset periodically
+        self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
+
+        if self.frightened and self.blinking and self.__animation_timer == 0:
+            self.y_pos_tile = 64
+            #If is not the last sprite, move to the next one  
+            if self.x_pos_tile != 48:self.x_pos_tile += 16
+            else: self.x_pos_tile = 0
+
+            return
+        elif self.frightened and self.__animation_timer == 0:
+            self.y_pos_tile = 64
+            #If is not the last sprite, move to the next one  
+            if self.x_pos_tile != 16:self.x_pos_tile = 16
+            else: self.x_pos_tile = 0
+
+            return
+        
+        if not self.alive and self.direction == "right":
+            self.y_pos_tile = 80
+            self.x_pos_tile = 0
+        elif self.__animation_timer == 0 and self.direction == "right":
+            self.y_pos_tile = self.__Y_POS_TILE
+            #If is not the last sprite, move to the next one  
+            if self.x_pos_tile != 16:self.x_pos_tile = 16
+            else: self.x_pos_tile = 0
+        elif not self.alive and self.direction == "left":
+            self.y_pos_tile = 80
+            self.x_pos_tile = 16
+        elif self.__animation_timer == 0 and self.direction == "left":
+            self.y_pos_tile = self.__Y_POS_TILE
+            #If is not the last sprite, move to the next one  
+            if self.x_pos_tile != 48:self.x_pos_tile = 48
+            else: self.x_pos_tile = 32
+        elif not self.alive and self.direction == "up":
+            self.y_pos_tile = 80
+            self.x_pos_tile = 48
+        elif self.__animation_timer == 0 and self.direction == "up":
+            self.y_pos_tile = self.__Y_POS_TILE
+            #If is not the last sprite, move to the next one  
+            if self.x_pos_tile != 112:self.x_pos_tile = 112
+            #Else, move to the previous one
+            else: self.x_pos_tile = 96 
+        elif not self.alive and self.direction == "down":
+            self.y_pos_tile = 80
+            self.x_pos_tile = 32
+        elif self.__animation_timer == 0 and self.direction == "down":
+            self.y_pos_tile = self.__Y_POS_TILE
+            #If is not the last sprite, move to the next one  
+            if self.x_pos_tile != 80:self.x_pos_tile = 80
+            else: self.x_pos_tile = 64
 
     def move(self):
         """A function that moves the ghost"""
-        if self.direction == "right" and self.__can_move(self.direction):
 
+        if self.mode == "waiting":
+            if self._timer_to_start != 0:
+                
+                if self.__going_up and self._timer_to_start % 4 == 0:
+                    self.x_pos_tile = 96
+                    self.__going_up = False
+                elif not self.__going_up and self._timer_to_start % 4== 0:
+                    self.x_pos_tile = 80
+                    self.__going_up = True
+
+                #Change position every 4 frames
+                if self.__going_up:
+                    self.y_pos = self.y_pos - self.__velocity
+                else: self.y_pos = self.y_pos + self.__velocity
+
+                #Update the time
+                self._timer_to_start = (self._timer_to_start + 1) % self._time_to_start 
+
+                #Dont check directions nor if there are walls 
+                return     
+            else: 
+                self.mode = "exiting"
+                self.target = [int((SCREEN_WIDTH/2 - 16)/8),int((SCREEN_HEIGHT/2 - 100)/8)]
+        elif self.mode == "exiting":
+            #Check if the ghost is in the right tile
+            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
+                self.__velocity = 4
+                self.mode = "chase"
+        elif self.mode == "eaten":
+            #Check if the ghost is in the right tile
+            if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
+                #Reset velocity
+                self.__velocity = 4
+                self.alive = True
+                self.frightened = False
+                #Change mode to exiting
+                self.mode = "exiting"
+                #Reset how often it changes direction
+                self._change_direction_speed = int(8 /self.__velocity)
+          
+   
+        if self.direction == "right" and self.__can_move(self.direction):
             #Allow ghost to go from right to left
             if(self.x_pos > SCREEN_WIDTH):           
                 self.x_pos = -self.width
 
             self.x_pos += 1 * self.__velocity
-            #Logic to make the animation of pacman moving the mouth
-            #Only update every N frames
-            if self.__animation_timer == 0:
-                #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 16:self.x_pos_tile = 16
-                else: self.x_pos_tile = 0
-
+            self.__update_animations()
+           
         elif self.direction == "left" and self.__can_move(self.direction):
             #Allow pacman to go from left to right
             if(self.x_pos < -16):
                 self.x_pos = SCREEN_WIDTH
             self.x_pos -= 1 * self.__velocity
 
-            #Logic to make the animation of pacman moving the mouth
-            # Only update every N frames
-            if self.__animation_timer == 0:
-                #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 48:self.x_pos_tile = 48
-                else: self.x_pos_tile = 32
+            self.__update_animations()
 
         elif self.direction == "up" and self.__can_move(self.direction):
 
             #Need to substract one since the left corner is the origin
             self.y_pos -= 1 * self.__velocity
-                        #Logic to make the animation of pacman moving the mouth
-            # Only update every N frames
-            if self.__animation_timer == 0:
-                #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 112:self.x_pos_tile = 112
-                #Else, move to the previous one
-                else: self.x_pos_tile = 96 
+            self.__update_animations()
 
         elif self.direction == "down" and self.__can_move(self.direction):
 
             self.y_pos += 1 * self.__velocity
-            #Logic to make the animation of pacman moving the mouth
-            # Only update every N frames
-            if self.__animation_timer == 0:
-                #If is not the last sprite, move to the next one  
-                if self.x_pos_tile != 80:self.x_pos_tile = 80
-                else: self.x_pos_tile = 64
+            self.__update_animations()
 
-        # Increment animation timer, reset periodically
-        self.__animation_timer = (self.__animation_timer + 1) % self.__animation_speed
+    def force_change_mode(self,mode):
+        "A function that forces changing the mode of the ghost given a mode"
+        if mode == "scatter":
+            self.mode = "scatter"
+        elif mode == "chase":
+            self.mode = "chase"
 
     def __calculate_new_direction(self):
         #If he has recently change its direction, return
@@ -152,7 +245,7 @@ class Ghost(Sprite):
         else: directions.remove("up")
 
         new_directions =[]
-        #Check if which directions are allowed
+        #Check which directions are allowed
         for direction in directions:
             if self.__can_move_next_tile(direction): new_directions.append(direction)
 
@@ -162,16 +255,9 @@ class Ghost(Sprite):
 
         if self.mode == "frightened":
             self.__next_direction = new_directions[random.randrange(0,len(new_directions))]
-            self._change_direction_timer = 1
-        elif self.mode == "chase":
-            self.target = [pacman.x_pos,pacman.y_pos]
-            self._change_direction_timer = 1
-        elif self.mode == "eaten":
-            self.target = [SCREEN_WIDTH/2,248]
-            self._change_direction_timer = 1
-        else:
-            self.target = [SCREEN_WIDTH,0]
-            self._change_direction_timer = 1
+
+        #Reset the timer to change direction
+        self._change_direction_timer = 1
 
         #If the mode is frightened it should not calculate the path
         if self.mode == "frightened": return
@@ -247,14 +333,15 @@ class Ghost(Sprite):
                     best_direction = "right"
             self.__next_direction = best_direction
 
-    def __remains_in_same_tile(self, direction):
+
+    def __is_centered(self, direction):
         """A function that checks if the next step will stay in same tile"""
         current_tile = 0
         next_pos = 0
         new_tile = 0
         if direction == "right":
             current_tile = int(self.x_pos // 8)
-            next_pos = self.x_pos + self.__velocity
+            next_pos = self.x_pos + self.__velocity + 4
             new_tile = int((next_pos) // 8)
         elif direction == "left":
             current_tile = int(self.x_pos // 8)
@@ -266,14 +353,43 @@ class Ghost(Sprite):
             new_tile = int((next_pos) // 8)
         elif direction == "down":
             current_tile = int(self.y_pos // 8)
-            next_pos = self.y_pos + self.__velocity
+            next_pos = self.y_pos + self.__velocity + 4
             new_tile = int((next_pos) // 8)
 
         return current_tile == new_tile
 
     def change_direction(self):
-        """A function that changes the direction of the ghosts"""
-        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
-        if  self.__can_move_next_tile(self.__next_direction) and not self.__remains_in_same_tile(self.direction):
-            self.direction = self.__next_direction
+        """A function that changes the direction of the ghosts automatically"""
         self.__calculate_new_direction()
+        #Only change to that direction if the next tile is not a wall and if it will change tile in the next step
+        if  self.__can_move_next_tile(self.__next_direction) and self.__can_move(self.__next_direction) and not self.__is_centered(self.direction):
+            self.direction = self.__next_direction
+ 
+
+    def check_colision(self):
+        """A function that checks colision with pacman"""
+        ghost_x_upper_bound,ghost_y_upper_bound = self.x_pos + 10,self.y_pos + 10
+        ghost_x_lower_bound,ghost_y_lower_bound = self.x_pos + -10,self.y_pos -10
+
+        #Return True if the have the same tile
+        if pacman.x_pos > ghost_x_lower_bound and pacman.x_pos < ghost_x_upper_bound \
+            and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
+            and self.mode not in ["frightened","eaten"]:
+            pacman.die()
+        elif pacman.x_pos > ghost_x_lower_bound and pacman.x_pos < ghost_x_upper_bound \
+            and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
+            and self.mode == "frightened":
+            self.get_eated()
+    
+    def change_velocity(self,velocity:int):
+        self.__velocity = velocity
+
+    def force_change_direction(self,new_direction:str):
+        """A function that forces the ghost to change direction"""
+        if self.mode in ["waiting","exiting","eaten"]:return
+
+        self.direction = new_direction
+        self.__next_direction = new_direction
+        self._change_direction_timer = 1
+    
+        
