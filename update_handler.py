@@ -1,11 +1,13 @@
-from colision_handler import colision_handler
 import pyxel
+from item_colision import item_colision
 from blinky import blinky
+from clyde import clyde
+from pinky import pinky
+from inky import inky
+from maze_handler import maze
 from pacman import pacman
 from HUD import HUD_obj
 from fruit import fruit_object
-from colision_handler import colision_handler
-from maze_handler import maze
 from constants import GAME_STARTING, GAME_RUNNING, GAME_LEVEL_UP, GAME_OVER 
 from ghost_handler import ghost_handler
 
@@ -29,12 +31,11 @@ class UpdateHandler:
             #Update the status of pacman according to the user input
             pacman.change_direction()
             pacman.move()
-            blinky.change_direction()
-            colision_handler.pellet_eaten_check()
+            item_colision.pellet_eaten_check()
             #This if updates the logic of the fruit, it is drawn for 300 frames, if it hasn't been eaten in that number of frames, then it counts as eaten but doesn't sum points
             if fruit_object.eaten == False and self.frame_counter <= 300:
                 self.frame_counter += 1
-                colision_handler.fruit_collision_check()
+                item_colision.fruit_collision_check()
             else:
                 self.frame_counter = 0
                 fruit_object.eaten = True
@@ -48,11 +49,7 @@ class UpdateHandler:
             #When the blink has been on screen for 120 frames, reset game parameters to execute the new level
             else:
                 self.frame_counter = 0
-                maze.reset()
-                colision_handler.reset()
-                pacman.reset()
-                blinky.reset()
-                HUD_obj.increase_level()
+                self.global_reset()
                 
 
         elif HUD_obj.game_state == GAME_OVER:
@@ -60,5 +57,15 @@ class UpdateHandler:
 
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
+
+    def global_reset(self):
+        '''A function to call all of the reset functions in the game'''
+        pacman.reset()
+        maze.reset()
+        item_colision.reset()
+        ghost_handler.reset()
+        HUD_obj.increase_level()
+        item_colision.reset()
+
 
 Update_handler = UpdateHandler()

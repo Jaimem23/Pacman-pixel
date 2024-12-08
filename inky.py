@@ -1,14 +1,18 @@
-from ghost import Ghost
-import constants
 import pyxel
-from pacman import pacman
-import constants
+from ghost import Ghost
 from blinky import blinky
+from constants import INKY_Y_TILE,SCREEN_WIDTH,SCREEN_HEIGHT, INKY_INITIAL_X, INKY_INITIAL_Y
+from pacman import pacman
 
 
 class Inky(Ghost):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,_time_to_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,_time_to_start)
+
+    def reset(self):
+        self.x_pos = INKY_INITIAL_X
+        self.y_pos = INKY_INITIAL_Y
+        super().reset()
 
     def change_target(self):
         if self.mode == "chase":
@@ -24,10 +28,10 @@ class Inky(Ghost):
                 self.target = [inverted_vector[0],inverted_vector[1]]
 
         elif self.mode == "eaten":
-            self.target = [int(constants.SCREEN_WIDTH/2 - 16),int((constants.SCREEN_HEIGHT/2) -60)]
+            self.target = [int(SCREEN_WIDTH/2 - 16),int((SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
-            self.target = [constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT]
+            self.target = [SCREEN_WIDTH,SCREEN_HEIGHT]
         elif self.mode == "exiting":
-            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 106))]
+            self.target = [int((SCREEN_WIDTH/2 - 16)),int((SCREEN_HEIGHT/2 - 106))]
 
-inky = Inky(int(constants.SCREEN_WIDTH/2) + 8,216,16,16,0,constants.INKY_Y_TILE,"up",300)
+inky = Inky(INKY_INITIAL_X,INKY_INITIAL_Y,16,16,0,INKY_Y_TILE,"up",300)

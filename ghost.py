@@ -6,13 +6,12 @@ import random
 from HUD import HUD_obj
 import pyxel
 class Ghost(Sprite):
-    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,time_to_start):
+    def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,movement_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = direction
         self.__Y_POS_TILE = y_pos_tile
         self.alive = True
         self.frightened = False
-        self.blinking = False
         self.__velocity = 2
         self.__animation_speed = 2
         #A variable to control the animations depending on the frames
@@ -26,7 +25,19 @@ class Ghost(Sprite):
         #Variables to change mode
         self.mode = "waiting"  
         self._timer_to_start = 1
-        self._time_to_start = time_to_start
+        self._movement_start = movement_start
+        self.__going_up = False
+
+    def reset(self):
+        '''A function to reset the parameters when restarting or leveling up'''
+        self.alive = True
+        self.frightened = False
+        self.change_velocity()
+        self.__next_direction = "up"
+        self._change_direction_timer = 0
+        self._change_direction_speed = int(8// (self.__velocity))
+        self.change_mode()
+        self._timer_to_start = 1
         self.__going_up = False
 
     #Read only attributes
@@ -88,7 +99,6 @@ class Ghost(Sprite):
         self._change_direction_speed = 1
 
         self.alive = False
-        self.blinking = False
         self.frightened = False
         self.mode = "eaten"
         self.__velocity = 7
@@ -167,7 +177,7 @@ class Ghost(Sprite):
                 else: self.y_pos = self.y_pos + self.__velocity
 
                 #Update the time
-                self._timer_to_start = (self._timer_to_start + 1) % self._time_to_start 
+                self._timer_to_start = (self._timer_to_start + 1) % self._movement_start
 
                 #Dont check directions nor if there are walls 
                 return     
@@ -219,6 +229,7 @@ class Ghost(Sprite):
             self.y_pos += 1 * self.__velocity
             self.__update_animations()
 
+
     def force_change_mode(self,mode):
         "A function that forces changing the mode of the ghost given a mode"
         if mode == "scatter":
@@ -266,7 +277,7 @@ class Ghost(Sprite):
         self.__calculate_best_path(new_directions)
     
     def __can_move(self,direction):
-        """A function that chekcs if the next step is a wall"""
+        """A function that checks if the next step is a wall"""
         for tile in range(4): 
             if direction == "right" and self.__map_matrix[int(self.y_pos/8) + tile][int((self.x_pos+ 24 +self.__velocity)/8)] == 1:
                 #If a tile is a wall, return False
@@ -371,7 +382,7 @@ class Ghost(Sprite):
         ghost_x_upper_bound,ghost_y_upper_bound = self.x_pos + 10,self.y_pos + 10
         ghost_x_lower_bound,ghost_y_lower_bound = self.x_pos + -10,self.y_pos -10
 
-        #Return True if the have the same tile
+        #Return True if they have the same tile
         if pacman.x_pos > ghost_x_lower_bound and pacman.x_pos < ghost_x_upper_bound \
             and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
             and self.mode not in ["frightened","eaten"]:
@@ -381,8 +392,19 @@ class Ghost(Sprite):
             and self.mode == "frightened":
             self.get_eated()
     
-    def change_velocity(self,velocity:int):
-        self.__velocity = velocity
+    def change_velocity(self):
+        '''A function to change the velocity in function of the level'''
+        if HUD_obj.level < 5:
+            self.__velocity = 1 + HUD_obj.level
+        else:
+            self.__velocity = 5
+
+    def change_mode(self):
+        '''A function that changes the direction of the ghost when starting up or leveling up'''
+        if HUD_obj.level < 5:
+            self.mode = "waiting"
+        else:
+            self.mode = "exiting"
 
     def force_change_direction(self,new_direction:str):
         """A function that forces the ghost to change direction"""

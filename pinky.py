@@ -1,12 +1,16 @@
-from ghost import Ghost
-import constants
 import pyxel
+from ghost import Ghost
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PINKY_INITIAL_X, PINKY_INITIAL_Y, PINKY_Y_TILE
 from pacman import pacman
-import constants
 
 class Pinky(Ghost):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,_time_to_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,_time_to_start)
+
+    def reset(self):
+        self.x_pos = PINKY_INITIAL_X
+        self.y_pos = PINKY_INITIAL_Y
+        super().reset()
 
     def change_target(self):
         if self.mode == "chase":
@@ -19,11 +23,11 @@ class Pinky(Ghost):
                 self.target = [pacman.x_pos, pacman.y_pos + 3 * 8]
             else: self.target = [pacman.x_pos + 3 * 8, pacman.y_pos]
         elif self.mode == "eaten":
-            self.target = [int(constants.SCREEN_WIDTH/2 - 16),int((constants.SCREEN_HEIGHT/2) -60)]
+            self.target = [int(SCREEN_WIDTH/2 - 16),int((SCREEN_HEIGHT/2) -60)]
         elif self.mode == "scatter":
             self.target = [0,0]
         elif self.mode == "exiting":
-            self.target = [int((constants.SCREEN_WIDTH/2 - 16)),int((constants.SCREEN_HEIGHT/2 - 106))]
+            self.target = [int((SCREEN_WIDTH/2 - 16)),int((SCREEN_HEIGHT/2 - 106))]
 
-pinky = Pinky(int(constants.SCREEN_WIDTH/2 - 16),206,16,16,0,constants.PINKY_Y_TILE,"right",150)
+pinky = Pinky(PINKY_INITIAL_X,PINKY_INITIAL_Y,16,16,0,PINKY_Y_TILE,"right",150)
 

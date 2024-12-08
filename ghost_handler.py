@@ -14,6 +14,18 @@ class Ghost_Handler():
         self.__mode = "scatter"
         self.__chg_mode_counter = 0
 
+    def reset(self):
+        ''' A function to reset the parameter when restarting or leveling up'''
+        self._timer_to_chg_mode = 1
+        self._time_to_chg_mode = 300
+        self._timer_frightened = 300
+        self._time_frightened = 300
+        self.__chg_mode_counter = 0
+        self.__mode = "scatter"
+        for ghost in self.ghosts:
+            ghost.reset()
+
+
     def update_ghosts(self):
         for ghost in self.ghosts:
             ghost.change_direction()

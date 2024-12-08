@@ -1,10 +1,9 @@
 from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
                       KEY_W,KEY_S,KEY_A,KEY_D,KEY_E
-from constants import SCREEN_HEIGHT,SCREEN_WIDTH, \
-                        PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y, FRUIT_X_POS, FRUIT_Y_POS
+from constants import SCREEN_WIDTH,PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y,GAME_OVER
 from maze_handler import maze
-from fruit import fruit_object
+from HUD import HUD_obj
 class Pacman(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,velocity: int):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -227,7 +226,8 @@ class Pacman(Sprite):
         return maze.map_matrix
     
     def die(self):
-        pass
+        self.lifes -= 1
+        HUD_obj.game_state = GAME_OVER
 
 
 #Create the pacman

@@ -41,11 +41,11 @@ class Maze:
                     self.map_matrix[y].append(1)
                 #If the tile is a pellet create a pellet object in the pellet list and append a 0 in map matrix
                 elif pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
-                    self.pellet_positions.append(Pellets(x,y,4,4, False))
+                    self.pellet_positions.append(Pellets(x,y, False))
                     self.map_matrix[y].append(0)
                 #If the tile is a power pellet, create a power_pellet object and append a 3 (internal number for corridor with power pellet)
                 elif pyxel.tilemap(0).pget(x,y) == self.power_pellet_tile:
-                    self.pellet_positions.append(PowerPellets(x,y,4,4, False))
+                    self.pellet_positions.append(PowerPellets(x,y, False))
                     self.map_matrix[y].append(3)
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:
@@ -58,21 +58,9 @@ class Maze:
                 #If the tile is in the wall list, a wall (1) is append
                 if pyxel.tilemap(0).pget(x,y) in self.ghost_wall_tiles:
                     self.ghost_map_matrix[y].append(1)
-                #If the tile is a pellet create a pellet object in the pellet list and append a 0 in map matrix
-                elif pyxel.tilemap(0).pget(x,y) == self.pellet_tile:
-                    self.pellet_positions.append(Pellets(x,y,4,4, False))
-                    self.ghost_map_matrix[y].append(0)
-                #If the tile is a power pellet, create a power_pellet object and append a 3 (internal number for corridor with power pellet)
-                elif pyxel.tilemap(0).pget(x,y) == self.power_pellet_tile:
-                    self.pellet_positions.append(PowerPellets(x,y,4,4, False))
-                    self.ghost_map_matrix[y].append(3)
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:
                     self.ghost_map_matrix[y].append(0)
-
-    def victory_maze_update(self):
-        '''This function is in charge of updating the parameters of the maze while the victory screen is running'''
-        self.blink_control +=1
 
 
 maze = Maze()

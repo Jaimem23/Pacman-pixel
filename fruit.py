@@ -3,19 +3,46 @@ from consumable import Consumable
 from constants import FRUIT_X_POS, FRUIT_Y_POS
 from HUD import HUD_obj
 class Fruit(Consumable):
-   def __init__(self, x_pos, y_pos, widht, height, eaten, x_pos_tile,y_pos_tile, fruit_number):
-      super().__init__(x_pos, y_pos, widht, height, eaten)
+   def __init__(self, x_pos, y_pos, width, height, eaten, x_pos_tile,y_pos_tile, fruit_number):
+      super().__init__(x_pos, y_pos, eaten)
       self.fruit_ID = {"1": (0, 176), "2": (16, 176), "3": (32,176), "4": (48, 176), "5":(64, 176)} #Internal naming of the fruits: 1.Cherry 2.Raspberry 3.Orange 4.Apple 5.Watermelon
       self.fruit_value = {"1": 100, "2": 150, "3": 200, "4": 250, "5":500}
       self.eaten = eaten
-      self.fruit_number = fruit_number
+      self.width = width
+      self.height = height
       self.y_pos_tile = y_pos_tile
       self.x_pos_tile = x_pos_tile
+      self.fruit_number = fruit_number
    
    #Read only property
    @property
    def value(self):
       return int(HUD_obj.level * self.fruit_value[str(self.fruit_number)])
+   
+   @property
+   def width(self):
+        return self.__widht
+    
+   @width.setter
+   def width(self,widht):
+        if not isinstance(widht,int):
+            raise TypeError("widht value must be an integer")
+        elif widht < 0:
+            raise ValueError("Widht must be positive or 0 ")
+        self.__widht = widht
+
+   @property
+   def height(self):
+        return self.__height
+    
+   @height.setter
+   def height(self,height):
+        if not isinstance(height,int):
+            raise TypeError("Height value must be an integer")
+        elif height < 0:
+            raise ValueError("Height must be positive or 0 ")
+        self.__height = height
+
        
    def fruit_spawn(self):
       #Choose a random fruit (number) to spawn and update the object parameters

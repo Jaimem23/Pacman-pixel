@@ -4,7 +4,7 @@ from maze_handler import maze
 from fruit import fruit_object
 from HUD import HUD_obj
 from constants import GAME_LEVEL_UP
-class ColisionHandler():
+class ItemColision():
     def __init__(self):
         self.pellet_positions = maze.pellet_positions
         self.__map_matrix = maze.map_matrix
@@ -12,6 +12,7 @@ class ColisionHandler():
 
     def reset(self):
         self.__eaten_pellets = 0
+        self.pellet_positions = maze.pellet_positions
 
     def pellet_eaten_check(self):
         '''This function checks if the position pacman is going to has an active pellet in it, if it has, it erases the pellet and sums the value to the score'''
@@ -60,4 +61,5 @@ class ColisionHandler():
         if ( 26 >= int(pacman.x_pos/8 + 1) and 26 < int(pacman.x_pos/8 + 2)) and (33 == int(pacman.y_pos/8)):
                 fruit_object.eaten = True
                 HUD_obj.level_score += fruit_object.value
-colision_handler = ColisionHandler()
+
+item_colision = ItemColision()
