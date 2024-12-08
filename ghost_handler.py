@@ -29,27 +29,31 @@ class Ghost_Handler():
 
 
     def update_ghosts(self):
+        """A function thar updates all the ghost except their modes"""
         for ghost in self.ghosts:
             ghost.change_direction()
             ghost.change_target()
             ghost.move()
             ghost.check_colision()
+            ghost.change_mode()
+        self.__update_ghosts_mode()
 
     def activate_blink_mode(self):
-            '''A function to toggle the frightened state of the ghosts'''
-            print("change to frightened")
-            self._timer_frightened = 1
-            for ghost in self.ghosts:
-                if ghost.mode not in ["exiting","eaten","waiting"]:
-                    ghost.blinking = False
-                    ghost.frightened = True
-                    ghost.mode = "frightened"
-                    ghost.change_velocity(2)
-                    ghost._change_direction_speed = 8
-            self.__invert_direction()
-            self.__mode = "frightened"
+        '''A function to toggle the frightened state of the ghosts'''
+        print("change to frightened")
+        self._timer_frightened = 1
+        for ghost in self.ghosts:
+            if ghost.mode not in ["exiting","eaten","waiting"]:
+                ghost.blinking = False
+                ghost.frightened = True
+                ghost.mode = "frightened"
+                ghost.change_velocity(2)
+                ghost._change_direction_speed = 8
+        self.__invert_direction()
+        self.__mode = "frightened"
 
     def __invert_direction(self):
+       """A function that inverts the direction of all ghosts"""
        for ghost in self.ghosts:
             # Dictionary to map the current direction to its inverse
             direction_map = {
@@ -60,8 +64,8 @@ class Ghost_Handler():
             }
             ghost.force_change_direction(direction_map[ghost.direction])
 
-    def update_ghosts_mode(self):
-
+    def __update_ghosts_mode(self):
+        """A function that updates the modes of the ghosts"""
         #Check if ghosts are frightened, so it does not change mode 
         self._timer_frightened = self._timer_frightened  % self._time_frightened
         if self._timer_frightened != 0:
@@ -122,6 +126,7 @@ class Ghost_Handler():
                 self._time_to_chg_mode = 600
 
     def draw_ghosts(self):
+        """A function that draws the ghost on the screen"""
         for ghost in self.ghosts:
             pyxel.blt(ghost.x_pos + 7, ghost.y_pos + 55,1,ghost.x_pos_tile,ghost.y_pos_tile,16,16,0,0,1.4)
 

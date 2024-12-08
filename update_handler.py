@@ -28,7 +28,6 @@ class UpdateHandler:
 
         elif HUD_obj.game_state == GAME_RUNNING:
             #Update the status of the ghosts
-            ghost_handler.update_ghosts_mode()
             ghost_handler.update_ghosts()
             #Update the status of pacman according to the user input
             pacman.change_direction()
