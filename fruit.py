@@ -9,7 +9,7 @@ class Fruit(Consumable):
    def __init__(self, x_pos, y_pos, width, height, eaten, x_pos_tile,y_pos_tile, fruit_number):
       super().__init__(x_pos, y_pos, eaten)
       #Internal naming of the fruits: 1.Cherry 2.Raspberry 3.Orange 4.Apple 5.Watermelon 6.Axe 7.Bell 8.Key
-      self.fruit_ID = {"1": (0, 176), "2": (16, 176), "3": (32,176), "4": (48, 176), "5":(64, 176), "5":()} 
+      self.fruit_ID = {"1": (0, 176), "2": (16, 176), "3": (32,176), "4": (48, 176), "5":(64, 176), "6":(80, 176), "7":(96, 176), "8":(112, 176)} 
       self.fruit_value = {"1": 100, "2": 150, "3": 200, "4": 250, "5":300, "6": 350, "7": 400, "8": 500}
       self.eaten = eaten
       self.width = width
@@ -49,8 +49,8 @@ class Fruit(Consumable):
 
        
    def fruit_spawn(self):
-      #Choose a random fruit (number) to spawn and update the object parameters
-      selected_fruit = random.randint(1,5)
+      '''A function that chooses a random fruit (number) to spawn and updates the object parameters'''
+      selected_fruit = random.randint(1,8)
       fruit_object.x_pos_tile = self.fruit_ID[str(selected_fruit)][0]
       fruit_object.y_pos_tile = self.fruit_ID[str(selected_fruit)][1]
       fruit_object.fruit_number = selected_fruit

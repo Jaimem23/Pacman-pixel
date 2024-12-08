@@ -1,5 +1,7 @@
 from constants import GAME_STARTING,GAME_LEVEL_UP,GAME_RUNNING, GAME_OVER, GAME_LIVE_LOST
 class HUD:
+    '''A class in charge of the leveling and the scoring system'''
+
     def __init__(self):
         self.level = 1
         self.current_score = 0
@@ -8,14 +10,17 @@ class HUD:
         self.game_state = GAME_STARTING
     
     def increase_level(self):
+        '''A function used to increase the level of the game'''
         self.level += 1
         self.game_state = GAME_STARTING
 
     def score_update(self):
+        '''A function that updates the high_score variable if the current score surpasses the highest recorded score'''
         if self.current_score > self.high_score:
             self.high_score = self.current_score
 
     def eaten_ghost_score(self):
+        '''A function to add the neccesary quantity of points when pacman '''
         self.current_score += 200 * self.eaten_ghosts
 
 
