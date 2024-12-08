@@ -22,12 +22,12 @@ class ItemColision():
                 if not element.eaten and self.__map_matrix[element.y_pos][element.x_pos] != 3:
                     element.eaten = True
                     self.__eaten_pellets += 1
-                    HUD_obj.level_score += 10
+                    HUD_obj.current_score += 10
                     self.pellet_status_update()
                 elif not element.eaten:
                     element.eaten = True
                     self.__eaten_pellets += 1
-                    HUD_obj.level_score += 50
+                    HUD_obj.current_score += 50
                     self.pellet_status_update()
 
     def pellet_status_update(self):
@@ -60,6 +60,6 @@ class ItemColision():
         '''A function that checks if Pacman collides with the fruit'''
         if ( 26 >= int(pacman.x_pos/8 + 1) and 26 < int(pacman.x_pos/8 + 2)) and (33 == int(pacman.y_pos/8)):
                 fruit_object.eaten = True
-                HUD_obj.level_score += fruit_object.value
+                HUD_obj.current_score += fruit_object.value
 
 item_colision = ItemColision()

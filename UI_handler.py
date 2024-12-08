@@ -1,5 +1,6 @@
 import pyxel
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, CAPTION, CHARACTERS, GAME_STARTING, GAME_RUNNING, GAME_LEVEL_UP, GAME_OVER
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, CAPTION, CHARACTERS, GAME_STARTING, GAME_RUNNING, GAME_LEVEL_UP, \
+                        GAME_LIVE_LOST, GAME_OVER, PACMAN_DEATH_TILES_X, PACMAN_DEATH_TILES_Y
 from pacman import pacman
 from blinky import blinky
 from maze_handler import maze
@@ -71,9 +72,9 @@ class UIHandler:
 
         #Score draw
         self.__characters_drawn = 0
-        for number in str(HUD_obj.level_score):
+        for number in str(HUD_obj.current_score):
             if self.__characters_drawn <= 8:
-                pyxel.blt(73 - 12*len(str(HUD_obj.level_score))/2+self.__characters_drawn*12,24,0,self.__characters[number][0],self.__characters[number][1],16,16,0,0,1)
+                pyxel.blt(73 - 12*len(str(HUD_obj.current_score))/2+self.__characters_drawn*12,24,0,self.__characters[number][0],self.__characters[number][1],16,16,0,0,1)
                 self.__characters_drawn += 1
 
         #Draw lives letters
@@ -83,7 +84,7 @@ class UIHandler:
             self.__characters_drawn += 1  
 
         #Draw the lives icons
-        for counter in range(pacman.lifes):
+        for counter in range(pacman.lives):
             pyxel.blt(350+counter*20, 24, 0, 16, 0,16, 16, 0, 1)
 
 
@@ -105,6 +106,23 @@ class UIHandler:
         #Draw the REGRESSIVE counter number
         pyxel.blt(216,291, 0,self.__characters[str(3 - (Update_handler.frame_counter// 30))][0],self.__characters[str(3 - (Update_handler.frame_counter// 30))][1],16,16,0,0,2)
 
+    def pacman_death_draw (self):
+        '''A function to draw the pacman death'''
+        pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,PACMAN_DEATH_TILES_X[Update_handler.frame_counter//13],PACMAN_DEATH_TILES_Y,16,16, 0, 0, 1.4)
+
+    def game_over_draw (self):
+        #Draw GAME OVER letters
+        self.__characters_drawn = 0
+        for letter in ("GAME OVER"):
+            pyxel.blt(132+self.__characters_drawn*20,263,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,2)
+            self.__characters_drawn += 1
+
+        #Draw PRESS S letters
+        self.__characters_drawn = 0
+        for letter in ("PRESS S"):
+            pyxel.blt(148+self.__characters_drawn*20,290,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,2)
+            self.__characters_drawn += 1
+        
 
     def draw(self):
         pyxel.cls(0)
@@ -131,7 +149,7 @@ class UIHandler:
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
             ghost_handler.draw_ghosts()
 
-        
+
         elif HUD_obj.game_state == GAME_LEVEL_UP:
             self.victory_maze_draw()
             self.hud_draw()
@@ -139,8 +157,19 @@ class UIHandler:
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
 
 
+        elif HUD_obj.game_state == GAME_LIVE_LOST:
+            self.maze_draw()
+            self.hud_draw()
+            self.erase_eaten_pellets()
+            self.pacman_death_draw()
+
+
         elif HUD_obj.game_state == GAME_OVER:
-            pass
+            self.maze_draw()
+            self.hud_draw()
+            self.erase_eaten_pellets()
+            self.game_over_draw()
+
         
 
 UI_Handler = UIHandler()

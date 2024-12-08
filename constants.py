@@ -8,10 +8,13 @@ PACMAN_INITIAL_X = 210
 PACMAN_INITIAL_Y = 268
 
 #Pacman tiles
+PACMAN_INITIAL_TILE_X = 16
 PACMAN_RIGHT_TILE_Y = 0
 PACMAN_LEFT_TILE_Y = 16
 PACMAN_UP_TILE_Y = 32
 PACMAN_DOWN_TILE_Y = 48
+PACMAN_DEATH_TILES_X = (0,16,32,80,96)
+PACMAN_DEATH_TILES_Y = 64
 
 #Ghost tiles
 BLINKY_Y_TILE = 0
@@ -43,12 +46,12 @@ SPRITE_SIZE = 12
 GAME_STARTING = 0
 GAME_RUNNING = 1
 GAME_LEVEL_UP = 2
-GAME_RESTART = 3
+GAME_LIVE_LOST = 3
 GAME_OVER = 4
 
 #Possible characters used in the UI
 CHARACTERS = {"H": (16, 96), "I": (32, 96), "G": (48,96), "L": (32, 144), "V": (48, 144), "M": (16, 160), "S": (0,80), "C": (16, 80), "O": (32, 80), "R": (48, 80),
-            "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), 
+            "E": (0, 96), "A": (0, 160), "F":(32,160),"D": (64, 80), "Y": (64, 96), "P":(64, 112), "0": (0, 112), "1": (16, 112), "2": (32,112), "3": (48, 112), "4": (0, 128), 
             "5": (16, 128), "6": (32, 128), "7": (48, 128), "8": (0,144), "9": (16, 144), " ": (48, 160)}
 
 MAZE_1 = []

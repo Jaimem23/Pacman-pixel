@@ -1,7 +1,8 @@
 from sprite import Sprite
 from pyxel import btn,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT, \
                       KEY_W,KEY_S,KEY_A,KEY_D,KEY_E
-from constants import SCREEN_WIDTH,PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y,GAME_OVER
+from constants import SCREEN_WIDTH,PACMAN_UP_TILE_Y, PACMAN_DOWN_TILE_Y, PACMAN_RIGHT_TILE_Y, \
+                        PACMAN_LEFT_TILE_Y,PACMAN_INITIAL_X,PACMAN_INITIAL_Y, PACMAN_INITIAL_TILE_X, GAME_OVER, GAME_LIVE_LOST
 from maze_handler import maze
 from HUD import HUD_obj
 class Pacman(Sprite):
@@ -9,7 +10,7 @@ class Pacman(Sprite):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
         self.direction = "right"
         self.velocity = velocity
-        self.lifes = 3
+        self.lives = 3
 
         #A variable to control the animations depending on the frames
         self.__animation_timer = 5
@@ -20,6 +21,7 @@ class Pacman(Sprite):
         self.y_pos = PACMAN_INITIAL_Y
         self.direction = "right"
         self.__next_direction = "right"
+        self.x_pos_tile = PACMAN_INITIAL_TILE_X
         self.y_pos_tile = PACMAN_RIGHT_TILE_Y
 
     
@@ -226,8 +228,9 @@ class Pacman(Sprite):
         return maze.map_matrix
     
     def die(self):
-        self.lifes -= 1
-        HUD_obj.game_state = GAME_OVER
+        '''A function to execute when pacman dies'''
+        self.lives -= 1
+        HUD_obj.game_state = GAME_LIVE_LOST
 
 
 #Create the pacman
