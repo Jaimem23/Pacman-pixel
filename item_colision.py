@@ -64,6 +64,7 @@ class ItemColision():
                 HUD_obj.current_score += fruit_object.value
 
     def power_pellet_activate(self):
+        '''A function that activates the frightened mode of the ghosts if a power pellet is eaten'''
         ghost_handler.activate_blink_mode()
 
 item_colision = ItemColision()

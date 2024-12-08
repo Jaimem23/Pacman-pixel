@@ -30,10 +30,8 @@ class UIHandler:
         '''This function is in charge of drawing the maze while the victory screen is running '''
         #This two elif control the timing of the map blink, when the variable blink_control divided by 20 returns a 
         #remainder bigger than or equal to 10 it will load the white map to create the effect
-        
         if Update_handler.frame_counter%20 < 10:
             pyxel.bltm(0, 50, 0, 0, 512, 448, 504, None, None, 1)
-
         elif Update_handler.frame_counter%20 >= 10:
             pyxel.bltm(0, 50, 0, 0, 0, 448, 504, None, None, 1)
 
@@ -120,6 +118,7 @@ class UIHandler:
         pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,PACMAN_DEATH_TILES_X[Update_handler.frame_counter//13],PACMAN_DEATH_TILES_Y,16,16, 0, 0, 1.4)
 
     def game_over_draw (self):
+        '''A function to draw game over letters'''
         #Draw GAME OVER letters
         self.__characters_drawn = 0
         for letter in ("GAME OVER"):
@@ -134,14 +133,16 @@ class UIHandler:
         
 
     def draw(self):
+        '''The function in charge of drawing all of the elements in the game'''
+        #Erase what was previously on screen
         pyxel.cls(0)
+
         if HUD_obj.game_state == GAME_STARTING:
             self.maze_draw()
             self.hud_draw()
             self.erase_eaten_pellets()
             self.ready_banner_draw()
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
-
 
         elif HUD_obj.game_state == GAME_RUNNING:
             self.maze_draw()
@@ -180,5 +181,5 @@ class UIHandler:
             self.erase_eaten_pellets()
             self.game_over_draw()
 
-
+#Create a UI_Handler object
 UI_Handler = UIHandler()
