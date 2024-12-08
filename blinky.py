@@ -1,5 +1,5 @@
 from ghost import Ghost
-from constants import BLINKY_Y_TILE,SCREEN_WIDTH,SCREEN_HEIGHT
+from constants import BLINKY_Y_TILE,SCREEN_WIDTH,SCREEN_HEIGHT, BLINKY_INITIAL_X, BLINKY_INITIAL_Y
 from pacman import pacman
 import random
 import pyxel
