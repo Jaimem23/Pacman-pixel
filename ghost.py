@@ -95,6 +95,7 @@ class Ghost(Sprite):
         else: self.__frightened = frightened
 
     def get_eated(self):
+        """A function that changes the parameters of the attributes"""
         #Allow to change direction more often
         self._change_direction_speed = 1
 
@@ -159,6 +160,7 @@ class Ghost(Sprite):
             else: self.x_pos_tile = 64
 
     def change_mode(self):
+        """A function that changes mode when exiting and when eating"""
         if self.mode == "exiting":
             #Check if the ghost is in the right tile
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
@@ -396,6 +398,7 @@ class Ghost(Sprite):
             HUD_obj.eaten_ghost_score()
     
     def change_velocity(self,velocity:int):
+        """A function that automatically changes the velocity of the ghosts"""
         if velocity <= 5:
             self.__velocity = velocity
         else:
@@ -410,6 +413,7 @@ class Ghost(Sprite):
 
     def force_change_direction(self,new_direction:str):
         """A function that forces the ghost to change direction"""
+        #Do not change direction if the ghost is in some important state
         if self.mode in ["waiting","exiting","eaten"]:return
 
         self.direction = new_direction
