@@ -52,8 +52,14 @@ class UIHandler:
         '''This function is in charge of drawing the score on screen'''
 
         #Draw high score letters
+        #This structure is the same used to print all of the strings in the UI
+        #The variable characters drawn is private and only serves to register 
+        #the quantity of characters that have already been drawn
         self.__characters_drawn = 0
         for letter in ("HIGH SCORE"):
+            #For every letter in the input string, the same code is used to draw the letter
+            #However as seen in the x position, letters will be autonmatically indented
+            #thanks and addition that depends on the quantity of characters drawn
             pyxel.blt(164+self.__characters_drawn*12,4,0,self.__characters[letter][0],self.__characters[letter][1],16,16,0,0,1)
             self.__characters_drawn += 1
 
@@ -61,6 +67,9 @@ class UIHandler:
         self.__characters_drawn = 0
         for number in str(HUD_obj.high_score):
             if self.__characters_drawn <= 8:
+                #The structure used here is the same as explained previously, however the x position
+                #is divided by 2 to ensure that as the string grows larger, the characters are still
+                #centered under the word high score
                 pyxel.blt(224-12*len(str(HUD_obj.high_score))/2+self.__characters_drawn*12,24,0,self.__characters[number][0],self.__characters[number][1],16,16,0,0,1)
                 self.__characters_drawn += 1
 
@@ -129,6 +138,7 @@ class UIHandler:
         if HUD_obj.game_state == GAME_STARTING:
             self.maze_draw()
             self.hud_draw()
+            self.erase_eaten_pellets()
             self.ready_banner_draw()
             pyxel.blt(pacman.x_pos+ 7,pacman.y_pos + 55,0,pacman.x_pos_tile,pacman.y_pos_tile,16,16, 0, 0, 1.4)
 

@@ -24,7 +24,6 @@ class UpdateHandler:
             #Update the status of the ghosts
             ghost_handler.update_ghosts_mode()
             ghost_handler.update_ghosts()
-            ghost_handler.check_ghosts_moves()
             #Update the status of pacman according to the user input
             pacman.change_direction()
             pacman.move()
@@ -58,7 +57,8 @@ class UpdateHandler:
             elif pacman.lives != 0:
                 self.frame_counter = 0
                 self.fruit_frame_counter = 0
-                self.global_reset()
+                pacman.reset()
+                ghost_handler.reset()
                 HUD_obj.game_state = GAME_STARTING
 
             else:
@@ -77,13 +77,13 @@ class UpdateHandler:
         if(pyxel.btn(pyxel.KEY_ESCAPE)):
             pyxel.quit()
 
+
     def global_reset(self):
         '''A function to call all of the reset functions in the game'''
         pacman.reset()
         maze.reset()
         item_colision.reset()
         ghost_handler.reset()
-        item_colision.reset()
 
 
 Update_handler = UpdateHandler()

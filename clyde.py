@@ -9,6 +9,7 @@ class Clyde(Ghost):
     def reset(self):
         self.x_pos = CLYDE_INITIAL_X
         self.y_pos = CLYDE_INITIAL_Y
+        self.y_pos_tile = CLYDE_Y_TILE
         super().reset()
 
 

@@ -4,7 +4,6 @@ from maze_handler import maze
 from pacman import pacman
 import random
 from HUD import HUD_obj
-import pyxel
 class Ghost(Sprite):
     def __init__(self, x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,movement_start):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile)
@@ -39,11 +38,7 @@ class Ghost(Sprite):
         self.change_mode()
         self._timer_to_start = 1
         self.__going_up = False
-        #If the level is lower than 5 set the velocity in function of the level
-        if HUD_obj.level < 5:
-            self.__velocity = 1 + HUD_obj.level
-        else:
-            self.__velocity = 5
+        self.change_velocity(1 + HUD_obj.level)
 
     #Read only attributes
     @property
@@ -192,13 +187,13 @@ class Ghost(Sprite):
         elif self.mode == "exiting":
             #Check if the ghost is in the right tile
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
-                self.__velocity = 4
+                self.change_velocity(1 + HUD_obj.level)
                 self.mode = "chase"
         elif self.mode == "eaten":
             #Check if the ghost is in the right tile
             if int(self.x_pos/8) == int(self.target[0]/8) and  int(self.y_pos/8)  == int(self.target[1]/8):
                 #Reset velocity
-                self.__velocity = 4
+                self.change_velocity(1 + HUD_obj.level)
                 self.alive = True
                 self.frightened = False
                 #Change mode to exiting
@@ -396,9 +391,14 @@ class Ghost(Sprite):
             and pacman.y_pos > ghost_y_lower_bound and pacman.y_pos < ghost_y_upper_bound\
             and self.mode == "frightened":
             self.get_eated()
+            HUD_obj.eaten_ghosts += 1
+            HUD_obj.eaten_ghost_score()
     
     def change_velocity(self,velocity:int):
-        self.__velocity = velocity
+        if velocity <= 5:
+            self.__velocity = velocity
+        else:
+            self.__velocity = 5
 
     def change_mode(self):
         '''A function that changes the direction of the ghost when starting up or leveling up'''

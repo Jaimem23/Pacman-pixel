@@ -4,6 +4,7 @@ class HUD:
         self.level = 1
         self.current_score = 0
         self.high_score = 0
+        self.eaten_ghosts = 0
         self.game_state = GAME_STARTING
     
     def increase_level(self):
@@ -13,6 +14,9 @@ class HUD:
     def score_update(self):
         if self.current_score > self.high_score:
             self.high_score = self.current_score
+
+    def eaten_ghost_score(self):
+        self.current_score += 200 * self.eaten_ghosts
 
 
     @property 

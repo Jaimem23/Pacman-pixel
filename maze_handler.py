@@ -1,7 +1,6 @@
 import pyxel
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from consumable import Consumable
-from power_pellets import PowerPellets
 
 class Maze:
     ''' This class is used to register the walls in the map that has been loaded, and put their positions into a matrix '''
@@ -45,7 +44,7 @@ class Maze:
                     self.map_matrix[y].append(0)
                 #If the tile is a power pellet, create a power_pellet object and append a 3 (internal number for corridor with power pellet)
                 elif pyxel.tilemap(0).pget(x,y) == self.power_pellet_tile:
-                    self.pellet_positions.append(PowerPellets(x,y, False))
+                    self.pellet_positions.append(Consumable(x,y, False))
                     self.map_matrix[y].append(3)
                 #If the tile is not in the wall list, a corridor (0) is appended
                 else:

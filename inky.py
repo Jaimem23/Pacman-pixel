@@ -12,6 +12,7 @@ class Inky(Ghost):
     def reset(self):
         self.x_pos = INKY_INITIAL_X
         self.y_pos = INKY_INITIAL_Y
+        self.y_pos_tile = INKY_Y_TILE
         super().reset()
 
     def change_target(self):

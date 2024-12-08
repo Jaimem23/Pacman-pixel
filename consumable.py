@@ -1,4 +1,6 @@
 class Consumable:
+    ''' A class that controls all of the consumables in the game, including pellets, power pellets and fruits'''
+    
     def __init__(self, x_pos, y_pos, eaten):
         self.x_pos = x_pos
         self.y_pos = y_pos

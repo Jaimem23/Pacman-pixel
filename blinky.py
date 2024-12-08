@@ -8,6 +8,7 @@ class Blinky(Ghost):
     def reset(self):
         self.x_pos = BLINKY_INITIAL_X
         self.y_pos = BLINKY_INITIAL_Y
+        self.y_pos_tile = BLINKY_Y_TILE
         super().reset()
 
     def change_target(self):

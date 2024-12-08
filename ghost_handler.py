@@ -2,6 +2,7 @@ from blinky import blinky
 from pinky import pinky
 from inky import inky
 from clyde import clyde
+from HUD import HUD_obj
 import pyxel
 
 class Ghost_Handler():
@@ -15,7 +16,7 @@ class Ghost_Handler():
         self.__chg_mode_counter = 0
 
     def reset(self):
-        ''' A function to reset the parameter when restarting or leveling up'''
+        ''' A function to reset the parameters when restarting or leveling up'''
         self._timer_to_chg_mode = 1
         self._time_to_chg_mode = 300
         self._timer_frightened = 300
@@ -24,6 +25,7 @@ class Ghost_Handler():
         self.__mode = "scatter"
         for ghost in self.ghosts:
             ghost.reset()
+
 
 
     def update_ghosts(self):
@@ -46,14 +48,6 @@ class Ghost_Handler():
                     ghost._change_direction_speed = 8
             self.__invert_direction()
             self.__mode = "frightened"
-
-
-
-    def check_ghosts_moves(self):
-        """Delete this function when the project is done"""
-        if pyxel.btn(pyxel.KEY_5):
-            for ghost in self.ghosts:
-                print(ghost.mode)
 
     def __invert_direction(self):
        for ghost in self.ghosts:
@@ -85,11 +79,13 @@ class Ghost_Handler():
                 ghost.blinking = False
                 if ghost.mode not in ["eaten","waiting","exiting"]:
                     ghost.mode = "chase"
-                    ghost.change_velocity(4)
+                    ghost.change_velocity(1 + HUD_obj.level)
+                    HUD_obj.eaten_ghosts = 0
             
             self.__invert_direction()
                     
             self.__mode = "chase"
+
         
         #Return if 4 loops have been completed
         if self.__chg_mode_counter > 4:return

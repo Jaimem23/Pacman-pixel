@@ -3,10 +3,14 @@ from consumable import Consumable
 from constants import FRUIT_X_POS, FRUIT_Y_POS
 from HUD import HUD_obj
 class Fruit(Consumable):
+   '''A class that is a child of Consumable. I contains the logic used to calculate which fruit is going to be spawned,
+   its value and is in charge of storing the status of the fruit'''
+
    def __init__(self, x_pos, y_pos, width, height, eaten, x_pos_tile,y_pos_tile, fruit_number):
       super().__init__(x_pos, y_pos, eaten)
-      self.fruit_ID = {"1": (0, 176), "2": (16, 176), "3": (32,176), "4": (48, 176), "5":(64, 176)} #Internal naming of the fruits: 1.Cherry 2.Raspberry 3.Orange 4.Apple 5.Watermelon
-      self.fruit_value = {"1": 100, "2": 150, "3": 200, "4": 250, "5":500}
+      #Internal naming of the fruits: 1.Cherry 2.Raspberry 3.Orange 4.Apple 5.Watermelon 6.Axe 7.Bell 8.Key
+      self.fruit_ID = {"1": (0, 176), "2": (16, 176), "3": (32,176), "4": (48, 176), "5":(64, 176), "5":()} 
+      self.fruit_value = {"1": 100, "2": 150, "3": 200, "4": 250, "5":300, "6": 350, "7": 400, "8": 500}
       self.eaten = eaten
       self.width = width
       self.height = height
