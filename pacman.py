@@ -85,9 +85,6 @@ class Pacman(Sprite):
 
     def move(self):
         """A function that moves pacman with his direction"""
-        if(btn(KEY_E)):
-            print(self.x_pos)
-            print(self.y_pos)
 
         if self.direction == "right"  and self.__can_move(self.direction):
             #Allow pacman to go from right to left

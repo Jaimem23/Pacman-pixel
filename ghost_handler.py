@@ -40,7 +40,6 @@ class Ghost_Handler():
 
     def activate_blink_mode(self):
         '''A function to toggle the frightened state of the ghosts'''
-        print("change to frightened")
         self._timer_frightened = 1
         for ghost in self.ghosts:
             if ghost.mode not in ["exiting","eaten","waiting"]:
@@ -101,11 +100,9 @@ class Ghost_Handler():
 
         for ghost in self.ghosts:
             if self.__mode == "scatter" and ghost.mode not in ["frightened","exiting","eaten","waiting"]:
-                print("Change to chase")
                 ghost.force_change_mode("chase")
                 self._timer_to_chg_mode = 1
             elif self.__mode == "chase" and ghost.mode not in ["frightened","exiting","eaten","waiting"]:
-                print("Change to scatter")
                 ghost.force_change_mode("scatter")
                 self._timer_to_chg_mode = 1
         self.__invert_direction()
