@@ -10,7 +10,7 @@ class HUD:
         self.game_state = GAME_STARTING
     
     def increase_level(self):
-        '''A function used to increase the level of the game'''
+        '''A function used to increase the level of the game by 1'''
         self.level += 1
         self.game_state = GAME_STARTING
 
@@ -20,7 +20,7 @@ class HUD:
             self.high_score = self.current_score
 
     def eaten_ghost_score(self):
-        '''A function to add the neccesary quantity of points when pacman '''
+        '''A function to add the neccesary quantity of points when pacman eats a ghost'''
         self.current_score += 200 * self.eaten_ghosts
 
 
@@ -62,4 +62,5 @@ class HUD:
         else:
             self.__game_state = game_state
 
+#Create a HUD object
 HUD_obj = HUD()

@@ -10,6 +10,7 @@ class Inky(Ghost):
         super().__init__(x_pos, y_pos, widht, height,x_pos_tile,y_pos_tile,direction,_time_to_start)
 
     def reset(self):
+        '''A function that resets the parameters when restarting or leveling up'''
         self.x_pos = INKY_INITIAL_X
         self.y_pos = INKY_INITIAL_Y
         self.y_pos_tile = INKY_Y_TILE
