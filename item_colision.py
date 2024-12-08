@@ -11,6 +11,7 @@ class ItemColision():
         self.__eaten_pellets = 0
 
     def reset(self):
+        """A function that resets the pelets"""
         self.__eaten_pellets = 0
         self.pellet_positions = maze.pellet_positions
 
